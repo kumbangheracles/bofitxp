@@ -1,6 +1,6 @@
 import * as Yup from "yup";
-import { User } from "../generated/prisma/client";
-export interface UserDTO extends User {}
+import { Users } from "../generated/prisma/client";
+export interface UserDTO extends Users {}
 export const registerValidateSchema = Yup.object<UserDTO>({
   fullName: Yup.string().required(),
   username: Yup.string().required(),

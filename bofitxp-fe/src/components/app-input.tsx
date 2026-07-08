@@ -73,6 +73,7 @@ const AppInput = ({
             onBlur={() => setIsFocus(false)}
             style={{ ...styles.input, ...props.style }}
             secureTextEntry={openPass}
+            {...props}
           />
         </View>
 

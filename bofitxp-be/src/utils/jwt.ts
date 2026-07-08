@@ -1,11 +1,8 @@
 import { SECRET } from "./env";
 import jwt from "jsonwebtoken";
-import { User } from "../generated/prisma/client";
-export interface IUserToken extends Omit<
-  User,
-  "password" | "email" | "fullName" | "username"
-> {
-  id: string;
+import { Users } from "../generated/prisma/client";
+export interface IUserToken {
+  id: Users["id"];
 }
 
 export const generateToken = (user: IUserToken): string => {

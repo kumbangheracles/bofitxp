@@ -1,11 +1,13 @@
 import AppGradButton from "@/components/app-gradient-btn";
 import AppInput from "@/components/app-input";
-import { AppTheme, Fonts, fontWeight, spacing } from "@/constants/theme";
+import environtment from "@/constants/environtments";
+import { AppTheme, Fonts, spacing } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
-import instance from "@/libs/axios/instance";
-import { UserProps } from "@/types/user.type";
+import useRegister from "@/hooks/use-register";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useEffect } from "react";
+import { Controller } from "react-hook-form";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -16,27 +18,20 @@ import {
   View,
 } from "react-native";
 
-// interface LoginForm extends LoginProps {}
-
 export default function RegisterScreen() {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const handleSubmit = async (data: UserProps) => {
-    // if (!data.)
-    //   return alert("Username atau Email tidak boleh kosong");
-    // if (!data.password) return alert("Password tidak boleh kosong");
-    try {
-      const res = await instance.post("/register");
-      // console.log("REsdata: ", resData);
-      // if (res.status === 200) {
-      //   router.replace("/private/private-dashboard");
-      // }
-    } catch (error) {
-      //   alert("Failed Login");
-      alert("Register Failed");
-      console.log("error Login: ", error);
-    }
-  };
+
+  const { control, errors, handleRegister, handleSubmit, isPendingRegister } =
+    useRegister();
+
+  useEffect(() => {
+    console.log("Error: ", errors);
+    // console.log("API_URL: ", environtment.EXPO_BASE_URL);
+  }, [errors]);
+  useEffect(() => {
+    console.log("API_URL: ", environtment.EXPO_BASE_URL);
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -96,20 +91,114 @@ export default function RegisterScreen() {
         <View style={styles.card}>
           <Text style={styles.title}>Welcome</Text>
 
-          <AppInput label="Full Name" autoCapitalize="none" />
-          <AppInput
-            label="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
+          <Controller
+            control={control}
+            name="fullName"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Full Name"
+                disableFullscreenUI={isPendingRegister}
+                onChangeText={onChange}
+                value={value}
+                autoCapitalize="none"
+              />
+            )}
           />
-          <AppInput label="Password" secureTextEntry />
-          <AppInput label="Confirm Password" secureTextEntry />
+          {errors.fullName && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.fullName.message || "This field is required."}
+            </Text>
+          )}
+          <Controller
+            control={control}
+            name="username"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Username"
+                disableFullscreenUI={isPendingRegister}
+                onChangeText={onChange}
+                value={value}
+                autoCapitalize="none"
+              />
+            )}
+          />
+          {errors.username && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.username.message || "This field is required."}
+            </Text>
+          )}
+
+          <Controller
+            control={control}
+            name="email"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Email"
+                disableFullscreenUI={isPendingRegister}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+
+          {errors.email && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.email.message || "This field is required."}
+            </Text>
+          )}
+          <Controller
+            control={control}
+            name="password"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                disableFullscreenUI={isPendingRegister}
+                label="Password"
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry
+              />
+            )}
+          />
+
+          {errors.password && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.password.message || "This field is required."}
+            </Text>
+          )}
+
+          <Controller
+            control={control}
+            name="confirmPassword"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                disableFullscreenUI={isPendingRegister}
+                label="ConfirmPassword"
+                onChangeText={onChange}
+                value={value}
+                secureTextEntry
+              />
+            )}
+          />
+
+          {errors.confirmPassword && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.confirmPassword.message || "This field is required."}
+            </Text>
+          )}
 
           <AppGradButton
             label="Register"
             title=""
+            disabled={isPendingRegister}
             variantGrad="primary"
-            onPress={() => router.push("/public/activation")}
+            onPress={handleSubmit(handleRegister)}
             isGrad={true}
           />
 
@@ -150,6 +239,7 @@ export default function RegisterScreen() {
               viewStyle={{ width: "90%" }}
               label=""
               isGrad={true}
+              disabled={isPendingRegister}
               title=""
               icon={<MaterialCommunityIcons name="google" size={20} />}
             />
@@ -158,6 +248,7 @@ export default function RegisterScreen() {
               viewStyle={{ width: "90%" }}
               label=""
               isGrad={true}
+              disabled={isPendingRegister}
               title=""
               icon={<MaterialCommunityIcons name="apple" size={20} />}
             />
@@ -178,6 +269,7 @@ export default function RegisterScreen() {
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
+              disabled={isPendingRegister}
               onPress={() => router.push("/public/login")}
             >
               {({ pressed }) => (

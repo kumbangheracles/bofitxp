@@ -1,5 +1,5 @@
 const environtment = {
-  EXPO_BASE_URL: process.env.EXPO_BASE_URL,
+  EXPO_BASE_URL: process.env.EXPO_PUBLIC_BASE_URL as string,
   SECRET: process.env.SECRET,
 };
 

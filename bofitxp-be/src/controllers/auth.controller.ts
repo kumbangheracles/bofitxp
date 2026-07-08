@@ -1,59 +1,35 @@
 import { Request, Response } from "express";
-import * as Yup from "yup";
-import { encrypt } from "../utils/encryption";
-import { generateToken } from "../utils/jwt";
 import { IReqUser } from "../middlewares/auth.middleware";
-import { registerValidateSchema } from "../validation/auth.validation";
 import prisma from "../utils/prisma";
-type TRegister = {
+import response from "../utils/response";
+import { AuthService } from "../services/auth.service";
+import { Users } from "../generated/prisma/client";
+export type TRegister = {
   fullName: string;
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
-  phoneNumber: string;
 };
 
 type TLogin = {
   identifier: string;
   password: string;
 };
-
+const authService = new AuthService();
 export default {
   async register(req: Request, res: Response) {
-    const {
-      fullName,
-      username,
-      email,
-      password,
-      confirmPassword,
-      phoneNumber,
-    } = req.body as unknown as TRegister;
+    const payload = req.body as unknown as TRegister;
 
     try {
-      await registerValidateSchema.validate({
-        fullName,
-        username,
-        email,
-        password,
-        confirmPassword,
-        phoneNumber,
-      });
-      const hashedPassword = encrypt(password);
-      const result = await prisma.user.create({
-        data: { fullName, username, email, password: hashedPassword },
-      });
+      const result = await authService.register(payload);
+
       res.status(200).json({
-        message: "Success Registration!",
-        data: result,
+        message: "success",
+        data: result.user,
       });
     } catch (error: any) {
-      const err = error as Error;
-      console.log("error validate register: ", err);
-      res.status(400).json({
-        message: err.message,
-        data: null,
-      });
+      response.error(res, error, "Failed registration");
     }
   },
 
@@ -66,46 +42,52 @@ export default {
      }
      
      */
-    const { identifier, password } = req.body as unknown as TLogin;
+    const payload = req.body as unknown as TLogin;
     try {
-      const userByIdentifier = await prisma.user.findFirst({
-        where: {
-          OR: [{ username: identifier }, { email: identifier }],
-        },
-      });
+      const result = await authService.login(payload);
 
-      // validasi identifier
-      if (!userByIdentifier) {
-        return res.status(403).json({
-          message: "User not found",
-          data: null,
-        });
-      }
-
-      // validasi password
-      const validatePassword: boolean =
-        encrypt(password) === userByIdentifier.password;
-
-      if (!validatePassword) {
-        return res.status(403).json({
-          message: "User not found",
-          data: null,
-        });
-      }
-
-      const token = generateToken({
-        id: userByIdentifier?.id,
-      });
-      res.status(200).json({
+      return res.status(200).json({
         message: "Login success",
-        data: token,
+        data: result.token,
       });
     } catch (error: any) {
-      const err = error as Error;
-      res.status(400).json({
-        message: err.message,
+      const status = error.message === "User not found" ? 403 : 400;
+      return res.status(status).json({
+        message: error.message,
         data: null,
       });
+    }
+  },
+  async activation(req: IReqUser, res: Response) {
+    /**
+    #swagger.tags = ['Auth']
+    #swagger.requestBody = {
+    required: true,
+    schema: {$ref: '#/components/schemas/ActivationRequest'}
+    }
+     */
+    try {
+      const { activationCode } = req.body;
+      const result = await authService.activationCode(activationCode);
+
+      response.success(res, result.updatedUser, "User successfully activated");
+    } catch (error) {
+      response.error(res, error, "User is failed activated");
+    }
+  },
+
+  async resendActivationCode(req: Request, res: Response) {
+    const { email } = req.body;
+    try {
+      const result = await authService.resendActivationCode(email);
+
+      response.success(
+        res,
+        result.updatedUser.activationCode,
+        "Success resend activation code",
+      );
+    } catch (error) {
+      response.error(res, error, "Failed send activation code");
     }
   },
 
@@ -117,7 +99,14 @@ export default {
      */
     try {
       const user = req.user;
-      const result = await prisma.user.findUnique({ where: { id: user?.id } });
+      const result = await prisma.users.findFirst({ where: { id: user?.id } });
+
+      if (!result?.isVerified) {
+        res.status(404).json({
+          message: "User is not active",
+          data: null,
+        });
+      }
 
       res.status(200).json({
         message: "Success get user profile",

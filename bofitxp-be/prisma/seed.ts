@@ -1,45 +1,144 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+
 import { PrismaClient } from "../src/generated/prisma/client";
+import { encrypt } from "../src/utils/encryption";
+
 const prisma = new PrismaClient();
 
 async function main() {
-  // Hapus data lama (opsional)
-  await prisma.mahasiswa.deleteMany();
+  await prisma.users.deleteMany();
 
-  // Insert data
-  await prisma.mahasiswa.createMany({
+  const password = encrypt("password123");
+
+  await prisma.users.createMany({
     data: [
       {
-        fullName: "Budi Santoso",
-        nim: "2021001",
-        jurusan: "Teknik Informatika",
-        email: "budi@test.com",
-        noHp: "08912313123",
+        fullName: "Ahmad Fauzan",
+        username: "ahmadf",
+        email: "ahmadf@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 2,
+        streak: 5,
+        xp: 250,
       },
       {
-        fullName: "Siti Rahma",
-        nim: "2021002",
-        jurusan: "Sistem Informasi",
-        email: "sitirahma@test.com",
-        noHp: "0809123123",
+        fullName: "Siti Nurhaliza",
+        username: "sitin",
+        email: "sitin@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 3,
+        streak: 10,
+        xp: 520,
+      },
+      {
+        fullName: "Budi Santoso",
+        username: "budis",
+        email: "budis@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 1,
+        streak: 2,
+        xp: 100,
+      },
+      {
+        fullName: "Rina Marlina",
+        username: "rinar",
+        email: "rina@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 4,
+        streak: 18,
+        xp: 860,
+        expireAt: null,
+      },
+      {
+        fullName: "Dedi Kurniawan",
+        username: "dedik",
+        email: "dedi@test.com",
+        password,
+        activationCode: null,
+        isVerified: false,
+        level: 0,
+        streak: 0,
+        xp: 0,
+        expireAt: null,
+      },
+      {
+        fullName: "Maya Putri",
+        username: "mayap",
+        email: "maya@test.com",
+        password,
+        activationCode: "123456",
+        isVerified: false,
+        level: 0,
+        streak: 0,
+        expireAt: null,
+        xp: 0,
       },
       {
         fullName: "Andi Wijaya",
-        nim: "2021003",
-        jurusan: "Teknik Informatika",
-        email: "andiawi@test.com",
-        noHp: "080912312123",
+        username: "andiw",
+        email: "andi@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 5,
+        streak: 22,
+        expireAt: null,
+        xp: 1250,
+      },
+      {
+        fullName: "Fajar Ramadhan",
+        username: "fajarr",
+        email: "fajar@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 2,
+        streak: 6,
+        expireAt: null,
+        xp: 340,
+      },
+      {
+        fullName: "Nabila Azzahra",
+        username: "nabilaa",
+        email: "nabila@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 6,
+        streak: 30,
+        expireAt: null,
+        xp: 1800,
+      },
+      {
+        fullName: "Yoga Pratama",
+        username: "yogap",
+        email: "yoga@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 3,
+        streak: 11,
+        expireAt: null,
+        xp: 650,
       },
     ],
   });
 
-  console.log(" Seeding selesai!");
+  console.log("✅ Seeder Users berhasil dijalankan!");
 }
 
 main()
   .catch((e) => {
-    console.error(" Seeding gagal:", e);
+    console.error(e);
     process.exit(1);
   })
   .finally(async () => {
