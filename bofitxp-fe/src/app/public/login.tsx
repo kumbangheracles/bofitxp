@@ -14,6 +14,8 @@ import {
 } from "react-native";
 import AppInput from "@/components/app-input";
 import AppGradButton from "@/components/app-gradient-btn";
+import useLogin from "@/hooks/use-login";
+import { Controller } from "react-hook-form";
 
 // interface LoginForm extends LoginProps {}
 
@@ -21,25 +23,8 @@ export default function LoginScreen() {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  //   const handleSubmit = async (data: LoginForm) => {
-  //     if (!data.identifier)
-  //       return alert("Username atau Email tidak boleh kosong");
-  //     if (!data.password) return alert("Password tidak boleh kosong");
-
-  //     console.log("Login data:", formData);
-  //     try {
-  //       const res = await userLogin(data);
-  //       const resData = await res.json();
-  //       console.log("REsdata: ", resData);
-  //       if (res.ok) {
-  //         await storage.set("token", resData.data);
-  //         router.replace("/private/private-dashboard");
-  //       }
-  //     } catch (error) {
-  //       //   alert("Failed Login");
-  //       console.log("error Login: ", error);
-  //     }
-  //   };
+  const { control, errors, handleLogin, handleSubmit, isPendingLogin } =
+    useLogin();
 
   return (
     <KeyboardAvoidingView
@@ -99,29 +84,61 @@ export default function LoginScreen() {
         <View style={styles.card}>
           <Text style={styles.title}>Welcome Back</Text>
 
-          <AppInput
-            label="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            icon={
-              <MaterialCommunityIcons
-                name="email"
-                size={20}
-                style={{ color: theme.textHint }}
+          <Controller
+            control={control}
+            name="email"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={onChange}
+                value={value}
+                disableFullscreenUI={isPendingLogin}
+                icon={
+                  <MaterialCommunityIcons
+                    name="email"
+                    size={20}
+                    style={{ color: theme.textHint }}
+                  />
+                }
               />
-            }
+            )}
           />
-          <AppInput
-            label="Password"
-            secureTextEntry
-            icon={
-              <MaterialCommunityIcons
-                name="lock"
-                size={20}
-                style={{ color: theme.textHint }}
+          {errors.email && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.email.message || "This field is required."}
+            </Text>
+          )}
+
+          <Controller
+            control={control}
+            name="password"
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Password"
+                isPassword
+                onChangeText={onChange}
+                value={value}
+                disableFullscreenUI={isPendingLogin}
+                icon={
+                  <MaterialCommunityIcons
+                    name="lock"
+                    size={20}
+                    style={{ color: theme.textHint }}
+                  />
+                }
               />
-            }
+            )}
           />
+
+          {errors.password && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errors.password.message || "This field is required."}
+            </Text>
+          )}
 
           <View
             style={{
@@ -154,8 +171,11 @@ export default function LoginScreen() {
           <AppGradButton
             label="Login"
             title=""
+            isLoading={isPendingLogin}
             variantGrad="primary"
             isGrad={true}
+            disabled={isPendingLogin}
+            onPress={handleSubmit(handleLogin)}
           />
 
           <View

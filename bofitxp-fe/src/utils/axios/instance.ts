@@ -1,6 +1,6 @@
 import environtment from "@/constants/environtments";
 import axios from "axios";
-import * as SecureStore from "expo-secure-store"; // <-- Impor storage kamu
+import * as SecureStore from "expo-secure-store";
 
 const headers = {
   "Content-Type": "application/json",
@@ -17,10 +17,8 @@ instance.interceptors.request.use(
     console.log("API_URL: ", environtment.EXPO_BASE_URL);
 
     try {
-      // 1. Ambil token langsung dari SecureStore secara async
-      const token = await SecureStore.getItemAsync("user_token"); // Sesuaikan key penyimpananmu
+      const token = await SecureStore.getItemAsync("user_token");
 
-      // 2. Jika token ada, langsung pasang ke header
       if (token) {
         request.headers.Authorization = `Bearer ${token}`;
         console.log("Token berhasil dipasang ke header: ", token);

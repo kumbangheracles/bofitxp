@@ -1,12 +1,10 @@
 import AppGradButton from "@/components/app-gradient-btn";
 import AppInput from "@/components/app-input";
-import environtment from "@/constants/environtments";
 import { AppTheme, Fonts, spacing } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import useRegister from "@/hooks/use-register";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import {
   KeyboardAvoidingView,
@@ -21,17 +19,12 @@ import {
 export default function RegisterScreen() {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-
   const { control, errors, handleRegister, handleSubmit, isPendingRegister } =
     useRegister();
 
-  useEffect(() => {
-    console.log("Error: ", errors);
-    // console.log("API_URL: ", environtment.EXPO_BASE_URL);
-  }, [errors]);
-  useEffect(() => {
-    console.log("API_URL: ", environtment.EXPO_BASE_URL);
-  }, []);
+  // useEffect(() => {
+  //   console.log("Error: ", errors);
+  // }, [errors]);
 
   return (
     <KeyboardAvoidingView
@@ -161,7 +154,7 @@ export default function RegisterScreen() {
                 label="Password"
                 onChangeText={onChange}
                 value={value}
-                secureTextEntry
+                isPassword
               />
             )}
           />
@@ -178,11 +171,11 @@ export default function RegisterScreen() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
+                isPassword
                 disableFullscreenUI={isPendingRegister}
                 label="ConfirmPassword"
                 onChangeText={onChange}
                 value={value}
-                secureTextEntry
               />
             )}
           />

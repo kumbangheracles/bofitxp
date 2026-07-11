@@ -21,6 +21,13 @@ export const registerValidateSchema = Yup.object({
   //   .default(""),
 }).required(); // <-- Tambahkan .required() di ujung objek schema
 
-// Membuat tipe data TRegister OTOMATIS dari skema Yup
+export const loginValidateSchema = Yup.object({
+  email: Yup.string()
+    .email("Email format not valid")
+    .required("Please input your email"),
+  password: Yup.string().required("Please input your password"),
+});
+
 export type TRegister = Yup.InferType<typeof registerValidateSchema>;
+export type TLogin = Yup.InferType<typeof loginValidateSchema>;
 export const loginValidation = Yup.object({});

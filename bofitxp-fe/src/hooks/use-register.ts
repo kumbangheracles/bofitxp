@@ -7,6 +7,7 @@ import {
 import { AuthService } from "@/services/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 const useRegister = () => {
   const authServices = new AuthService();
   const {
@@ -28,10 +29,17 @@ const useRegister = () => {
       //   setToaster({ type: "error", message: error.message });
       alert(error.message);
     },
-    onSuccess: () => {
-      reset();
+    onSuccess: (_, variables) => {
+      const registeredEmail = variables.email;
+
       alert("Register berhasil");
-      //   setToaster({ type: "success", message: "Register success" });
+
+      if (registeredEmail) {
+        SecureStore.setItemAsync("email_activation", registeredEmail);
+      }
+
+      reset();
+
       router.push("/public/activation");
     },
   });

@@ -293,7 +293,7 @@ const getStyles = (theme: AppTheme) =>
     },
     otpBox: {
       flex: 1,
-      aspectRatio: 1,
+      aspectRatio: 0,
       borderRadius: radius.md,
       borderWidth: 1.5,
       borderColor: theme.border,

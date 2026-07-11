@@ -14,6 +14,17 @@ async function main() {
   await prisma.users.createMany({
     data: [
       {
+        fullName: "Ahmad Herkal",
+        username: "herkaltest",
+        email: "ahmadherkal@test.com",
+        password,
+        activationCode: null,
+        isVerified: true,
+        level: 2,
+        streak: 5,
+        xp: 250,
+      },
+      {
         fullName: "Ahmad Fauzan",
         username: "ahmadf",
         email: "ahmadf@test.com",

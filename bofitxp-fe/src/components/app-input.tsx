@@ -21,7 +21,7 @@ import styled from "styled-components/native";
 interface PropTypes extends TextInputProps {
   icon?: ReactNode;
   label?: string;
-
+  isPassword?: boolean;
   containerStyles?: React.CSSProperties;
   labelStyles?: React.CSSProperties;
 }
@@ -31,11 +31,13 @@ const AppInput = ({
   label,
   containerStyles,
   labelStyles,
+  isPassword = false,
   ...props
 }: PropTypes) => {
   const theme = useAppTheme();
   const [openPass, setOpenPass] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
+
   const progress = useSharedValue<number>(0);
   const styles = makeStyles(theme);
   useEffect(() => {
@@ -77,7 +79,7 @@ const AppInput = ({
           />
         </View>
 
-        {props.secureTextEntry && (
+        {isPassword && (
           <Pressable>
             {openPass ? (
               <MaterialCommunityIcons

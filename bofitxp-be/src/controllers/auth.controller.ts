@@ -13,7 +13,7 @@ export type TRegister = {
 };
 
 type TLogin = {
-  identifier: string;
+  email: string;
   password: string;
 };
 const authService = new AuthService();
@@ -52,6 +52,7 @@ export default {
       });
     } catch (error: any) {
       const status = error.message === "User not found" ? 403 : 400;
+      console.log("Error: ", error);
       return res.status(status).json({
         message: error.message,
         data: null,

@@ -10,7 +10,9 @@ import AppGradButton from "@/components/app-gradient-btn";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { radius, spacing } from "@/constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
-const ActivationScreen = () => {
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+const HomeScreen = () => {
   const theme = useAppTheme();
   const authService = new AuthService();
   const [code, setCode] = useState<UserProps["activationCode"]>("");
@@ -51,59 +53,10 @@ const ActivationScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView
-        contentContainerStyle={{
-          backgroundColor: theme.background,
-          padding: 16,
-          flexGrow: 1,
-          justifyContent: "center",
-          position: "relative",
-        }}
-      >
-        <SafeAreaView>
-          <AppGradButton
-            title={"Back"}
-            onPress={() => router.back()}
-            viewStyle={{
-              position: "absolute",
-              top: -200,
-              left: 0,
-              zIndex: 999,
-            }}
-            icon={
-              <MaterialCommunityIcons
-                name="arrow-left"
-                size={16}
-                style={{
-                  color: theme.primaryLabel,
-                  padding: spacing.md,
-                  backgroundColor: theme.background,
-                  borderColor: theme.primaryLabel,
-                  borderRadius: radius.md,
-                  borderWidth: 1,
-                }}
-              />
-            }
-            label={""}
-          />
-        </SafeAreaView>
-        <AppActivationCodeCard
-          subtitle="Activation code has sended to your email"
-          value={code as UserProps["activationCode"]}
-          onChangeCode={setCode}
-          onSubmit={() => handleSubmit("activation")}
-          onResend={() => handleSubmit("resendActivationCode")}
-          loading={loading}
-          resendLoading={loading}
-          error={error}
-        />
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <ThemedView>
+      <ThemedText>Home Page</ThemedText>
+    </ThemedView>
   );
 };
 
-export default ActivationScreen;
+export default HomeScreen;

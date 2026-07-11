@@ -1,6 +1,6 @@
 import { UserProps } from "@/types/user.type";
 import instance from "@/utils/axios/instance";
-import { TRegister } from "@/utils/validation/user.validation";
+import { TLogin, TRegister } from "@/utils/validation/user.validation";
 export class AuthService {
   async register(payload: TRegister) {
     const result = await instance.post("/auth/register", payload);
@@ -8,14 +8,24 @@ export class AuthService {
     return result;
   }
 
-  async login(payload: { identifier: string; password: string }) {
+  async login(payload: TLogin) {
     const result = await instance.post("/auth/login", payload);
 
     return result;
   }
 
   async activationCode(payload: UserProps["activationCode"]) {
-    const result = await instance.post("/auth/activation", payload);
+    const result = await instance.post("/auth/activation", {
+      activationCode: payload,
+    });
+
+    return result;
+  }
+
+  async resendActivationCode(payload: UserProps["email"]) {
+    const result = await instance.post("/auth/resend-activation", {
+      email: payload,
+    });
 
     return result;
   }

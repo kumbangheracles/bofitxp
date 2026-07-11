@@ -16,3 +16,13 @@ export const initialTRegister: RegisterDTO = {
   password: "",
   username: "",
 };
+
+interface TLogin {
+  email: string;
+  password: string;
+}
+
+export const TLogin: TLogin = {
+  email: "",
+  password: "",
+};
