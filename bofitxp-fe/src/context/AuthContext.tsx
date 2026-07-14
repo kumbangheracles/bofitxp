@@ -16,26 +16,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    SecureStore.getItemAsync("token").then((t) => {
+    SecureStore.getItemAsync("user_token").then((t) => {
       setToken(t);
       setIsLoading(false);
     });
   }, []);
 
   const login = async (newToken: string) => {
-    await SecureStore.setItemAsync("token", newToken);
+    await SecureStore.setItemAsync("user_token", newToken);
     setToken(newToken);
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("user_token");
     setToken(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated: false,
+        isAuthenticated: !!token,
         isLoading,
         token,
         login,

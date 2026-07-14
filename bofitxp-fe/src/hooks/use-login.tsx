@@ -8,8 +8,10 @@ import { AuthService } from "@/services/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import { useAuth } from "@/context/AuthContext";
 const useLogin = () => {
   const authServices = new AuthService();
+  const { login: loginSaveToken } = useAuth();
   const {
     control,
     handleSubmit,
@@ -29,7 +31,7 @@ const useLogin = () => {
       alert(error.message);
     },
     onSuccess: async (data) => {
-      await SecureStore.setItem("user_token", data.data.toString() as string);
+      await loginSaveToken(data.data.toString() as string);
       console.log("Data: ", data);
 
       alert("Login success.");
