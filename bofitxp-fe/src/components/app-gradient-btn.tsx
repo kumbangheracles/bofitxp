@@ -2,7 +2,7 @@ import { useAppTheme } from "@/hooks/use-app-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { ReactNode } from "react";
 import {
-  ActivityIndicator, // 1. Import ActivityIndicator untuk animasi loading
+  ActivityIndicator,
   ButtonProps,
   Pressable,
   Text,
@@ -15,7 +15,7 @@ interface PropTypes extends ButtonProps {
   label: string;
   icon?: ReactNode;
   isGrad?: boolean;
-  isLoading?: boolean; // 2. Tambahkan prop isLoading opsional
+  isLoading?: boolean;
   startGrad?: { x: number; y: number };
   endGrad?: { x: number; y: number };
   viewStyle?: ViewStyle;
@@ -36,11 +36,11 @@ const AppGradButton = ({
   startGrad = { x: 0, y: 0 },
   endGrad = { x: 1, y: 1 },
   isGrad = false,
-  isLoading = false, // 3. Set default value ke false
+  isLoading = false,
   viewStyle,
   textStyle,
   variantGrad = "default",
-  disabled, // Ambil disabled dari props bawaan jika ada
+  disabled,
   ...props
 }: PropTypes) => {
   const theme = useAppTheme();
@@ -70,13 +70,11 @@ const AppGradButton = ({
     ],
   }[variantGrad];
 
-  // Tentukan warna spinner mengikuti warna teks agar kontras
   const spinnerColor = textStyle?.color || theme.textSecondary;
 
   return (
     <Pressable
       {...props}
-      // 4. Otomatis disable tombol jika sedang loading ATAU jika prop disabled diset true
       disabled={disabled || isLoading}
       style={({ pressed }) => [
         { opacity: pressed || isLoading ? 0.7 : 1 }, // Beri efek feedback visual saat loading/ditekan
@@ -93,8 +91,8 @@ const AppGradButton = ({
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
-            alignItems: "center", // Pastikan spinner & teks sejajar vertikal
-            gap: 8, // Beri jarak yang pas jika loading muncul
+            alignItems: "center",
+            gap: 8,
             padding: 12,
             ...viewStyle,
           }}
@@ -127,7 +125,7 @@ const AppGradButton = ({
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
-            alignItems: "center", // Pastikan spinner & teks sejajar vertikal
+            alignItems: "center",
             gap: 8,
             padding: 12,
             ...viewStyle,

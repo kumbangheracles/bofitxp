@@ -1,5 +1,6 @@
 import { Stack, Redirect } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
+import AppPrivateLayout from "@/components/app-private-layout";
 export default function PrivateLayout() {
   const { isAuthenticated, isLoading } = useAuth();
 
@@ -9,5 +10,9 @@ export default function PrivateLayout() {
     return <Redirect href="/public/login" />;
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <AppPrivateLayout>
+      <Stack screenOptions={{ headerShown: false }} />
+    </AppPrivateLayout>
+  );
 }
