@@ -10,9 +10,5 @@ export default function PrivateLayout() {
     return <Redirect href="/public/login" />;
   }
 
-  return (
-    <AppPrivateLayout>
-      <Stack screenOptions={{ headerShown: false }} />
-    </AppPrivateLayout>
-  );
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
