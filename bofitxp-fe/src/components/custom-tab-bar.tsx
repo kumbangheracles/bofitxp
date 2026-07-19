@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import Toast from "react-native-toast-message";
 
 const HORIZONTAL_PADDING = 10;
 
@@ -38,7 +39,7 @@ export default function CustomTabBar({
   }));
 
   const listTabs = [
-    { key: "index", label: "Home", icon: "home-outline" },
+    { key: "home", label: "Home", icon: "home-outline" },
     { key: "quests", label: "Quests", icon: "circle-off-outline" },
     { key: "exercise", label: "Exercise", icon: "dumbbell" },
     { key: "achievements", label: "Achievements", icon: "trophy-variant" },

@@ -1,10 +1,42 @@
 import { fontSize, fontWeight, spacing } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
-import { Text, View } from "react-native";
+import { Pressable, Text, View, ToastAndroid } from "react-native";
+
 import Checkbox from "expo-checkbox";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import Toast from "react-native-toast-message";
+import { showError, showSuccess } from "@/utils/toast";
 const ListTodayQuests = () => {
   const theme = useAppTheme();
+  const [checked, setChecked] = useState<boolean>(false);
+  const progress = useSharedValue(0);
+  useEffect(() => {
+    progress.value = withTiming(checked ? 1 : 0, {
+      duration: 50,
+    });
+  }, [checked]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      borderColor: interpolateColor(
+        progress.value,
+        [0, 1],
+        [theme.elevated, theme.xpProgress],
+      ),
+    };
+  });
+
+  const showToast = () => {
+    showError("Workout selesai", "+120 XP");
+  };
+
   return (
     <View style={{ width: "100%" }}>
       <View
@@ -34,19 +66,27 @@ const ListTodayQuests = () => {
         </Text>
       </View>
 
-      <View style={{ gap: 8 }}>
-        <View
-          style={{
-            padding: spacing.md,
-            backgroundColor: theme.surface,
-            borderRadius: 16,
-            marginTop: 12,
-            borderWidth: 1,
-            overflowX: "hidden",
-            borderColor: theme.elevated,
-            flexDirection: "row",
-            gap: 8,
-          }}
+      {/* Quest Card */}
+      <Pressable
+        onPress={() => {
+          (setChecked((prev) => !prev), showToast());
+        }}
+        style={{ gap: 8 }}
+      >
+        <Animated.View
+          style={[
+            {
+              padding: spacing.md,
+              backgroundColor: theme.surface,
+              borderRadius: 16,
+              marginTop: 12,
+
+              borderWidth: 1,
+              flexDirection: "row",
+              gap: 8,
+            },
+            animatedStyle,
+          ]}
         >
           <Checkbox
             style={{
@@ -54,15 +94,16 @@ const ListTodayQuests = () => {
               padding: 10,
               borderColor: theme.textHint,
             }}
-            value={true}
+            value={checked}
             color={theme.xpProgress}
-            onValueChange={() => {}}
+            // onValueChange={(val) => setChecked((val)=>!va)}
           />
           <View>
             <Text
               style={{
                 fontSize: spacing.md,
                 color: theme.text,
+                textDecorationLine: checked ? "line-through" : "none",
                 fontWeight: fontWeight.semibold,
               }}
             >
@@ -138,8 +179,8 @@ const ListTodayQuests = () => {
               </View>
             </View>
           </View>
-        </View>
-      </View>
+        </Animated.View>
+      </Pressable>
     </View>
   );
 };

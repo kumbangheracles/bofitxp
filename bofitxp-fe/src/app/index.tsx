@@ -7,7 +7,7 @@ export default function Index() {
   if (isLoading) return null; // atau loading screen
 
   return isAuthenticated ? (
-    <Redirect href="/private/(tabs)/" />
+    <Redirect href="/private/(tabs)/home" />
   ) : (
     <Redirect href="/public/login" />
   );
