@@ -1,4 +1,11 @@
-import { Animated, StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -14,6 +21,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
+import ListTodayQuests from "@/components/Home/ListTodayQuests";
 const { width } = Dimensions.get("window");
 export default function index() {
   const theme = useAppTheme();
@@ -64,182 +72,284 @@ export default function index() {
   ];
   return (
     <>
-      <ThemedView
-        style={{
-          paddingInline: spacing.md,
-          paddingTop: 50,
-          paddingBottom: 30,
-          backgroundColor: theme.elevated,
-        }}
-      >
-        {/* <SafeAreaView style={styles.safeArea}>
-        <> */}
+      <ScrollView>
         <ThemedView
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            paddingInline: spacing.md,
+            paddingTop: 50,
+            paddingBottom: 30,
             backgroundColor: theme.elevated,
           }}
         >
-          <ThemedView style={{ backgroundColor: theme.elevated }}>
-            <ThemedText>Welcome Back</ThemedText>
-            <ThemedText style={{ fontWeight: 300, color: theme.textHint }}>
-              Ready to level up?
-            </ThemedText>
-          </ThemedView>
+          {/* <SafeAreaView style={styles.safeArea}>
+        <> */}
           <ThemedView
             style={{
               flexDirection: "row",
-              gap: 10,
+              justifyContent: "space-between",
               backgroundColor: theme.elevated,
             }}
           >
-            <ThemedView
-              style={{
-                padding: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "50%",
-                width: 37,
-                height: 37,
-                backgroundColor: theme.border,
-              }}
-            >
-              <MaterialCommunityIcons
-                style={{
-                  color: theme.text,
-                }}
-                name="bell"
-                size={16}
-              />
+            <ThemedView style={{ backgroundColor: theme.elevated }}>
+              <ThemedText>Welcome Back</ThemedText>
+              <ThemedText style={{ fontWeight: 300, color: theme.textHint }}>
+                Ready to level up?
+              </ThemedText>
             </ThemedView>
             <ThemedView
               style={{
-                padding: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "50%",
-                width: 37,
-                height: 37,
-                backgroundColor: theme.border,
+                flexDirection: "row",
+                gap: 10,
+                backgroundColor: theme.elevated,
               }}
             >
-              <MaterialCommunityIcons
+              <ThemedView
                 style={{
-                  color: theme.text,
+                  padding: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  width: 37,
+                  height: 37,
+                  backgroundColor: theme.border,
                 }}
-                name="cog"
-                size={16}
-              />
+              >
+                <MaterialCommunityIcons
+                  style={{
+                    color: theme.text,
+                  }}
+                  name="bell"
+                  size={16}
+                />
+              </ThemedView>
+              <ThemedView
+                style={{
+                  padding: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  width: 37,
+                  height: 37,
+                  backgroundColor: theme.border,
+                }}
+              >
+                <MaterialCommunityIcons
+                  style={{
+                    color: theme.text,
+                  }}
+                  name="cog"
+                  size={16}
+                />
+              </ThemedView>
             </ThemedView>
           </ThemedView>
-        </ThemedView>
 
-        {/* Card Section */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: 20,
-            marginTop: 20,
-          }}
-        >
-          {/* Streak Card */}
-          {streak_list.map((item) => (
+          {/* Card Section */}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 20,
+              marginTop: 20,
+            }}
+          >
+            {/* Streak Card */}
+            {streak_list.map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  backgroundColor: theme.border,
+                  padding: 12,
+                  borderColor: theme.textHint,
+                  borderWidth: 1,
+                  borderRadius: 16,
+                  minWidth: 90,
+                }}
+              >
+                <View
+                  style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+                >
+                  <View>{item.icon}</View>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: fontSize.xs,
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                </View>
+                <Text
+                  style={{ color: theme.text, fontWeight: 700, fontSize: 17 }}
+                >
+                  {item.label}
+                </Text>
+              </View>
+            ))}
+          </View>
+          {/* </> */}
+
+          {/* Level Progress Section */}
+
+          <View
+            style={{
+              padding: spacing.md,
+              backgroundColor: theme.border,
+              borderColor: theme.textHint,
+              borderWidth: 1,
+              borderRadius: 16,
+              marginInline: 8,
+              marginTop: 16,
+            }}
+          >
             <View
-              key={item.id}
-              style={{
-                backgroundColor: theme.border,
-                padding: 12,
-                borderColor: theme.textHint,
-                borderWidth: 1,
-                borderRadius: 16,
-                minWidth: 90,
-              }}
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <View
-                style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+                style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
               >
-                <View>{item.icon}</View>
+                <View
+                  style={{
+                    padding: 4,
+                    borderRadius: 12,
+                    height: 33,
+                    width: 33,
+                    backgroundColor: theme.primaryLabel,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    size={20}
+                    name="lightning-bolt-outline"
+                    style={{ color: theme.text }}
+                  />
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      color: theme.textSecondary,
+                      fontSize: fontSize.xs,
+                    }}
+                  >
+                    Level 24
+                  </Text>
+                  <Text style={{ color: theme.text }}>2,450 / 3,000 XP</Text>
+                </View>
+              </View>
+
+              <View style={{ alignItems: "flex-end" }}>
                 <Text
                   style={{ color: theme.textSecondary, fontSize: fontSize.xs }}
                 >
-                  {item.title}
+                  To next level
+                </Text>
+                <Text
+                  style={{
+                    color: theme.primaryLabel,
+                    fontWeight: fontWeight.bold,
+                  }}
+                >
+                  550 XP
                 </Text>
               </View>
-              <Text
-                style={{ color: theme.text, fontWeight: 700, fontSize: 17 }}
-              >
-                {item.label}
-              </Text>
             </View>
-          ))}
-        </View>
-        {/* </> */}
 
-        {/* Level Progress Section */}
+            <View
+              style={{
+                marginTop: 10,
+                position: "relative",
+                height: 8,
+                overflow: "hidden",
+                borderRadius: 16,
+              }}
+            >
+              <View
+                style={{
+                  ...StyleSheet.absoluteFill,
+                  backgroundColor: theme.surface,
+                }}
+              />
+
+              <View
+                style={{
+                  ...StyleSheet.absoluteFill,
+                  width: "60%",
+                  backgroundColor: theme.primaryMuted,
+                  borderRadius: 12,
+                }}
+              />
+
+              <Animated.View
+                style={{
+                  ...StyleSheet.absoluteFill,
+                  transform: [{ translateX }],
+                  width: "100%",
+                }}
+              >
+                <LinearGradient
+                  colors={[
+                    "transparent",
+                    "rgba(255, 255, 255, 0.4)",
+                    "transparent",
+                  ]}
+                  start={{ x: 0, y: 0 }} // [cite: 9]
+                  end={{ x: 1, y: 0 }} // [cite: 9]
+                  style={StyleSheet.absoluteFill}
+                />
+              </Animated.View>
+            </View>
+          </View>
+          {/* {Platform.OS === "web" && <WebBadge />}
+      </SafeAreaView> */}
+
+          {/* Progress, generate & AI COACH */}
+        </ThemedView>
 
         <View
           style={{
             padding: spacing.md,
-            backgroundColor: theme.border,
-            borderColor: theme.textHint,
-            borderWidth: 1,
+            backgroundColor: theme.surface,
             borderRadius: 16,
-            marginInline: 8,
-            marginTop: 16,
+            marginInline: 12,
+            marginTop: 12,
+            borderWidth: 1,
+            borderColor: theme.elevated,
           }}
         >
           <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
-            >
-              <View
+            <View>
+              <Text
                 style={{
-                  padding: 4,
-                  borderRadius: 12,
-                  height: 33,
-                  width: 33,
-                  backgroundColor: theme.primaryLabel,
-                  justifyContent: "center",
-                  alignItems: "center",
+                  fontSize: fontSize.md,
+                  fontWeight: fontWeight.medium,
+                  color: theme.text,
                 }}
               >
-                <MaterialCommunityIcons
-                  size={20}
-                  name="lightning-bolt-outline"
-                  style={{ color: theme.text }}
-                />
-              </View>
-              <View>
-                <Text
-                  style={{ color: theme.textSecondary, fontSize: fontSize.xs }}
-                >
-                  Level 24
-                </Text>
-                <Text style={{ color: theme.text }}>2,450 / 3,000 XP</Text>
-              </View>
+                Daily Progress
+              </Text>
+              <Text style={{ fontSize: fontSize.sm, color: theme.textHint }}>
+                0/5 quests completed
+              </Text>
             </View>
 
-            <View style={{ alignItems: "flex-end" }}>
-              <Text
-                style={{ color: theme.textSecondary, fontSize: fontSize.xs }}
-              >
-                To next level
-              </Text>
-              <Text
-                style={{
-                  color: theme.primaryLabel,
-                  fontWeight: fontWeight.bold,
-                }}
-              >
-                550 XP
-              </Text>
-            </View>
+            <Text
+              style={{
+                fontSize: fontSize.xl,
+                color: theme.xpProgress,
+                fontWeight: fontWeight.extrabold,
+              }}
+            >
+              0%
+            </Text>
           </View>
 
           <View
@@ -254,199 +364,102 @@ export default function index() {
             <View
               style={{
                 ...StyleSheet.absoluteFill,
-                backgroundColor: theme.surface,
+                backgroundColor: theme.xpProgress,
+                borderRadius: 12,
+                zIndex: 10,
+                width: "40%",
               }}
             />
 
             <View
               style={{
                 ...StyleSheet.absoluteFill,
-                width: "60%",
-                backgroundColor: theme.primaryMuted,
+                width: "100%",
+                backgroundColor: theme.border,
                 borderRadius: 12,
               }}
             />
-
-            <Animated.View
-              style={{
-                ...StyleSheet.absoluteFill,
-                transform: [{ translateX }],
-                width: "100%",
-              }}
-            >
-              <LinearGradient
-                colors={[
-                  "transparent",
-                  "rgba(255, 255, 255, 0.4)",
-                  "transparent",
-                ]}
-                start={{ x: 0, y: 0 }} // [cite: 9]
-                end={{ x: 1, y: 0 }} // [cite: 9]
-                style={StyleSheet.absoluteFill}
-              />
-            </Animated.View>
           </View>
         </View>
-        {/* {Platform.OS === "web" && <WebBadge />}
-      </SafeAreaView> */}
 
-        {/* Progress, generate & AI COACH */}
-      </ThemedView>
-
-      <View
-        style={{
-          padding: spacing.md,
-          backgroundColor: theme.surface,
-          borderRadius: 16,
-          marginInline: 12,
-          marginTop: 12,
-          borderWidth: 1,
-          borderColor: theme.elevated,
-        }}
-      >
         <View
           style={{
-            justifyContent: "space-between",
+            padding: 10,
             flexDirection: "row",
-            alignItems: "center",
+            gap: 12,
+            justifyContent: "center",
           }}
         >
-          <View>
+          <View
+            style={{
+              padding: spacing.md,
+              borderRadius: 16,
+              backgroundColor: theme.primaryLabel,
+              minWidth: 160,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="generator-mobile"
+              size={16}
+              color={theme.text}
+            />
             <Text
               style={{
-                fontSize: fontSize.md,
-                fontWeight: fontWeight.medium,
                 color: theme.text,
+                fontWeight: fontWeight.bold,
+                fontSize: fontSize.md,
               }}
             >
-              Daily Progress
+              Generate Quest
             </Text>
-            <Text style={{ fontSize: fontSize.sm, color: theme.textHint }}>
-              0/5 quests completed
+            <Text
+              style={{
+                color: theme.text,
+
+                fontSize: fontSize.xs,
+              }}
+            >
+              AI-powered daily
             </Text>
           </View>
-
-          <Text
-            style={{
-              fontSize: fontSize.xl,
-              color: theme.xpProgress,
-              fontWeight: fontWeight.extrabold,
-            }}
-          >
-            0%
-          </Text>
-        </View>
-
-        <View
-          style={{
-            marginTop: 10,
-            position: "relative",
-            height: 8,
-            overflow: "hidden",
-            borderRadius: 16,
-          }}
-        >
           <View
             style={{
-              ...StyleSheet.absoluteFill,
-              backgroundColor: theme.xpProgress,
-              borderRadius: 12,
-              zIndex: 10,
-              width: "40%",
-            }}
-          />
-
-          <View
-            style={{
-              ...StyleSheet.absoluteFill,
-              width: "100%",
-              backgroundColor: theme.border,
-              borderRadius: 12,
-            }}
-          />
-        </View>
-      </View>
-
-      <View
-        style={{
-          padding: 10,
-          flexDirection: "row",
-          gap: 12,
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            padding: spacing.md,
-            borderRadius: 16,
-            backgroundColor: theme.primaryLabel,
-            minWidth: 160,
-          }}
-        >
-          <MaterialCommunityIcons
-            name="generator-mobile"
-            size={16}
-            color={theme.text}
-          />
-          <Text
-            style={{
-              color: theme.text,
-              fontWeight: fontWeight.bold,
-              fontSize: fontSize.md,
+              padding: spacing.md,
+              borderRadius: 16,
+              backgroundColor: theme.xp,
+              minWidth: 160,
             }}
           >
-            Generate Quest
-          </Text>
-          <Text
-            style={{
-              color: theme.text,
+            <MaterialCommunityIcons
+              name="badge-account-horizontal"
+              size={16}
+              color={theme.text}
+            />
+            <Text
+              style={{
+                color: theme.text,
+                fontWeight: fontWeight.bold,
+                fontSize: fontSize.md,
+              }}
+            >
+              AI Coach
+            </Text>
+            <Text
+              style={{
+                color: theme.text,
 
-              fontSize: fontSize.xs,
-            }}
-          >
-            AI-powered daily
-          </Text>
+                fontSize: fontSize.xs,
+              }}
+            >
+              Get advice
+            </Text>
+          </View>
         </View>
-        <View
-          style={{
-            padding: spacing.md,
-            borderRadius: 16,
-            backgroundColor: theme.xp,
-            minWidth: 160,
-          }}
-        >
-          <MaterialCommunityIcons
-            name="badge-account-horizontal"
-            size={16}
-            color={theme.text}
-          />
-          <Text
-            style={{
-              color: theme.text,
-              fontWeight: fontWeight.bold,
-              fontSize: fontSize.md,
-            }}
-          >
-            AI Coach
-          </Text>
-          <Text
-            style={{
-              color: theme.text,
 
-              fontSize: fontSize.xs,
-            }}
-          >
-            Get advice
-          </Text>
+        <View style={{ marginInline: 16 }}>
+          <ListTodayQuests />
         </View>
-      </View>
-
-      <View>
-        <View>
-          <Text>Today's Quest</Text>
-          <Text>View All {">"}</Text>
-        </View>
-      </View>
+      </ScrollView>
     </>
   );
 }
