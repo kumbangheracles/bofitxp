@@ -1,4 +1,10 @@
-import { fontSize, fontWeight, spacing } from "@/constants/theme";
+import {
+  difficultyStyle,
+  exerciseStyle,
+  fontSize,
+  fontWeight,
+  spacing,
+} from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { Pressable, Text, View, ToastAndroid } from "react-native";
 
@@ -13,6 +19,56 @@ import Animated, {
 } from "react-native-reanimated";
 import Toast from "react-native-toast-message";
 import { showError, showSuccess } from "@/utils/toast";
+import QuestCard from "./QuestCard";
+
+const mockQuests = [
+  {
+    id: 1,
+    title: "Complete 3 sets of bench press",
+    exercise: "Lifting",
+    difficulity: "Medium",
+    exp: 80,
+    exStyle: exerciseStyle["lifting"],
+    difStyle: difficultyStyle["medium"],
+  },
+  {
+    id: 2,
+    title: "Mukbang matcha",
+    exercise: "Cardio",
+    difficulity: "Hard",
+    exp: 190,
+    exStyle: exerciseStyle["cardio"],
+    difStyle: difficultyStyle["hard"],
+  },
+  {
+    id: 3,
+    title: "Mukbang Gorengan",
+    exercise: "Cardio",
+    difficulity: "Medium",
+    exp: 120,
+    exStyle: exerciseStyle["cardio"],
+    difStyle: difficultyStyle["medium"],
+  },
+  {
+    id: 4,
+    title: "Jalan jalan pagi",
+    exercise: "Cardio",
+    difficulity: "Easy",
+    exp: 80,
+    exStyle: exerciseStyle["cardio"],
+    difStyle: difficultyStyle["easy"],
+  },
+  {
+    id: 5,
+    title: "Read Book",
+    exercise: "Thinking",
+    difficulity: "Easy",
+    exp: 70,
+    exStyle: exerciseStyle["thinking"],
+    difStyle: difficultyStyle["easy"],
+  },
+];
+
 const ListTodayQuests = () => {
   const theme = useAppTheme();
   const [checked, setChecked] = useState<boolean>(false);
@@ -66,121 +122,10 @@ const ListTodayQuests = () => {
         </Text>
       </View>
 
-      {/* Quest Card */}
-      <Pressable
-        onPress={() => {
-          (setChecked((prev) => !prev), showToast());
-        }}
-        style={{ gap: 8 }}
-      >
-        <Animated.View
-          style={[
-            {
-              padding: spacing.md,
-              backgroundColor: theme.surface,
-              borderRadius: 16,
-              marginTop: 12,
-
-              borderWidth: 1,
-              flexDirection: "row",
-              gap: 8,
-            },
-            animatedStyle,
-          ]}
-        >
-          <Checkbox
-            style={{
-              borderRadius: 16,
-              padding: 10,
-              borderColor: theme.textHint,
-            }}
-            value={checked}
-            color={theme.xpProgress}
-            // onValueChange={(val) => setChecked((val)=>!va)}
-          />
-          <View>
-            <Text
-              style={{
-                fontSize: spacing.md,
-                color: theme.text,
-                textDecorationLine: checked ? "line-through" : "none",
-                fontWeight: fontWeight.semibold,
-              }}
-            >
-              Complete 3 sets of bench press
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                gap: 8,
-                alignItems: "center",
-                marginTop: 8,
-              }}
-            >
-              <View
-                style={{
-                  paddingBlock: 4,
-                  paddingInline: 8,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 4,
-                  borderRadius: 16,
-                  borderColor: theme.combo,
-                  borderWidth: 1,
-                }}
-              >
-                <MaterialCommunityIcons name="fire" color={theme.combo} />
-                <Text style={{ fontSize: fontSize.xs, color: theme.combo }}>
-                  Lifting
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingBlock: 4,
-                  paddingInline: 8,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 4,
-                  borderRadius: 16,
-                  borderColor: theme.achievementGlow,
-                  borderWidth: 1,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: fontSize.xs,
-                    color: theme.achievementGlow,
-                  }}
-                >
-                  Medium
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingBlock: 4,
-                  paddingInline: 8,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 4,
-                  borderRadius: 16,
-                  borderColor: theme.xpProgress,
-                  borderWidth: 1,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="lightning-bolt-outline"
-                  color={theme.xpProgress}
-                />
-                <Text
-                  style={{ fontSize: fontSize.xs, color: theme.xpProgress }}
-                >
-                  +80XP
-                </Text>
-              </View>
-            </View>
-          </View>
-        </Animated.View>
-      </Pressable>
+      {/* List Quest Card */}
+      {mockQuests?.map((item) => (
+        <QuestCard key={item.id} item={item} showToast={showToast} />
+      ))}
     </View>
   );
 };

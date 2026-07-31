@@ -23,7 +23,7 @@ export default function RootLayout() {
           >
             <AnimatedSplashOverlay />
             <Stack screenOptions={{ headerShown: false }} />
-            <Toast visibilityTime={10000000000} config={toastConfig} />
+            <Toast config={toastConfig} />
           </StyledProvider>
         </ThemeProvider>
       </QueryClientProvider>

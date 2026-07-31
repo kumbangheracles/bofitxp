@@ -222,6 +222,46 @@ export const fontSize = {
   display: 36,
 } as const;
 
+export const exerciseStyle = {
+  lifting: {
+    backgroundColor: "#E0F2FE", // Soft Blue
+    color: "#0369A1", // Dark Blue Text
+    borderColor: "#BAE6FD", // Subtle Blue Border
+  },
+  cardio: {
+    backgroundColor: "#FFE4E6", // Soft Pink/Red
+    color: "#E11D48", // Dark Red Text
+    borderColor: "#FECDD3", // Subtle Pink Border
+  },
+  flexibility: {
+    backgroundColor: "#F3E8FF", // Soft Purple
+    color: "#6B21A8", // Dark Purple Text
+    borderColor: "#E9D5FF", // Subtle Purple Border
+  },
+  thinking: {
+    backgroundColor: "#E0E7FF", // Soft Indigo
+    color: "#4338CA", // Dark Indigo Text
+    borderColor: "#C7D2FE", // Subtle Indigo Border
+  },
+};
+
+export const difficultyStyle = {
+  easy: {
+    backgroundColor: "#DCFCE7", // Soft Green
+    color: "#15803D", // Dark Green Text
+    borderColor: "#BBF7D0", // Subtle Green Border
+  },
+  medium: {
+    backgroundColor: "#FEF3C7", // Soft Amber/Orange
+    color: "#B45309", // Dark Amber Text
+    borderColor: "#FDE68A", // Subtle Amber Border
+  },
+  hard: {
+    backgroundColor: "#FEE2E2", // Soft Crimson/Red
+    color: "#B91C1C", // Dark Crimson Text
+    borderColor: "#FCA5A5", // Subtle Crimson Border
+  },
+};
 export const fontWeight = {
   regular: "400" as const,
   medium: "500" as const,
