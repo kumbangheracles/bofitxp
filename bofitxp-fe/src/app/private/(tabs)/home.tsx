@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
   ScrollView,
+  Pressable,
 } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
@@ -22,11 +23,14 @@ import { useAppTheme } from "@/hooks/use-app-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef } from "react";
 import ListTodayQuests from "@/components/Home/ListTodayQuests";
+import { router } from "expo-router";
+import { usePressScale } from "@/hooks/use-press-scale";
 const { width } = Dimensions.get("window");
 export default function index() {
   const theme = useAppTheme();
   const translateX = useRef(new Animated.Value(-width)).current;
-
+  const scaleQuest = usePressScale();
+  const scaleCoach = usePressScale();
   useEffect(() => {
     Animated.loop(
       Animated.timing(translateX, {
@@ -390,70 +394,88 @@ export default function index() {
             justifyContent: "center",
           }}
         >
-          <View
-            style={{
-              padding: spacing.md,
-              borderRadius: 16,
-              backgroundColor: theme.primaryLabel,
-              minWidth: 160,
-            }}
+          <Pressable
+            onPress={() => router.push("/private/quests")}
+            onPressIn={scaleQuest.onPressIn}
+            onPressOut={scaleQuest.onPressOut}
           >
-            <MaterialCommunityIcons
-              name="generator-mobile"
-              size={16}
-              color={theme.text}
-            />
-            <Text
-              style={{
-                color: theme.text,
-                fontWeight: fontWeight.bold,
-                fontSize: fontSize.md,
-              }}
-            >
-              Generate Quest
-            </Text>
-            <Text
-              style={{
-                color: theme.text,
+            <Animated.View style={scaleQuest.pressScaleStyle}>
+              <View
+                style={{
+                  padding: spacing.md,
+                  borderRadius: 16,
+                  backgroundColor: theme.primaryLabel,
+                  minWidth: 160,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="generator-mobile"
+                  size={16}
+                  color={theme.text}
+                />
 
-                fontSize: fontSize.xs,
-              }}
-            >
-              AI-powered daily
-            </Text>
-          </View>
-          <View
-            style={{
-              padding: spacing.md,
-              borderRadius: 16,
-              backgroundColor: theme.xp,
-              minWidth: 160,
-            }}
+                <Text
+                  style={{
+                    color: theme.text,
+                    fontWeight: fontWeight.bold,
+                    fontSize: fontSize.md,
+                  }}
+                >
+                  Generate Quest
+                </Text>
+
+                <Text
+                  style={{
+                    color: theme.text,
+
+                    fontSize: fontSize.xs,
+                  }}
+                >
+                  AI-powered daily
+                </Text>
+              </View>
+            </Animated.View>
+          </Pressable>
+          <Pressable
+            // onPress={() => router.push("/private/quests")}
+            onPressIn={scaleCoach.onPressIn}
+            onPressOut={scaleCoach.onPressOut}
           >
-            <MaterialCommunityIcons
-              name="badge-account-horizontal"
-              size={16}
-              color={theme.text}
-            />
-            <Text
-              style={{
-                color: theme.text,
-                fontWeight: fontWeight.bold,
-                fontSize: fontSize.md,
-              }}
-            >
-              AI Coach
-            </Text>
-            <Text
-              style={{
-                color: theme.text,
+            <Animated.View style={scaleCoach.pressScaleStyle}>
+              <View
+                style={{
+                  padding: spacing.md,
+                  borderRadius: 16,
+                  backgroundColor: theme.xp,
+                  minWidth: 160,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="badge-account-horizontal"
+                  size={16}
+                  color={theme.text}
+                />
+                <Text
+                  style={{
+                    color: theme.text,
+                    fontWeight: fontWeight.bold,
+                    fontSize: fontSize.md,
+                  }}
+                >
+                  AI Coach
+                </Text>
+                <Text
+                  style={{
+                    color: theme.text,
 
-                fontSize: fontSize.xs,
-              }}
-            >
-              Get advice
-            </Text>
-          </View>
+                    fontSize: fontSize.xs,
+                  }}
+                >
+                  Get advice
+                </Text>
+              </View>
+            </Animated.View>
+          </Pressable>
         </View>
 
         {/* List Quests */}

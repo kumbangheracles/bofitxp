@@ -19,7 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Toast from "react-native-toast-message";
 import { showError, showSuccess } from "@/utils/toast";
-import QuestCard from "./QuestCard";
+import QuestCard from "../QuestCard";
 
 const mockQuests = [
   {
