@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "prisma generate && ts-node-dev src/server.ts",
     "seed": "ts-node prisma/seed.ts",
-    "db:push": "npx prisma db push",
-    "start:test": "jest"
+    "build": "prisma generate && tsc",
+    "db:push": "npx prisma db push"
   },
   "keywords": [],
   "author": "",
