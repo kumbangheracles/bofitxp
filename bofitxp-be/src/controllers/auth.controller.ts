@@ -4,6 +4,7 @@ import prisma from "../utils/prisma";
 import response from "../utils/response";
 import { AuthService } from "../services/auth.service";
 import { Users } from "../generated/prisma/client";
+import logger from "../utils/pino";
 export type TRegister = {
   fullName: string;
   username: string;
@@ -52,7 +53,7 @@ export default {
       });
     } catch (error: any) {
       const status = error.message === "User not found" ? 403 : 400;
-      console.log("Error: ", error);
+      logger.info(error);
       return res.status(status).json({
         message: error.message,
         data: null,

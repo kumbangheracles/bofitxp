@@ -6,7 +6,6 @@ import { ThemedView } from "@/components/themed-view";
 import {
   difficultyStyle,
   exerciseStyle,
-  fontSize,
   fontWeight,
   spacing,
 } from "@/constants/theme";
@@ -17,7 +16,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ComponentProps } from "react";
 import { View, ScrollView } from "react-native";
-import Animated from "react-native-reanimated";
 
 export interface QuestCategoryTab {
   id: number;
@@ -358,37 +356,37 @@ const QuestsPage = () => {
 
         {/* List Quests */}
 
-        <Animated.View style={fadeInLeftStyle}>
-          {activeTab === "daily" &&
-            mockQuestsDaily.map((item, index) => (
+        {activeTab === "daily" &&
+          mockQuestsDaily.map((item, index) => {
+            return (
               <QuestCard
                 key={item.id}
                 item={item}
                 index={index}
                 showToast={() => showToast(item.exp)}
               />
-            ))}
+            );
+          })}
 
-          {activeTab === "weekly" &&
-            mockQuestWeekly.map((item, index) => (
-              <QuestCard
-                key={item.id}
-                item={item}
-                index={index}
-                showToast={() => showToast(item.exp)}
-              />
-            ))}
+        {activeTab === "weekly" &&
+          mockQuestWeekly.map((item, index) => (
+            <QuestCard
+              key={item.id}
+              item={item}
+              index={index}
+              showToast={() => showToast(item.exp)}
+            />
+          ))}
 
-          {activeTab === "special" &&
-            mockQuestSpecial.map((item, index) => (
-              <QuestCard
-                key={item.id}
-                item={item}
-                index={index}
-                showToast={() => showToast(item.exp)}
-              />
-            ))}
-        </Animated.View>
+        {activeTab === "special" &&
+          mockQuestSpecial.map((item, index) => (
+            <QuestCard
+              key={item.id}
+              item={item}
+              index={index}
+              showToast={() => showToast(item.exp)}
+            />
+          ))}
       </View>
     </ScrollView>
   );

@@ -35,7 +35,18 @@ export class AuthService {
       throw new Error("Email atau password salah");
     }
 
-    const token = generateToken({ id: user.id });
+    const token = generateToken({
+      id: user.id,
+      fullName: user.fullName,
+      username: user.username,
+      email: user.email,
+      isVerified: user.isVerified,
+      level: user.level,
+      streak: user.streak,
+      avatarUrl: user.avatarUrl,
+      xp: user.xp,
+      createdAt: user.createdAt,
+    });
 
     return { token };
   }

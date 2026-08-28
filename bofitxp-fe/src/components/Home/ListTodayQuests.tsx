@@ -3,22 +3,13 @@ import {
   exerciseStyle,
   fontSize,
   fontWeight,
-  spacing,
 } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
-import { Pressable, Text, View, ToastAndroid } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
-import Checkbox from "expo-checkbox";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import Animated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
-import Toast from "react-native-toast-message";
-import { showError, showSuccess } from "@/utils/toast";
+import { useSharedValue, withTiming } from "react-native-reanimated";
+import { showSuccess } from "@/utils/toast";
 import QuestCard from "../QuestCard";
 
 const mockQuests = [
@@ -71,7 +62,8 @@ const mockQuests = [
 
 const ListTodayQuests = () => {
   const theme = useAppTheme();
-  const [checked, setChecked] = useState<boolean>(false);
+  const [checked, _] = useState<boolean>(false);
+
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, {
@@ -79,22 +71,12 @@ const ListTodayQuests = () => {
     });
   }, [checked]);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      borderColor: interpolateColor(
-        progress.value,
-        [0, 1],
-        [theme.elevated, theme.xpProgress],
-      ),
-    };
-  });
-
-  const showToast = () => {
-    showError("Workout selesai", "+120 XP");
+  const showToast = (exp: number) => {
+    showSuccess("Workout selesai", `+${exp} XP`);
   };
 
   return (
-    <View style={{ width: "100%" }}>
+    <ScrollView style={{ width: "100%" }}>
       <View
         style={{
           marginBlock: 16,
@@ -123,10 +105,15 @@ const ListTodayQuests = () => {
       </View>
 
       {/* List Quest Card */}
-      {mockQuests?.map((item) => (
-        <QuestCard key={item.id} item={item} showToast={showToast} />
+      {mockQuests?.map((item, index) => (
+        <QuestCard
+          key={item.id}
+          item={item}
+          index={index}
+          showToast={() => showToast(item.exp)}
+        />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

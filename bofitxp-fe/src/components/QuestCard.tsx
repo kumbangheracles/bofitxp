@@ -1,17 +1,15 @@
 import { spacing, fontWeight, fontSize } from "@/constants/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { difficultyStyle, exerciseStyle } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
-import { Pressable, Text, View, ToastAndroid } from "react-native";
-import { showError } from "@/utils/toast";
+import { Pressable, Text, View } from "react-native";
 import { useFadeInLeft } from "@/hooks/use-fadein-left";
 
 interface QuestCardProps {
@@ -21,33 +19,23 @@ interface QuestCardProps {
     difficulity: string;
     exercise: string;
     exp: number;
-    exStyle: {
-      color: string;
-      borderColor: string;
-      backgroundColor: string;
-    };
-    difStyle: {
-      color: string;
-      borderColor: string;
-      backgroundColor: string;
-    };
+    exStyle: { color: string; borderColor: string; backgroundColor: string };
+    difStyle: { color: string; borderColor: string; backgroundColor: string };
   };
-
   index?: number;
-  activeTab?: string;
+  trigger?: string | number | boolean;
   showToast?: () => void;
 }
 
-const QuestCard = ({ item, showToast, activeTab, index }: QuestCardProps) => {
-  // Setiap kartu punya state checked sendiri
+const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
   const theme = useAppTheme();
   const [checked, setChecked] = useState<boolean>(false);
-  const { fadeInLeftStyle } = useFadeInLeft(activeTab as string, index);
   const progress = useSharedValue(0);
+
+  const { fadeInLeftStyle } = useFadeInLeft(trigger, index);
+
   useEffect(() => {
-    progress.value = withTiming(checked ? 1 : 0, {
-      duration: 50,
-    });
+    progress.value = withTiming(checked ? 1 : 0, { duration: 50 });
   }, [checked]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -65,7 +53,8 @@ const QuestCard = ({ item, showToast, activeTab, index }: QuestCardProps) => {
       <Pressable
         key={item.id}
         onPress={() => {
-          (setChecked((prev) => !prev), showToast?.());
+          setChecked((prev) => !prev);
+          showToast?.();
         }}
         style={{ gap: 8 }}
       >
@@ -76,7 +65,6 @@ const QuestCard = ({ item, showToast, activeTab, index }: QuestCardProps) => {
               backgroundColor: theme.surface,
               borderRadius: 16,
               marginTop: 12,
-
               borderWidth: 1,
               flexDirection: "row",
               gap: 8,
@@ -92,7 +80,6 @@ const QuestCard = ({ item, showToast, activeTab, index }: QuestCardProps) => {
             }}
             value={checked}
             color={theme.xpProgress}
-            // onValueChange={(val) => setChecked((val)=>!va)}
           />
           <View>
             <Text
@@ -131,10 +118,7 @@ const QuestCard = ({ item, showToast, activeTab, index }: QuestCardProps) => {
                   color={item?.exStyle?.color}
                 />
                 <Text
-                  style={{
-                    fontSize: fontSize.xs,
-                    color: item?.exStyle?.color,
-                  }}
+                  style={{ fontSize: fontSize.xs, color: item?.exStyle?.color }}
                 >
                   {item?.exercise}
                 </Text>

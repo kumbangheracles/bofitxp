@@ -10,14 +10,7 @@ import {
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import {
-  BottomTabInset,
-  fontSize,
-  fontWeight,
-  MaxContentWidth,
-  spacing,
-  Spacing,
-} from "@/constants/theme";
+import { fontSize, fontWeight, spacing } from "@/constants/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { LinearGradient } from "expo-linear-gradient";
@@ -25,12 +18,16 @@ import { useEffect, useRef } from "react";
 import ListTodayQuests from "@/components/Home/ListTodayQuests";
 import { router } from "expo-router";
 import { usePressScale } from "@/hooks/use-press-scale";
+import { useAuth } from "@/context/AuthContext";
 const { width } = Dimensions.get("window");
 export default function index() {
   const theme = useAppTheme();
   const translateX = useRef(new Animated.Value(-width)).current;
   const scaleQuest = usePressScale();
   const scaleCoach = usePressScale();
+  const { authUser, logout } = useAuth();
+
+  console.log("Auth User: ", authUser);
   useEffect(() => {
     Animated.loop(
       Animated.timing(translateX, {
@@ -140,6 +137,7 @@ export default function index() {
                 }}
               >
                 <MaterialCommunityIcons
+                  onPress={() => logout()}
                   style={{
                     color: theme.text,
                   }}
