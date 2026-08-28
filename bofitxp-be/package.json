@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "dev": "prisma generate && ts-node-dev src/server.ts",
-    "seed": "ts-node prisma/seed.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start:dev": "npm run prisma:generate && ts-node src/setup.ts && ts-node-dev src/server.ts",
+    "start": "node dist/server.js",
     "build": "prisma generate && tsc",
-    "db:push": "npx prisma db push"
+    "prisma:generate": "prisma generate",
+    "db:dev": "prisma db push && prisma generate",
+    "db:push": "prisma db push",
+    "db:setup": "ts-node src/setup.ts",
+    "db:seed": "ts-node prisma/seed.ts",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
