@@ -23,7 +23,7 @@ const doc = {
     },
     schemas: {
       LoginRequest: {
-        identifier: "ahmadherkal",
+        email: "ahmadherkal",
         password: "1234",
       },
     },

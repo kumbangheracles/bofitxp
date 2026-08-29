@@ -30,12 +30,18 @@ export type UsersAvgAggregateOutputType = {
   level: number | null
   streak: number | null
   xp: number | null
+  body_weight: number | null
+  body_height: number | null
+  body_mass_index: number | null
 }
 
 export type UsersSumAggregateOutputType = {
   level: number | null
   streak: number | null
   xp: number | null
+  body_weight: number | null
+  body_height: number | null
+  body_mass_index: number | null
 }
 
 export type UsersMinAggregateOutputType = {
@@ -50,6 +56,9 @@ export type UsersMinAggregateOutputType = {
   streak: number | null
   avatarUrl: string | null
   xp: number | null
+  body_weight: number | null
+  body_height: number | null
+  body_mass_index: number | null
   expireAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -67,6 +76,9 @@ export type UsersMaxAggregateOutputType = {
   streak: number | null
   avatarUrl: string | null
   xp: number | null
+  body_weight: number | null
+  body_height: number | null
+  body_mass_index: number | null
   expireAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -84,6 +96,9 @@ export type UsersCountAggregateOutputType = {
   streak: number
   avatarUrl: number
   xp: number
+  body_weight: number
+  body_height: number
+  body_mass_index: number
   expireAt: number
   createdAt: number
   updatedAt: number
@@ -95,12 +110,18 @@ export type UsersAvgAggregateInputType = {
   level?: true
   streak?: true
   xp?: true
+  body_weight?: true
+  body_height?: true
+  body_mass_index?: true
 }
 
 export type UsersSumAggregateInputType = {
   level?: true
   streak?: true
   xp?: true
+  body_weight?: true
+  body_height?: true
+  body_mass_index?: true
 }
 
 export type UsersMinAggregateInputType = {
@@ -115,6 +136,9 @@ export type UsersMinAggregateInputType = {
   streak?: true
   avatarUrl?: true
   xp?: true
+  body_weight?: true
+  body_height?: true
+  body_mass_index?: true
   expireAt?: true
   createdAt?: true
   updatedAt?: true
@@ -132,6 +156,9 @@ export type UsersMaxAggregateInputType = {
   streak?: true
   avatarUrl?: true
   xp?: true
+  body_weight?: true
+  body_height?: true
+  body_mass_index?: true
   expireAt?: true
   createdAt?: true
   updatedAt?: true
@@ -149,6 +176,9 @@ export type UsersCountAggregateInputType = {
   streak?: true
   avatarUrl?: true
   xp?: true
+  body_weight?: true
+  body_height?: true
+  body_mass_index?: true
   expireAt?: true
   createdAt?: true
   updatedAt?: true
@@ -253,6 +283,9 @@ export type UsersGroupByOutputType = {
   streak: number | null
   avatarUrl: string | null
   xp: number | null
+  body_weight: number
+  body_height: number
+  body_mass_index: number
   expireAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -293,6 +326,9 @@ export type UsersWhereInput = {
   streak?: Prisma.IntNullableFilter<"Users"> | number | null
   avatarUrl?: Prisma.StringNullableFilter<"Users"> | string | null
   xp?: Prisma.IntNullableFilter<"Users"> | number | null
+  body_weight?: Prisma.IntFilter<"Users"> | number
+  body_height?: Prisma.IntFilter<"Users"> | number
+  body_mass_index?: Prisma.IntFilter<"Users"> | number
   expireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
@@ -310,6 +346,9 @@ export type UsersOrderByWithRelationInput = {
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -330,6 +369,9 @@ export type UsersWhereUniqueInput = Prisma.AtLeast<{
   streak?: Prisma.IntNullableFilter<"Users"> | number | null
   avatarUrl?: Prisma.StringNullableFilter<"Users"> | string | null
   xp?: Prisma.IntNullableFilter<"Users"> | number | null
+  body_weight?: Prisma.IntFilter<"Users"> | number
+  body_height?: Prisma.IntFilter<"Users"> | number
+  body_mass_index?: Prisma.IntFilter<"Users"> | number
   expireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
@@ -347,6 +389,9 @@ export type UsersOrderByWithAggregationInput = {
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -372,6 +417,9 @@ export type UsersScalarWhereWithAggregatesInput = {
   streak?: Prisma.IntNullableWithAggregatesFilter<"Users"> | number | null
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
   xp?: Prisma.IntNullableWithAggregatesFilter<"Users"> | number | null
+  body_weight?: Prisma.IntWithAggregatesFilter<"Users"> | number
+  body_height?: Prisma.IntWithAggregatesFilter<"Users"> | number
+  body_mass_index?: Prisma.IntWithAggregatesFilter<"Users"> | number
   expireAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
@@ -389,6 +437,9 @@ export type UsersCreateInput = {
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -406,6 +457,9 @@ export type UsersUncheckedCreateInput = {
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -422,6 +476,9 @@ export type UsersUpdateInput = {
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  body_weight?: Prisma.IntFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,6 +495,9 @@ export type UsersUncheckedUpdateInput = {
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  body_weight?: Prisma.IntFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -455,6 +515,9 @@ export type UsersCreateManyInput = {
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -471,6 +534,9 @@ export type UsersUpdateManyMutationInput = {
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  body_weight?: Prisma.IntFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -487,6 +553,9 @@ export type UsersUncheckedUpdateManyInput = {
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  body_weight?: Prisma.IntFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -504,6 +573,9 @@ export type UsersCountOrderByAggregateInput = {
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -513,6 +585,9 @@ export type UsersAvgOrderByAggregateInput = {
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
 }
 
 export type UsersMaxOrderByAggregateInput = {
@@ -527,6 +602,9 @@ export type UsersMaxOrderByAggregateInput = {
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -544,6 +622,9 @@ export type UsersMinOrderByAggregateInput = {
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -553,6 +634,9 @@ export type UsersSumOrderByAggregateInput = {
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  body_weight?: Prisma.SortOrder
+  body_height?: Prisma.SortOrder
+  body_mass_index?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -575,6 +659,14 @@ export type NullableIntFieldUpdateOperationsInput = {
   multiply?: number
   divide?: number
   unset?: boolean
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -600,6 +692,9 @@ export type UsersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   streak?: boolean
   avatarUrl?: boolean
   xp?: boolean
+  body_weight?: boolean
+  body_height?: boolean
+  body_mass_index?: boolean
   expireAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -619,12 +714,15 @@ export type UsersSelectScalar = {
   streak?: boolean
   avatarUrl?: boolean
   xp?: boolean
+  body_weight?: boolean
+  body_height?: boolean
+  body_mass_index?: boolean
   expireAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "expireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
+export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "body_weight" | "body_height" | "body_mass_index" | "expireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
 
 export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Users"
@@ -641,6 +739,9 @@ export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     streak: number | null
     avatarUrl: string | null
     xp: number | null
+    body_weight: number
+    body_height: number
+    body_mass_index: number
     expireAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -1047,6 +1148,9 @@ export interface UsersFieldRefs {
   readonly streak: Prisma.FieldRef<"Users", 'Int'>
   readonly avatarUrl: Prisma.FieldRef<"Users", 'String'>
   readonly xp: Prisma.FieldRef<"Users", 'Int'>
+  readonly body_weight: Prisma.FieldRef<"Users", 'Int'>
+  readonly body_height: Prisma.FieldRef<"Users", 'Int'>
+  readonly body_mass_index: Prisma.FieldRef<"Users", 'Int'>
   readonly expireAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Users", 'DateTime'>

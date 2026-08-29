@@ -70,6 +70,9 @@ export const UsersScalarFieldEnum = {
   streak: 'streak',
   avatarUrl: 'avatarUrl',
   xp: 'xp',
+  body_weight: 'body_weight',
+  body_height: 'body_height',
+  body_mass_index: 'body_mass_index',
   expireAt: 'expireAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

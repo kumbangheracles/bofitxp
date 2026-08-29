@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "v0.0.1",
-    "title": "Dokumentasi API ACARA",
-    "description": "Dokumentasi API ACARA"
+    "title": "Dokumentasi API BofitXp",
+    "description": "Dokumentasi API BofitXp"
   },
   "servers": [
     {
@@ -140,13 +140,13 @@
       "LoginRequest": {
         "type": "object",
         "properties": {
-          "identifier": {
+          "email": {
             "type": "string",
-            "example": "ahmadherkal"
+            "example": "ahmadherkal@test.com"
           },
           "password": {
             "type": "string",
-            "example": "1234"
+            "example": "password123"
           }
         },
         "xml": {

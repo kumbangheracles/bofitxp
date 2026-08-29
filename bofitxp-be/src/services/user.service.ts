@@ -16,13 +16,26 @@ export class UserService {
     if (!user) {
       throw new Error("User not found");
     }
+
     await updateUserSchema.validate(payload);
 
-    const updatedUser = await prisma.users.update({
-      where: { id },
-      data: payload,
-    });
+    let bmi: number;
 
-    return { updatedUser };
+    if (payload.body_height !== null && payload.body_weight !== null) {
+      bmi = payload.body_weight / payload.body_height ** 2;
+      const updatedUser = await prisma.users.update({
+        where: { id },
+        data: { ...payload, body_mass_index: bmi },
+      });
+
+      return { updatedUser };
+    } else {
+      const updatedUser = await prisma.users.update({
+        where: { id },
+        data: { ...payload },
+      });
+
+      return { updatedUser };
+    }
   }
 }

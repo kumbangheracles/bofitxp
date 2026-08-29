@@ -1,3 +1,4 @@
+import "dotenv/config";
 import prisma from "./utils/prisma";
 import { JobService } from "./jobs/ttl_init_index";
 

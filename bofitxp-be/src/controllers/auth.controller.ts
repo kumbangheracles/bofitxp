@@ -5,6 +5,7 @@ import response from "../utils/response";
 import { AuthService } from "../services/auth.service";
 import { Users } from "../generated/prisma/client";
 import logger from "../utils/pino";
+import { getUserData } from "../utils/jwt";
 export type TRegister = {
   fullName: string;
   username: string;
@@ -47,13 +48,16 @@ export default {
     try {
       const result = await authService.login(payload);
 
+      const userData = getUserData(result.token);
+
+      logger.info({ user: userData }, "Login Success");
       return res.status(200).json({
         message: "Login success",
         data: result.token,
       });
     } catch (error: any) {
       const status = error.message === "User not found" ? 403 : 400;
-      logger.info(error);
+      logger.error(error);
       return res.status(status).json({
         message: error.message,
         data: null,
