@@ -46,8 +46,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null);
   };
 
+  // useEffect(() => {
+  //   console.log("Token:", token);
+
+  //   const decoded = jwtDecode<JWTDecode>(token?.toString() as string);
+  //   console.log("decoded token: ", decoded);
+  // }, [token]);
   useEffect(() => {
-    if (token) {
+    console.log("Auth user: ", authUser);
+  }, [authUser]);
+
+  useEffect(() => {
+    if (token !== null) {
       try {
         const decoded = jwtDecode<JWTDecode>(token);
 
@@ -56,16 +66,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.warn("Token has expired");
           localStorage.removeItem("token");
           setAuthUser(null);
-
-          console.log("Decoded: ", decoded);
         } else {
           setAuthUser(decoded);
+          console.log("Token");
+          console.log("Decoded: ", decoded);
         }
       } catch (error) {
         console.error("Invalid token format:", error);
       }
     }
-  }, []);
+  }, [token]);
 
   return (
     <AuthContext.Provider

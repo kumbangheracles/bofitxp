@@ -31,9 +31,8 @@ const useLogin = () => {
       alert(error.message);
     },
     onSuccess: async (data) => {
-      await loginSaveToken(data.data.toString() as string);
-      console.log("Data: ", data);
-
+      await loginSaveToken(data.data); // data.data = token string
+      console.log("Data: ", data.data);
       alert("Login success.");
       reset();
       router.push("/private/(tabs)");

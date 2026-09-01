@@ -10,8 +10,7 @@ export class AuthService {
 
   async login(payload: TLogin) {
     const result = await instance.post("/auth/login", payload);
-
-    return result;
+    return result.data;
   }
 
   async activationCode(payload: UserProps["activationCode"]) {
