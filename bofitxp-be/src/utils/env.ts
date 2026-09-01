@@ -21,3 +21,5 @@ export const EMAIL_SMTP_SERVICE_NAME: string =
   process.env.EMAIL_SMTP_SERVICE_NAME || "";
 export const EXPIRE_TTL_MINUTE: number =
   Number(process.env.EXPIRE_TTL_MINUTE) || 5;
+
+export const GROQ_API_KEY: string = process.env.GROQ_API_KEY || "";

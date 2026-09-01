@@ -203,6 +203,40 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumQuestTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestType | Prisma.EnumQuestTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestTypeFilter<$PrismaModel> | $Enums.QuestType
+}
+
+export type EnumDifficultyFilter<$PrismaModel = never> = {
+  equals?: $Enums.Difficulty | Prisma.EnumDifficultyFieldRefInput<$PrismaModel>
+  in?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDifficultyFilter<$PrismaModel> | $Enums.Difficulty
+}
+
+export type EnumQuestTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestType | Prisma.EnumQuestTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestTypeFilter<$PrismaModel>
+}
+
+export type EnumDifficultyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Difficulty | Prisma.EnumDifficultyFieldRefInput<$PrismaModel>
+  in?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDifficultyWithAggregatesFilter<$PrismaModel> | $Enums.Difficulty
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -409,6 +443,40 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
+}
+
+export type NestedEnumQuestTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestType | Prisma.EnumQuestTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestTypeFilter<$PrismaModel> | $Enums.QuestType
+}
+
+export type NestedEnumDifficultyFilter<$PrismaModel = never> = {
+  equals?: $Enums.Difficulty | Prisma.EnumDifficultyFieldRefInput<$PrismaModel>
+  in?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDifficultyFilter<$PrismaModel> | $Enums.Difficulty
+}
+
+export type NestedEnumQuestTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestType | Prisma.EnumQuestTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.QuestType[] | Prisma.ListEnumQuestTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumQuestTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumDifficultyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Difficulty | Prisma.EnumDifficultyFieldRefInput<$PrismaModel>
+  in?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Difficulty[] | Prisma.ListEnumDifficultyFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDifficultyWithAggregatesFilter<$PrismaModel> | $Enums.Difficulty
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
 }
 
 

@@ -33,6 +33,55 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+
+  userQuests     UserQuest[]
+
+}
+
+enum QuestType {
+  cardio
+  lifting
+  thinking
+  meditating
+  unknown
+}
+
+enum Difficulty {
+  easy
+  medium
+  hard
+  
+}
+
+model Quests {
+  questId     String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  quest_type  QuestType  @default(unknown)
+  difficulty  Difficulty @default(easy)
+  xp_reward   Int        @default(0)
+
+  userQuests  UserQuest[]
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model UserQuest {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId      String   @db.ObjectId
+  questId     String   @db.ObjectId
+
+  is_finished Boolean  @default(false)
+  finishedAt  DateTime?
+
+  user        Users    @relation(fields: [userId], references: [id])
+  quest       Quests   @relation(fields: [questId], references: [questId])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, questId])
 }
 
 // model Habits {

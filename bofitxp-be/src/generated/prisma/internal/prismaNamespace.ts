@@ -390,7 +390,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  Users: 'Users'
+  Users: 'Users',
+  Quests: 'Quests',
+  UserQuest: 'UserQuest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -406,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "users"
+    modelProps: "users" | "quests" | "userQuest"
     txIsolationLevel: never
   }
   model: {
@@ -484,6 +486,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Quests: {
+      payload: Prisma.$QuestsPayload<ExtArgs>
+      fields: Prisma.QuestsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QuestsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QuestsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>
+        }
+        findFirst: {
+          args: Prisma.QuestsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QuestsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>
+        }
+        findMany: {
+          args: Prisma.QuestsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>[]
+        }
+        create: {
+          args: Prisma.QuestsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>
+        }
+        createMany: {
+          args: Prisma.QuestsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.QuestsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>
+        }
+        update: {
+          args: Prisma.QuestsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>
+        }
+        deleteMany: {
+          args: Prisma.QuestsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QuestsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.QuestsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestsPayload>
+        }
+        aggregate: {
+          args: Prisma.QuestsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuests>
+        }
+        groupBy: {
+          args: Prisma.QuestsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestsGroupByOutputType>[]
+        }
+        findRaw: {
+          args: Prisma.QuestsFindRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        aggregateRaw: {
+          args: Prisma.QuestsAggregateRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        count: {
+          args: Prisma.QuestsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestsCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserQuest: {
+      payload: Prisma.$UserQuestPayload<ExtArgs>
+      fields: Prisma.UserQuestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserQuestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserQuestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>
+        }
+        findFirst: {
+          args: Prisma.UserQuestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserQuestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>
+        }
+        findMany: {
+          args: Prisma.UserQuestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>[]
+        }
+        create: {
+          args: Prisma.UserQuestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>
+        }
+        createMany: {
+          args: Prisma.UserQuestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.UserQuestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>
+        }
+        update: {
+          args: Prisma.UserQuestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserQuestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserQuestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.UserQuestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserQuestPayload>
+        }
+        aggregate: {
+          args: Prisma.UserQuestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserQuest>
+        }
+        groupBy: {
+          args: Prisma.UserQuestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserQuestGroupByOutputType>[]
+        }
+        findRaw: {
+          args: Prisma.UserQuestFindRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        aggregateRaw: {
+          args: Prisma.UserQuestAggregateRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        count: {
+          args: Prisma.UserQuestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserQuestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -522,6 +672,32 @@ export const UsersScalarFieldEnum = {
 } as const
 
 export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+
+
+export const QuestsScalarFieldEnum = {
+  questId: 'questId',
+  title: 'title',
+  quest_type: 'quest_type',
+  difficulty: 'difficulty',
+  xp_reward: 'xp_reward',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestsScalarFieldEnum = (typeof QuestsScalarFieldEnum)[keyof typeof QuestsScalarFieldEnum]
+
+
+export const UserQuestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  questId: 'questId',
+  is_finished: 'is_finished',
+  finishedAt: 'finishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserQuestScalarFieldEnum = (typeof UserQuestScalarFieldEnum)[keyof typeof UserQuestScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -592,6 +768,34 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestType'
+ */
+export type EnumQuestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestType'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestType[]'
+ */
+export type ListEnumQuestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Difficulty'
+ */
+export type EnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Difficulty'>
+    
+
+
+/**
+ * Reference to a field of type 'Difficulty[]'
+ */
+export type ListEnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Difficulty[]'>
     
 
 
@@ -695,6 +899,8 @@ export interface PrismaClientOptions {
 }
 export type GlobalOmitConfig = {
   users?: Prisma.UsersOmit
+  quests?: Prisma.QuestsOmit
+  userQuest?: Prisma.UserQuestOmit
 }
 
 /* Types for Logging */

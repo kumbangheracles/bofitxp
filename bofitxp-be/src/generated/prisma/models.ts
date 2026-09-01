@@ -9,4 +9,6 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Users'
+export type * from './models/Quests'
+export type * from './models/UserQuest'
 export type * from './commonInputTypes'

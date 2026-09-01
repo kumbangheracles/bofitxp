@@ -9,7 +9,21 @@
 * 🟢 You can import this file directly.
 */
 
+export const QuestType = {
+  cardio: 'cardio',
+  lifting: 'lifting',
+  thinking: 'thinking',
+  meditating: 'meditating',
+  unknown: 'unknown'
+} as const
+
+export type QuestType = (typeof QuestType)[keyof typeof QuestType]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const Difficulty = {
+  easy: 'easy',
+  medium: 'medium',
+  hard: 'hard'
+} as const
+
+export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]

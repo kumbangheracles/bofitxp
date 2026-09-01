@@ -52,9 +52,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   //   const decoded = jwtDecode<JWTDecode>(token?.toString() as string);
   //   console.log("decoded token: ", decoded);
   // }, [token]);
-  useEffect(() => {
-    console.log("Auth user: ", authUser);
-  }, [authUser]);
+  // useEffect(() => {
+  //   console.log("Auth user: ", authUser);
+  // }, [authUser]);
 
   useEffect(() => {
     if (token !== null) {
