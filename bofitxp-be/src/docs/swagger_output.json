@@ -11,7 +11,7 @@
       "description": "Local Server"
     },
     {
-      "url": "https://bofitxp.vercel.app/",
+      "url": "https://bofitxp.vercel.app/api",
       "description": "Deploy Server"
     }
   ],
