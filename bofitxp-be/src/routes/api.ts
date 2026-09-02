@@ -13,6 +13,8 @@ router.get("/auth/me", authMiddleware, authController.me);
 // User
 router.patch("/user/:id", authMiddleware, userController.updateUser);
 
+// Quests
+
 // Mahasiswa
 
 // router.post("/mahasiswa", mahasiswaController.createMahasiswa);
