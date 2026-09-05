@@ -5,8 +5,8 @@ const userQuestService = new UserQuestService();
 export default {
   async generateQuests(req: Request, res: Response) {
     try {
-      const { userId } = req.params;
-      const { message, quests } = await userQuestService.generateQuests(userId);
+      const { id } = req.params;
+      const { message, quests } = await userQuestService.generateQuests(id);
       logger.info({ questes: quests }, message);
       return res.status(200).json({
         message: message,
@@ -23,8 +23,8 @@ export default {
 
   async getAll(req: Request, res: Response) {
     try {
-      const { userId } = req.params;
-      const results = await userQuestService.getAllQuests(userId);
+      const { id } = req.params;
+      const results = await userQuestService.getAllQuests(id);
       logger.info({ quests: results }, "Success");
 
       return res.status(200).json({

@@ -23,7 +23,6 @@ const { width } = Dimensions.get("window");
 export default function index() {
   const theme = useAppTheme();
   const translateX = useRef(new Animated.Value(-width)).current;
-  const [open, seOpen] = useState<boolean>(false);
   const scaleQuest = usePressScale();
   const scaleCoach = usePressScale();
   const { logout } = useAuth();

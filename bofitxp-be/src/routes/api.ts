@@ -2,6 +2,7 @@ import exporess from "express";
 import authController from "../controllers/auth.controller";
 import authMiddleware from "../middlewares/auth.middleware";
 import userController from "../controllers/user.controller";
+import userQuestController from "../controllers/userQuest.controller";
 const router = exporess.Router();
 
 router.post("/auth/register", authController.register);
@@ -14,7 +15,12 @@ router.get("/auth/me", authMiddleware, authController.me);
 router.patch("/user/:id", authMiddleware, userController.updateUser);
 
 // Quests
-
+router.post(
+  "/generate-user-quests/:id",
+  authMiddleware,
+  userQuestController.generateQuests,
+);
+router.get("/user-quests/:id", authMiddleware, userQuestController.getAll);
 // Mahasiswa
 
 // router.post("/mahasiswa", mahasiswaController.createMahasiswa);

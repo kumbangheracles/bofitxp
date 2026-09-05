@@ -11,12 +11,15 @@ import { useEffect, useState } from "react";
 import { useSharedValue, withTiming } from "react-native-reanimated";
 import { showSuccess } from "@/utils/toast";
 import QuestCard from "../QuestCard";
+import useUserQuests from "@/hooks/use-user-quests";
+import { QuestsProperties } from "@/types/quests.type";
+import Toast from "react-native-toast-message";
 
 const mockQuests = [
   {
     id: 1,
     title: "Complete 3 sets of bench press",
-    exercise: "Lifting",
+    quest_type: "Lifting",
     difficulity: "Medium",
     exp: 80,
     exStyle: exerciseStyle["lifting"],
@@ -25,7 +28,7 @@ const mockQuests = [
   {
     id: 2,
     title: "Mukbang matcha",
-    exercise: "Cardio",
+    quest_type: "Cardio",
     difficulity: "Hard",
     exp: 190,
     exStyle: exerciseStyle["cardio"],
@@ -34,7 +37,7 @@ const mockQuests = [
   {
     id: 3,
     title: "Mukbang Gorengan",
-    exercise: "Cardio",
+    quest_type: "Cardio",
     difficulity: "Medium",
     exp: 120,
     exStyle: exerciseStyle["cardio"],
@@ -43,7 +46,7 @@ const mockQuests = [
   {
     id: 4,
     title: "Jalan jalan pagi",
-    exercise: "Cardio",
+    quest_type: "Cardio",
     difficulity: "Easy",
     exp: 80,
     exStyle: exerciseStyle["cardio"],
@@ -52,7 +55,7 @@ const mockQuests = [
   {
     id: 5,
     title: "Read Book",
-    exercise: "Thinking",
+    quest_type: "Thinking",
     difficulity: "Easy",
     exp: 70,
     exStyle: exerciseStyle["thinking"],
@@ -63,7 +66,14 @@ const mockQuests = [
 const ListTodayQuests = () => {
   const theme = useAppTheme();
   const [checked, _] = useState<boolean>(false);
-
+  const {
+    data: dataQuests,
+    isError,
+    isFetched,
+    isPending,
+    refetch,
+    error,
+  } = useUserQuests();
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, {
@@ -71,6 +81,13 @@ const ListTodayQuests = () => {
     });
   }, [checked]);
 
+  // useEffect(() => {
+  //   Toast.show({
+  //     type: "error",
+  //     text1: "Error get data quests",
+  //     text2: error?.message,
+  //   });
+  // }, [error?.message !== undefined]);
   const showToast = (exp: number) => {
     showSuccess("Workout selesai", `+${exp} XP`);
   };
@@ -105,12 +122,12 @@ const ListTodayQuests = () => {
       </View>
 
       {/* List Quest Card */}
-      {mockQuests?.map((item, index) => (
+      {dataQuests?.map((item: QuestsProperties, index: number) => (
         <QuestCard
           key={item.id}
-          item={item}
+          item={item?.quest}
           index={index}
-          showToast={() => showToast(item.exp)}
+          showToast={() => showToast(item?.quest?.xp_reward)}
         />
       ))}
     </ScrollView>

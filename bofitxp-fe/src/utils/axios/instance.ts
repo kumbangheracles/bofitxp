@@ -21,7 +21,7 @@ instance.interceptors.request.use(
 
       if (token) {
         request.headers.Authorization = `Bearer ${token}`;
-        console.log("Token berhasil dipasang ke header: ", token);
+        // console.log("Token berhasil dipasang ke header: ", token);
       }
     } catch (error) {
       console.log("Gagal mengambil token dari storage:", error);

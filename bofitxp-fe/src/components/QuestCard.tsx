@@ -1,4 +1,10 @@
-import { spacing, fontWeight, fontSize } from "@/constants/theme";
+import {
+  spacing,
+  fontWeight,
+  fontSize,
+  exerciseStyle,
+  difficultyStyle,
+} from "@/constants/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import { useEffect, useState } from "react";
@@ -11,17 +17,10 @@ import Animated, {
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { Pressable, Text, View } from "react-native";
 import { useFadeInLeft } from "@/hooks/use-fadein-left";
+import { QuestsProperties } from "@/types/quests.type";
 
 interface QuestCardProps {
-  item: {
-    id: number;
-    title: string;
-    difficulity: string;
-    exercise: string;
-    exp: number;
-    exStyle: { color: string; borderColor: string; backgroundColor: string };
-    difStyle: { color: string; borderColor: string; backgroundColor: string };
-  };
+  item: QuestsProperties["quest"];
   index?: number;
   trigger?: string | number | boolean;
   showToast?: () => void;
@@ -48,10 +47,17 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
     };
   });
 
+  const quest = item;
+  const questType = quest?.quest_type as keyof typeof exerciseStyle;
+  const difficulty = quest?.difficulty as keyof typeof difficultyStyle;
+
+  const exStyle = exerciseStyle[questType] ?? exerciseStyle.thinking;
+  const difStyle = difficultyStyle[difficulty] ?? difficultyStyle.medium;
+
   return (
     <Animated.View style={fadeInLeftStyle}>
       <Pressable
-        key={item.id}
+        key={quest?.questId}
         onPress={() => {
           setChecked((prev) => !prev);
           showToast?.();
@@ -90,7 +96,7 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                 fontWeight: fontWeight.semibold,
               }}
             >
-              {item?.title}
+              {quest?.title}
             </Text>
             <View
               style={{
@@ -100,6 +106,7 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                 marginTop: 8,
               }}
             >
+              {/* Quest type badge */}
               <View
                 style={{
                   paddingBlock: 4,
@@ -108,21 +115,22 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                   alignItems: "center",
                   gap: 4,
                   borderRadius: 16,
-                  borderColor: item?.exStyle.borderColor,
-                  backgroundColor: item?.exStyle.backgroundColor,
+                  borderColor: exStyle.borderColor,
+                  backgroundColor: exStyle.backgroundColor,
                   borderWidth: 1,
                 }}
               >
                 <MaterialCommunityIcons
                   name="fire"
-                  color={item?.exStyle?.color}
+                  color={exStyle.color}
+                  size={fontSize.sm}
                 />
-                <Text
-                  style={{ fontSize: fontSize.xs, color: item?.exStyle?.color }}
-                >
-                  {item?.exercise}
+                <Text style={{ fontSize: fontSize.xs, color: exStyle.color }}>
+                  {questType}
                 </Text>
               </View>
+
+              {/* Difficulty badge */}
               <View
                 style={{
                   paddingBlock: 4,
@@ -131,20 +139,17 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                   alignItems: "center",
                   gap: 4,
                   borderRadius: 16,
-                  borderColor: item?.difStyle.borderColor,
-                  backgroundColor: item?.difStyle.backgroundColor,
+                  borderColor: difStyle.borderColor,
+                  backgroundColor: difStyle.backgroundColor,
                   borderWidth: 1,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: fontSize.xs,
-                    color: item?.difStyle?.color,
-                  }}
-                >
-                  {item?.difficulity}
+                <Text style={{ fontSize: fontSize.xs, color: difStyle.color }}>
+                  {difficulty}
                 </Text>
               </View>
+
+              {/* XP badge */}
               <View
                 style={{
                   paddingBlock: 4,
@@ -161,9 +166,10 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                 <MaterialCommunityIcons
                   name="lightning-bolt-outline"
                   color={"#15803D"}
+                  size={fontSize.sm}
                 />
                 <Text style={{ fontSize: fontSize.xs, color: "#15803D" }}>
-                  +{item?.exp}XP
+                  +{quest?.xp_reward}XP
                 </Text>
               </View>
             </View>

@@ -253,6 +253,9 @@ Return exactly ${total} quests.
       where: {
         userId: id,
       },
+      include: {
+        quest: true,
+      },
     });
 
     return quests;
