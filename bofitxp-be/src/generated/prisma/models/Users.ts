@@ -59,6 +59,7 @@ export type UsersMinAggregateOutputType = {
   body_weight: number | null
   body_height: number | null
   body_mass_index: number | null
+  role: $Enums.Role | null
   expireAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -79,6 +80,7 @@ export type UsersMaxAggregateOutputType = {
   body_weight: number | null
   body_height: number | null
   body_mass_index: number | null
+  role: $Enums.Role | null
   expireAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -99,6 +101,7 @@ export type UsersCountAggregateOutputType = {
   body_weight: number
   body_height: number
   body_mass_index: number
+  role: number
   expireAt: number
   createdAt: number
   updatedAt: number
@@ -139,6 +142,7 @@ export type UsersMinAggregateInputType = {
   body_weight?: true
   body_height?: true
   body_mass_index?: true
+  role?: true
   expireAt?: true
   createdAt?: true
   updatedAt?: true
@@ -159,6 +163,7 @@ export type UsersMaxAggregateInputType = {
   body_weight?: true
   body_height?: true
   body_mass_index?: true
+  role?: true
   expireAt?: true
   createdAt?: true
   updatedAt?: true
@@ -179,6 +184,7 @@ export type UsersCountAggregateInputType = {
   body_weight?: true
   body_height?: true
   body_mass_index?: true
+  role?: true
   expireAt?: true
   createdAt?: true
   updatedAt?: true
@@ -286,6 +292,7 @@ export type UsersGroupByOutputType = {
   body_weight: number
   body_height: number
   body_mass_index: number
+  role: $Enums.Role
   expireAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -329,6 +336,7 @@ export type UsersWhereInput = {
   body_weight?: Prisma.IntFilter<"Users"> | number
   body_height?: Prisma.IntFilter<"Users"> | number
   body_mass_index?: Prisma.IntFilter<"Users"> | number
+  role?: Prisma.EnumRoleFilter<"Users"> | $Enums.Role
   expireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
@@ -350,6 +358,7 @@ export type UsersOrderByWithRelationInput = {
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -374,6 +383,7 @@ export type UsersWhereUniqueInput = Prisma.AtLeast<{
   body_weight?: Prisma.IntFilter<"Users"> | number
   body_height?: Prisma.IntFilter<"Users"> | number
   body_mass_index?: Prisma.IntFilter<"Users"> | number
+  role?: Prisma.EnumRoleFilter<"Users"> | $Enums.Role
   expireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
@@ -395,6 +405,7 @@ export type UsersOrderByWithAggregationInput = {
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -423,6 +434,7 @@ export type UsersScalarWhereWithAggregatesInput = {
   body_weight?: Prisma.IntWithAggregatesFilter<"Users"> | number
   body_height?: Prisma.IntWithAggregatesFilter<"Users"> | number
   body_mass_index?: Prisma.IntWithAggregatesFilter<"Users"> | number
+  role?: Prisma.EnumRoleWithAggregatesFilter<"Users"> | $Enums.Role
   expireAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
@@ -443,6 +455,7 @@ export type UsersCreateInput = {
   body_weight?: number
   body_height?: number
   body_mass_index?: number
+  role?: $Enums.Role
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -464,6 +477,7 @@ export type UsersUncheckedCreateInput = {
   body_weight?: number
   body_height?: number
   body_mass_index?: number
+  role?: $Enums.Role
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -484,6 +498,7 @@ export type UsersUpdateInput = {
   body_weight?: Prisma.IntFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -504,6 +519,7 @@ export type UsersUncheckedUpdateInput = {
   body_weight?: Prisma.IntFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -525,6 +541,7 @@ export type UsersCreateManyInput = {
   body_weight?: number
   body_height?: number
   body_mass_index?: number
+  role?: $Enums.Role
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -544,6 +561,7 @@ export type UsersUpdateManyMutationInput = {
   body_weight?: Prisma.IntFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -563,6 +581,7 @@ export type UsersUncheckedUpdateManyInput = {
   body_weight?: Prisma.IntFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -583,6 +602,7 @@ export type UsersCountOrderByAggregateInput = {
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -612,6 +632,7 @@ export type UsersMaxOrderByAggregateInput = {
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -632,6 +653,7 @@ export type UsersMinOrderByAggregateInput = {
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -681,6 +703,10 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type EnumRoleFieldUpdateOperationsInput = {
+  set?: $Enums.Role
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
   unset?: boolean
@@ -719,6 +745,7 @@ export type UsersCreateWithoutUserQuestsInput = {
   body_weight?: number
   body_height?: number
   body_mass_index?: number
+  role?: $Enums.Role
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -739,6 +766,7 @@ export type UsersUncheckedCreateWithoutUserQuestsInput = {
   body_weight?: number
   body_height?: number
   body_mass_index?: number
+  role?: $Enums.Role
   expireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -774,6 +802,7 @@ export type UsersUpdateWithoutUserQuestsInput = {
   body_weight?: Prisma.IntFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -793,6 +822,7 @@ export type UsersUncheckedUpdateWithoutUserQuestsInput = {
   body_weight?: Prisma.IntFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.IntFieldUpdateOperationsInput | number
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -844,6 +874,7 @@ export type UsersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   body_weight?: boolean
   body_height?: boolean
   body_mass_index?: boolean
+  role?: boolean
   expireAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -868,12 +899,13 @@ export type UsersSelectScalar = {
   body_weight?: boolean
   body_height?: boolean
   body_mass_index?: boolean
+  role?: boolean
   expireAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "body_weight" | "body_height" | "body_mass_index" | "expireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
+export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "body_weight" | "body_height" | "body_mass_index" | "role" | "expireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
 export type UsersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userQuests?: boolean | Prisma.Users$userQuestsArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -899,6 +931,7 @@ export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     body_weight: number
     body_height: number
     body_mass_index: number
+    role: $Enums.Role
     expireAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -1309,6 +1342,7 @@ export interface UsersFieldRefs {
   readonly body_weight: Prisma.FieldRef<"Users", 'Int'>
   readonly body_height: Prisma.FieldRef<"Users", 'Int'>
   readonly body_mass_index: Prisma.FieldRef<"Users", 'Int'>
+  readonly role: Prisma.FieldRef<"Users", 'Role'>
   readonly expireAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Users", 'DateTime'>

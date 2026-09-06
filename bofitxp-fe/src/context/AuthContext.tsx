@@ -53,7 +53,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   //   console.log("decoded token: ", decoded);
   // }, [token]);
   useEffect(() => {
-    console.log("Auth user: ", authUser);
+    if (authUser === null) {
+      logout();
+    }
   }, [authUser]);
 
   useEffect(() => {

@@ -75,6 +75,7 @@ export const UsersScalarFieldEnum = {
   body_weight: 'body_weight',
   body_height: 'body_height',
   body_mass_index: 'body_mass_index',
+  role: 'role',
   expireAt: 'expireAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -87,6 +88,7 @@ export const QuestsScalarFieldEnum = {
   questId: 'questId',
   title: 'title',
   quest_type: 'quest_type',
+  quest_category: 'quest_category',
   difficulty: 'difficulty',
   xp_reward: 'xp_reward',
   createdAt: 'createdAt',

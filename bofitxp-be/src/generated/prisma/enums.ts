@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const Role = {
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+} as const
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+
 export const QuestType = {
   cardio: 'cardio',
   lifting: 'lifting',
@@ -27,3 +35,13 @@ export const Difficulty = {
 } as const
 
 export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]
+
+
+export const QuestCategory = {
+  daily: 'daily',
+  weekly: 'weekly',
+  special: 'special',
+  unknown: 'unknown'
+} as const
+
+export type QuestCategory = (typeof QuestCategory)[keyof typeof QuestCategory]

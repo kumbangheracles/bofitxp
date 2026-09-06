@@ -60,15 +60,22 @@ enum Difficulty {
   
 }
 
+enum QuestCategory {
+  daily
+  weekly
+  special
+  unknown
+}
+
 model Quests {
   questId     String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   quest_type  QuestType  @default(unknown)
+  quest_category   QuestCategory @default(unknown)
   difficulty  Difficulty @default(easy)
   xp_reward   Int        @default(0)
 
   userQuests  UserQuest[]
-
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }

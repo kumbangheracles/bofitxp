@@ -16,11 +16,11 @@ router.patch("/user/:id", authMiddleware, userController.updateUser);
 
 // Quests
 router.post(
-  "/generate-user-quests/:id",
+  "/user-quests/generate",
   authMiddleware,
   userQuestController.generateQuests,
 );
-router.get("/user-quests/:id", authMiddleware, userQuestController.getAll);
+router.get("/user-quests", authMiddleware, userQuestController.getAll);
 // Mahasiswa
 
 // router.post("/mahasiswa", mahasiswaController.createMahasiswa);

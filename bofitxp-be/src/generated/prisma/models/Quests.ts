@@ -38,6 +38,7 @@ export type QuestsMinAggregateOutputType = {
   questId: string | null
   title: string | null
   quest_type: $Enums.QuestType | null
+  quest_category: $Enums.QuestCategory | null
   difficulty: $Enums.Difficulty | null
   xp_reward: number | null
   createdAt: Date | null
@@ -48,6 +49,7 @@ export type QuestsMaxAggregateOutputType = {
   questId: string | null
   title: string | null
   quest_type: $Enums.QuestType | null
+  quest_category: $Enums.QuestCategory | null
   difficulty: $Enums.Difficulty | null
   xp_reward: number | null
   createdAt: Date | null
@@ -58,6 +60,7 @@ export type QuestsCountAggregateOutputType = {
   questId: number
   title: number
   quest_type: number
+  quest_category: number
   difficulty: number
   xp_reward: number
   createdAt: number
@@ -78,6 +81,7 @@ export type QuestsMinAggregateInputType = {
   questId?: true
   title?: true
   quest_type?: true
+  quest_category?: true
   difficulty?: true
   xp_reward?: true
   createdAt?: true
@@ -88,6 +92,7 @@ export type QuestsMaxAggregateInputType = {
   questId?: true
   title?: true
   quest_type?: true
+  quest_category?: true
   difficulty?: true
   xp_reward?: true
   createdAt?: true
@@ -98,6 +103,7 @@ export type QuestsCountAggregateInputType = {
   questId?: true
   title?: true
   quest_type?: true
+  quest_category?: true
   difficulty?: true
   xp_reward?: true
   createdAt?: true
@@ -195,6 +201,7 @@ export type QuestsGroupByOutputType = {
   questId: string
   title: string
   quest_type: $Enums.QuestType
+  quest_category: $Enums.QuestCategory
   difficulty: $Enums.Difficulty
   xp_reward: number
   createdAt: Date
@@ -228,6 +235,7 @@ export type QuestsWhereInput = {
   questId?: Prisma.StringFilter<"Quests"> | string
   title?: Prisma.StringFilter<"Quests"> | string
   quest_type?: Prisma.EnumQuestTypeFilter<"Quests"> | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFilter<"Quests"> | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFilter<"Quests"> | $Enums.Difficulty
   xp_reward?: Prisma.IntFilter<"Quests"> | number
   createdAt?: Prisma.DateTimeFilter<"Quests"> | Date | string
@@ -239,6 +247,7 @@ export type QuestsOrderByWithRelationInput = {
   questId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   quest_type?: Prisma.SortOrder
+  quest_category?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   xp_reward?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -253,6 +262,7 @@ export type QuestsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.QuestsWhereInput | Prisma.QuestsWhereInput[]
   title?: Prisma.StringFilter<"Quests"> | string
   quest_type?: Prisma.EnumQuestTypeFilter<"Quests"> | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFilter<"Quests"> | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFilter<"Quests"> | $Enums.Difficulty
   xp_reward?: Prisma.IntFilter<"Quests"> | number
   createdAt?: Prisma.DateTimeFilter<"Quests"> | Date | string
@@ -264,6 +274,7 @@ export type QuestsOrderByWithAggregationInput = {
   questId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   quest_type?: Prisma.SortOrder
+  quest_category?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   xp_reward?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -282,6 +293,7 @@ export type QuestsScalarWhereWithAggregatesInput = {
   questId?: Prisma.StringWithAggregatesFilter<"Quests"> | string
   title?: Prisma.StringWithAggregatesFilter<"Quests"> | string
   quest_type?: Prisma.EnumQuestTypeWithAggregatesFilter<"Quests"> | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryWithAggregatesFilter<"Quests"> | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyWithAggregatesFilter<"Quests"> | $Enums.Difficulty
   xp_reward?: Prisma.IntWithAggregatesFilter<"Quests"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Quests"> | Date | string
@@ -292,6 +304,7 @@ export type QuestsCreateInput = {
   questId?: string
   title: string
   quest_type?: $Enums.QuestType
+  quest_category?: $Enums.QuestCategory
   difficulty?: $Enums.Difficulty
   xp_reward?: number
   createdAt?: Date | string
@@ -303,6 +316,7 @@ export type QuestsUncheckedCreateInput = {
   questId?: string
   title: string
   quest_type?: $Enums.QuestType
+  quest_category?: $Enums.QuestCategory
   difficulty?: $Enums.Difficulty
   xp_reward?: number
   createdAt?: Date | string
@@ -313,6 +327,7 @@ export type QuestsUncheckedCreateInput = {
 export type QuestsUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   quest_type?: Prisma.EnumQuestTypeFieldUpdateOperationsInput | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFieldUpdateOperationsInput | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   xp_reward?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -323,6 +338,7 @@ export type QuestsUpdateInput = {
 export type QuestsUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   quest_type?: Prisma.EnumQuestTypeFieldUpdateOperationsInput | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFieldUpdateOperationsInput | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   xp_reward?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -334,6 +350,7 @@ export type QuestsCreateManyInput = {
   questId?: string
   title: string
   quest_type?: $Enums.QuestType
+  quest_category?: $Enums.QuestCategory
   difficulty?: $Enums.Difficulty
   xp_reward?: number
   createdAt?: Date | string
@@ -343,6 +360,7 @@ export type QuestsCreateManyInput = {
 export type QuestsUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   quest_type?: Prisma.EnumQuestTypeFieldUpdateOperationsInput | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFieldUpdateOperationsInput | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   xp_reward?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -352,6 +370,7 @@ export type QuestsUpdateManyMutationInput = {
 export type QuestsUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   quest_type?: Prisma.EnumQuestTypeFieldUpdateOperationsInput | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFieldUpdateOperationsInput | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   xp_reward?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -362,6 +381,7 @@ export type QuestsCountOrderByAggregateInput = {
   questId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   quest_type?: Prisma.SortOrder
+  quest_category?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   xp_reward?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -376,6 +396,7 @@ export type QuestsMaxOrderByAggregateInput = {
   questId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   quest_type?: Prisma.SortOrder
+  quest_category?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   xp_reward?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -386,6 +407,7 @@ export type QuestsMinOrderByAggregateInput = {
   questId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   quest_type?: Prisma.SortOrder
+  quest_category?: Prisma.SortOrder
   difficulty?: Prisma.SortOrder
   xp_reward?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -403,6 +425,10 @@ export type QuestsScalarRelationFilter = {
 
 export type EnumQuestTypeFieldUpdateOperationsInput = {
   set?: $Enums.QuestType
+}
+
+export type EnumQuestCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.QuestCategory
 }
 
 export type EnumDifficultyFieldUpdateOperationsInput = {
@@ -427,6 +453,7 @@ export type QuestsCreateWithoutUserQuestsInput = {
   questId?: string
   title: string
   quest_type?: $Enums.QuestType
+  quest_category?: $Enums.QuestCategory
   difficulty?: $Enums.Difficulty
   xp_reward?: number
   createdAt?: Date | string
@@ -437,6 +464,7 @@ export type QuestsUncheckedCreateWithoutUserQuestsInput = {
   questId?: string
   title: string
   quest_type?: $Enums.QuestType
+  quest_category?: $Enums.QuestCategory
   difficulty?: $Enums.Difficulty
   xp_reward?: number
   createdAt?: Date | string
@@ -462,6 +490,7 @@ export type QuestsUpdateToOneWithWhereWithoutUserQuestsInput = {
 export type QuestsUpdateWithoutUserQuestsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   quest_type?: Prisma.EnumQuestTypeFieldUpdateOperationsInput | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFieldUpdateOperationsInput | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   xp_reward?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -471,6 +500,7 @@ export type QuestsUpdateWithoutUserQuestsInput = {
 export type QuestsUncheckedUpdateWithoutUserQuestsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   quest_type?: Prisma.EnumQuestTypeFieldUpdateOperationsInput | $Enums.QuestType
+  quest_category?: Prisma.EnumQuestCategoryFieldUpdateOperationsInput | $Enums.QuestCategory
   difficulty?: Prisma.EnumDifficultyFieldUpdateOperationsInput | $Enums.Difficulty
   xp_reward?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -512,6 +542,7 @@ export type QuestsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   questId?: boolean
   title?: boolean
   quest_type?: boolean
+  quest_category?: boolean
   difficulty?: boolean
   xp_reward?: boolean
   createdAt?: boolean
@@ -526,13 +557,14 @@ export type QuestsSelectScalar = {
   questId?: boolean
   title?: boolean
   quest_type?: boolean
+  quest_category?: boolean
   difficulty?: boolean
   xp_reward?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type QuestsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"questId" | "title" | "quest_type" | "difficulty" | "xp_reward" | "createdAt" | "updatedAt", ExtArgs["result"]["quests"]>
+export type QuestsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"questId" | "title" | "quest_type" | "quest_category" | "difficulty" | "xp_reward" | "createdAt" | "updatedAt", ExtArgs["result"]["quests"]>
 export type QuestsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userQuests?: boolean | Prisma.Quests$userQuestsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestsCountOutputTypeDefaultArgs<ExtArgs>
@@ -547,6 +579,7 @@ export type $QuestsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     questId: string
     title: string
     quest_type: $Enums.QuestType
+    quest_category: $Enums.QuestCategory
     difficulty: $Enums.Difficulty
     xp_reward: number
     createdAt: Date
@@ -947,6 +980,7 @@ export interface QuestsFieldRefs {
   readonly questId: Prisma.FieldRef<"Quests", 'String'>
   readonly title: Prisma.FieldRef<"Quests", 'String'>
   readonly quest_type: Prisma.FieldRef<"Quests", 'QuestType'>
+  readonly quest_category: Prisma.FieldRef<"Quests", 'QuestCategory'>
   readonly difficulty: Prisma.FieldRef<"Quests", 'Difficulty'>
   readonly xp_reward: Prisma.FieldRef<"Quests", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Quests", 'DateTime'>
