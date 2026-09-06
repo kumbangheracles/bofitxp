@@ -14,7 +14,7 @@ interface GeneratedQuestResponse {
   quests: GeneratedQuest[];
 }
 export class UserQuestService {
-  async generateQuests(userId: UserQuest["userId"], total: number = 10) {
+  async generateQuests(userId: UserQuest["userId"], total: number = 5) {
     if (!userId) {
       throw new Error("Invalid user id");
     }

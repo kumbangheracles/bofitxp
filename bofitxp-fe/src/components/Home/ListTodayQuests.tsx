@@ -14,6 +14,8 @@ import QuestCard from "../QuestCard";
 import useUserQuests from "@/hooks/use-user-quests";
 import { QuestsProperties } from "@/types/quests.type";
 import Toast from "react-native-toast-message";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Loader from "../ui/loaders";
 
 const mockQuests = [
   {
@@ -122,14 +124,54 @@ const ListTodayQuests = () => {
       </View>
 
       {/* List Quest Card */}
-      {dataQuests?.map((item: QuestsProperties, index: number) => (
-        <QuestCard
-          key={item.id}
-          item={item?.quest}
-          index={index}
-          showToast={() => showToast(item?.quest?.xp_reward)}
-        />
-      ))}
+      {dataQuests?.length === 0 && (
+        <View
+          style={{
+            padding: 20,
+            borderRadius: 16,
+            borderColor: theme.textHint,
+            borderWidth: 1,
+            backgroundColor: theme.background,
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <MaterialCommunityIcons
+            color={theme.textHint}
+            name="database-off"
+            size={24}
+          />
+          <Text style={{ color: theme.textHint }}>No quests availble</Text>
+        </View>
+      )}
+      {isPending && (
+        <View
+          style={{
+            padding: 20,
+            borderRadius: 16,
+            // borderColor: theme.textHint,
+            // borderWidth: 1,
+            backgroundColor: theme.background,
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <Loader />
+        </View>
+      )}
+
+      <View style={{ paddingBottom: 12 }}>
+        {dataQuests?.map((item: QuestsProperties, index: number) => (
+          <QuestCard
+            key={item.id}
+            item={item?.quest}
+            index={index}
+            showToast={() => showToast(item?.quest?.xp_reward)}
+          />
+        ))}
+      </View>
     </ScrollView>
   );
 };
