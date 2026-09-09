@@ -1,9 +1,4 @@
-import {
-  difficultyStyle,
-  exerciseStyle,
-  fontSize,
-  fontWeight,
-} from "@/constants/theme";
+import { fontSize, fontWeight } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { ScrollView, Text, View } from "react-native";
 
@@ -13,57 +8,8 @@ import { showSuccess } from "@/utils/toast";
 import QuestCard from "../QuestCard";
 import useUserQuests from "@/hooks/use-user-quests";
 import { QuestsProperties } from "@/types/quests.type";
-import Toast from "react-native-toast-message";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Loader from "../ui/loaders";
-
-const mockQuests = [
-  {
-    id: 1,
-    title: "Complete 3 sets of bench press",
-    quest_type: "Lifting",
-    difficulity: "Medium",
-    exp: 80,
-    exStyle: exerciseStyle["lifting"],
-    difStyle: difficultyStyle["medium"],
-  },
-  {
-    id: 2,
-    title: "Mukbang matcha",
-    quest_type: "Cardio",
-    difficulity: "Hard",
-    exp: 190,
-    exStyle: exerciseStyle["cardio"],
-    difStyle: difficultyStyle["hard"],
-  },
-  {
-    id: 3,
-    title: "Mukbang Gorengan",
-    quest_type: "Cardio",
-    difficulity: "Medium",
-    exp: 120,
-    exStyle: exerciseStyle["cardio"],
-    difStyle: difficultyStyle["medium"],
-  },
-  {
-    id: 4,
-    title: "Jalan jalan pagi",
-    quest_type: "Cardio",
-    difficulity: "Easy",
-    exp: 80,
-    exStyle: exerciseStyle["cardio"],
-    difStyle: difficultyStyle["easy"],
-  },
-  {
-    id: 5,
-    title: "Read Book",
-    quest_type: "Thinking",
-    difficulity: "Easy",
-    exp: 70,
-    exStyle: exerciseStyle["thinking"],
-    difStyle: difficultyStyle["easy"],
-  },
-];
 
 const ListTodayQuests = () => {
   const theme = useAppTheme();
@@ -76,6 +22,7 @@ const ListTodayQuests = () => {
     refetch,
     error,
   } = useUserQuests();
+
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, {
@@ -98,7 +45,7 @@ const ListTodayQuests = () => {
     <ScrollView style={{ width: "100%" }}>
       <View
         style={{
-          marginBlock: 16,
+          marginBlock: 10,
           flexDirection: "row",
           justifyContent: "space-between",
         }}
@@ -124,7 +71,7 @@ const ListTodayQuests = () => {
       </View>
 
       {/* List Quest Card */}
-      {dataQuests?.length === 0 && (
+      {!dataQuests && !isPending && dataQuests.length === 0 && (
         <View
           style={{
             padding: 20,

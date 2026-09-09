@@ -1,3 +1,4 @@
+import { QuestCategory } from "@/types/quests.type";
 import instance from "@/utils/axios/instance";
 
 export class UserQuestService {
@@ -7,8 +8,38 @@ export class UserQuestService {
     return result.data.message;
   }
 
-  async getAllUserQuests(id: string) {
-    const result = await instance.get(`/user-quests/${id}`);
+  async getAllUserQuestsDaily() {
+    const result = await instance.get(`/user-quests`, {
+      params: {
+        quest_category: QuestCategory.DAILY,
+      },
+    });
+
+    return result.data.data;
+  }
+  async getAllUserQuestsWeekly() {
+    const result = await instance.get(`/user-quests`, {
+      params: {
+        quest_category: QuestCategory.WEEKLY,
+      },
+    });
+
+    return result.data.data;
+  }
+  async getAllUserQuestsSpecial() {
+    const result = await instance.get(`/user-quests`, {
+      params: {
+        quest_category: QuestCategory.SPECIAL,
+      },
+    });
+
+    return result.data.data;
+  }
+
+  async finsihedQuest(id: string, userId: string, questId: string) {
+    const result = await instance.patch(
+      `/user-quests/${id}/${userId}/${questId}`,
+    );
 
     return result.data.data;
   }

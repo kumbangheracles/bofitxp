@@ -306,6 +306,32 @@ Return only the requested JSON structure.
     });
   }
 
+  async finishedQuest(
+    id: UserQuest["id"],
+    userId: UserQuest["userId"],
+    questId: UserQuest["questId"],
+  ) {
+    if (!id || !userId || !questId) {
+      throw new Error("Invalid id");
+    }
+
+    const finishedQuest = await prisma.userQuest.update({
+      where: {
+        id,
+        userId,
+        questId,
+      },
+      data: {
+        is_finished: true,
+      },
+      include: {
+        quest: true,
+      },
+    });
+
+    return finishedQuest;
+  }
+
   //   async generateQuests(userId: UserQuest["userId"], total: number = 5) {
   //     if (!userId) {
   //       throw new Error("Invalid user id");

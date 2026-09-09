@@ -6,6 +6,12 @@ export enum QuestType {
   THINKING = "thinking",
 }
 
+export enum QuestCategory {
+  DAILY = "daily",
+  WEEKLY = "weekly",
+  SPECIAL = "special",
+}
+
 export interface QuestsProperties {
   id: string;
   userId: string;
@@ -20,6 +26,7 @@ export interface QuestsProperties {
     title: string;
     quest_type: QuestType;
     difficulty: QuestDifficulty;
+    quest_category: QuestCategory;
     xp_reward: number;
   };
 }

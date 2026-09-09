@@ -8,7 +8,7 @@ const useUserQuests = () => {
   const { data, isError, isFetched, isPending, isSuccess, refetch, error } =
     useQuery({
       queryKey: ["userQuests", authUser?.id],
-      queryFn: () => userQuestService.getAllUserQuests(authUser?.id as string),
+      queryFn: () => userQuestService.getAllUserQuestsDaily(),
       enabled: !!authUser?.id,
     });
 

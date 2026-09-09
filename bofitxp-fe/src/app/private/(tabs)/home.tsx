@@ -14,19 +14,42 @@ import { fontSize, fontWeight, spacing } from "@/constants/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ListTodayQuests from "@/components/Home/ListTodayQuests";
 import { router } from "expo-router";
 import { usePressScale } from "@/hooks/use-press-scale";
 import { useAuth } from "@/context/AuthContext";
+import useUserQuests from "@/hooks/use-user-quests";
+import { QuestsProperties } from "@/types/quests.type";
 const { width } = Dimensions.get("window");
 export default function index() {
   const theme = useAppTheme();
   const translateX = useRef(new Animated.Value(-width)).current;
+  const { data: listDailyQuest } = useUserQuests();
   const scaleQuest = usePressScale();
   const scaleCoach = usePressScale();
   const { logout } = useAuth();
+  const completedQuests = listDailyQuest?.filter(
+    (item: QuestsProperties) => item.is_finished === true,
+  );
+  const dailyProgress = useMemo(() => {
+    const total = listDailyQuest?.length ?? 0;
+    const completed = completedQuests?.length ?? 0;
 
+    if (total === 0) {
+      return {
+        total: 0,
+        completed: 0,
+        percentage: 0,
+      };
+    }
+
+    return {
+      total,
+      completed,
+      percentage: Math.round((completed / total) * 100),
+    };
+  }, [listDailyQuest, completedQuests]);
   useEffect(() => {
     Animated.loop(
       Animated.timing(translateX, {
@@ -338,7 +361,7 @@ export default function index() {
                 Daily Progress
               </Text>
               <Text style={{ fontSize: fontSize.sm, color: theme.textHint }}>
-                0/5 quests completed
+                {dailyProgress.completed}/{dailyProgress.total} quests completed
               </Text>
             </View>
 
@@ -349,7 +372,7 @@ export default function index() {
                 fontWeight: fontWeight.extrabold,
               }}
             >
-              0%
+              {dailyProgress?.percentage}%
             </Text>
           </View>
 
@@ -368,7 +391,7 @@ export default function index() {
                 backgroundColor: theme.xpProgress,
                 borderRadius: 12,
                 zIndex: 10,
-                width: "40%",
+                width: `${dailyProgress.percentage}%`,
               }}
             />
 

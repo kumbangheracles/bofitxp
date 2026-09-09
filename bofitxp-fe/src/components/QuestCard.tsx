@@ -18,9 +18,10 @@ import { useAppTheme } from "@/hooks/use-app-theme";
 import { Pressable, Text, View } from "react-native";
 import { useFadeInLeft } from "@/hooks/use-fadein-left";
 import { QuestsProperties } from "@/types/quests.type";
+import useFinishedQuest from "@/hooks/use-finished-quest";
 
 interface QuestCardProps {
-  item: QuestsProperties["quest"];
+  item: QuestsProperties;
   index?: number;
   trigger?: string | number | boolean;
   showToast?: () => void;
@@ -30,7 +31,10 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
   const theme = useAppTheme();
   const [checked, setChecked] = useState<boolean>(false);
   const progress = useSharedValue(0);
-
+  const { loading: loadingFinished, handleFinishedQuest } = useFinishedQuest({
+    checked,
+    setChecked,
+  });
   const { fadeInLeftStyle } = useFadeInLeft(trigger, index);
 
   useEffect(() => {
@@ -48,8 +52,8 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
   });
 
   const quest = item;
-  const questType = quest?.quest_type as keyof typeof exerciseStyle;
-  const difficulty = quest?.difficulty as keyof typeof difficultyStyle;
+  const questType = quest?.quest?.quest_type as keyof typeof exerciseStyle;
+  const difficulty = quest?.quest?.difficulty as keyof typeof difficultyStyle;
 
   const exStyle = exerciseStyle[questType] ?? exerciseStyle.thinking;
   const difStyle = difficultyStyle[difficulty] ?? difficultyStyle.medium;
@@ -59,9 +63,10 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
       <Pressable
         key={quest?.questId}
         onPress={() => {
-          setChecked((prev) => !prev);
-          showToast?.();
+          handleFinishedQuest(item?.id, item?.userId, item?.quest?.xp_reward);
+          // showToast?.();
         }}
+        disabled={loadingFinished}
         style={{ gap: 8 }}
       >
         <Animated.View
@@ -96,7 +101,7 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                 fontWeight: fontWeight.semibold,
               }}
             >
-              {quest?.title}
+              {quest?.quest?.title}
             </Text>
             <View
               style={{
@@ -169,7 +174,7 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
                   size={fontSize.sm}
                 />
                 <Text style={{ fontSize: fontSize.xs, color: "#15803D" }}>
-                  +{quest?.xp_reward}XP
+                  +{quest?.quest?.xp_reward}XP
                 </Text>
               </View>
             </View>

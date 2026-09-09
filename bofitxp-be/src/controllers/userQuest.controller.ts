@@ -43,7 +43,7 @@ export default {
         case "special":
           result = await userQuestService.generateQuestsSpecial(
             userId,
-            questTotal ?? 3,
+            questTotal ?? 2,
           );
           break;
 
@@ -72,6 +72,28 @@ export default {
       logger.error(error);
 
       return res.status(400).json({
+        message: error.message,
+        data: null,
+      });
+    }
+  },
+
+  async finishedQuest(req: Request, res: Response) {
+    try {
+      const { userQuestId, userId, questId } = req.params;
+      const result = await userQuestService.finishedQuest(
+        userQuestId,
+        userId,
+        questId,
+      );
+      logger.info(
+        { quests: result },
+        `Success update ${result.quest.title} quests`,
+      );
+    } catch (error: any) {
+      const status = error.message === "Invalid Id" ? 403 : 400;
+      logger.error(error);
+      return res.status(status).json({
         message: error.message,
         data: null,
       });

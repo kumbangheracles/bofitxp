@@ -21,6 +21,11 @@ router.post(
   userQuestController.generateQuests,
 );
 router.get("/user-quests", authMiddleware, userQuestController.getAll);
+router.patch(
+  "/user-quests/:id/:userId/:questId",
+  authMiddleware,
+  userQuestController.finishedQuest,
+);
 // Mahasiswa
 
 // router.post("/mahasiswa", mahasiswaController.createMahasiswa);

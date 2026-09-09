@@ -54,7 +54,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // }, [token]);
   useEffect(() => {
     if (authUser === null) {
-      logout();
+      const time = setTimeout(() => {
+        logout();
+      }, 1000);
+      return () => clearTimeout(time);
     }
   }, [authUser]);
 
