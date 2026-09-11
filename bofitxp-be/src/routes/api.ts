@@ -22,7 +22,7 @@ router.post(
 );
 router.get("/user-quests", authMiddleware, userQuestController.getAll);
 router.patch(
-  "/user-quests/:id/:userId/:questId",
+  "/user-quests/:userQuestId/:questId",
   authMiddleware,
   userQuestController.finishedQuest,
 );

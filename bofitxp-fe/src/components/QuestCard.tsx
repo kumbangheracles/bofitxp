@@ -25,12 +25,13 @@ interface QuestCardProps {
   index?: number;
   trigger?: string | number | boolean;
   showToast?: () => void;
+  refetch?: () => void;
 }
 
-const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
+const QuestCard = ({ item, index = 0, trigger, refetch }: QuestCardProps) => {
   const theme = useAppTheme();
-  const [checked, setChecked] = useState<boolean>(false);
   const progress = useSharedValue(0);
+  const [checked, setChecked] = useState<boolean>(false);
   const { loading: loadingFinished, handleFinishedQuest } = useFinishedQuest({
     checked,
     setChecked,
@@ -40,6 +41,11 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, { duration: 50 });
   }, [checked]);
+
+  useEffect(() => {
+    setChecked(true);
+    refetch?.();
+  }, [item?.is_finished]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -63,12 +69,17 @@ const QuestCard = ({ item, index = 0, trigger, showToast }: QuestCardProps) => {
       <Pressable
         key={quest?.questId}
         onPress={() => {
-          handleFinishedQuest(item?.id, item?.userId, item?.quest?.xp_reward);
+          handleFinishedQuest(item?.id, item?.questId, item?.quest?.xp_reward);
           // showToast?.();
         }}
-        disabled={loadingFinished}
-        style={{ gap: 8 }}
+        disabled={loadingFinished || checked}
+        style={{ gap: 8, position: "relative" }}
       >
+        {loadingFinished && (
+          <View style={{ position: "absolute", left: 20 }}>
+            <MaterialCommunityIcons name="loading" size={14} />
+          </View>
+        )}
         <Animated.View
           style={[
             {

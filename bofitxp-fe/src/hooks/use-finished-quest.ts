@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { UserQuestService } from "@/services/userQuests.service";
 import { Dispatch, SetStateAction, useState } from "react";
 import Toast from "react-native-toast-message";
+import useUserQuests from "./use-user-quests";
 
 interface PropTypes {
   checked: boolean;
@@ -13,7 +14,7 @@ const useFinishedQuest = ({ checked, setChecked }: PropTypes) => {
   const userQuestService = new UserQuestService();
   const [loading, setLoading] = useState<boolean>(false);
   const handleFinishedQuest = async (
-    id: string,
+    userQuestId: string,
     questId: string,
     xp_reward: number,
   ) => {
@@ -28,20 +29,23 @@ const useFinishedQuest = ({ checked, setChecked }: PropTypes) => {
 
     try {
       setLoading(true);
+      console.log({ userQuestId, questId });
+      const res = await userQuestService.finsihedQuest(userQuestId, questId);
 
-      await userQuestService.finsihedQuest(id, authUser?.id, questId);
+      console.log("Res: ", res);
       setChecked(true);
       Toast.show({
         type: "success",
         text1: `Quest completed reward +${xp_reward} XP`,
       });
-    } catch (error) {
+    } catch (error: any) {
       Toast.show({
         type: "error",
         text1: "Error update quest",
         text2: "Please try again later.",
       });
-      console.log("Error finish quest: ", error);
+      console.log("Error finish quest: ", error.message);
+      setChecked(false);
     } finally {
       setLoading(false);
     }

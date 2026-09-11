@@ -1,4 +1,4 @@
-import { QuestCategory } from "@/types/quests.type";
+import { QuestCategory, QuestCategoryType } from "@/types/quests.type";
 import instance from "@/utils/axios/instance";
 
 export class UserQuestService {
@@ -6,6 +6,16 @@ export class UserQuestService {
     const result = await instance.post(`/generate-user-quests/${id}`);
 
     return result.data.message;
+  }
+
+  async getAllUserQuests(quest_category: QuestCategoryType) {
+    const result = await instance.get(`/user-quests`, {
+      params: {
+        quest_category,
+      },
+    });
+
+    return result.data.data;
   }
 
   async getAllUserQuestsDaily() {
@@ -36,9 +46,9 @@ export class UserQuestService {
     return result.data.data;
   }
 
-  async finsihedQuest(id: string, userId: string, questId: string) {
+  async finsihedQuest(userQuestId: string, questId: string) {
     const result = await instance.patch(
-      `/user-quests/${id}/${userId}/${questId}`,
+      `/user-quests/${userQuestId}/${questId}`,
     );
 
     return result.data.data;

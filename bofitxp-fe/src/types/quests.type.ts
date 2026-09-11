@@ -1,4 +1,5 @@
 export type QuestDifficulty = "easy" | "medium" | "hard";
+export type QuestCategoryType = "daily" | "weekly" | "special" | null;
 export enum QuestType {
   LIFTING = "lifting",
   CARDIO = "cardio",

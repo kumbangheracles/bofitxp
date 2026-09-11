@@ -80,10 +80,11 @@ export default {
 
   async finishedQuest(req: Request, res: Response) {
     try {
-      const { userQuestId, userId, questId } = req.params;
+      const { userQuestId, questId } = req.params;
+      const userId = (req as IReqUser).user?.id;
       const result = await userQuestService.finishedQuest(
         userQuestId,
-        userId,
+        userId as string,
         questId,
       );
       logger.info(

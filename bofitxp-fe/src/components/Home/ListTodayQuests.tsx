@@ -7,7 +7,7 @@ import { useSharedValue, withTiming } from "react-native-reanimated";
 import { showSuccess } from "@/utils/toast";
 import QuestCard from "../QuestCard";
 import useUserQuests from "@/hooks/use-user-quests";
-import { QuestsProperties } from "@/types/quests.type";
+import { QuestCategory, QuestsProperties } from "@/types/quests.type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Loader from "../ui/loaders";
 
@@ -21,8 +21,11 @@ const ListTodayQuests = () => {
     isPending,
     refetch,
     error,
-  } = useUserQuests();
+  } = useUserQuests({ questCategory: QuestCategory?.DAILY });
 
+  useEffect(() => {
+    console.log("Data quests: ", dataQuests);
+  }, [dataQuests]);
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, {
@@ -69,9 +72,24 @@ const ListTodayQuests = () => {
           View All {">"}
         </Text>
       </View>
+      {/* Loading */}
+      {isPending && (
+        <View
+          style={{
+            padding: 20,
+            borderRadius: 16,
+            backgroundColor: theme.background,
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <Loader />
+        </View>
+      )}
 
-      {/* List Quest Card */}
-      {!dataQuests && !isPending && dataQuests.length === 0 && (
+      {/* Empty */}
+      {isFetched && !isPending && dataQuests?.length === 0 && (
         <View
           style={{
             padding: 20,
@@ -89,31 +107,16 @@ const ListTodayQuests = () => {
             name="database-off"
             size={24}
           />
-          <Text style={{ color: theme.textHint }}>No quests availble</Text>
+          <Text style={{ color: theme.textHint }}>No quests available</Text>
         </View>
       )}
-      {isPending && (
-        <View
-          style={{
-            padding: 20,
-            borderRadius: 16,
-            // borderColor: theme.textHint,
-            // borderWidth: 1,
-            backgroundColor: theme.background,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 4,
-          }}
-        >
-          <Loader />
-        </View>
-      )}
-
+      {/* Quest List */}
       <View style={{ paddingBottom: 12 }}>
         {dataQuests?.map((item: QuestsProperties, index: number) => (
           <QuestCard
+            refetch={refetch}
             key={item.id}
-            item={item?.quest}
+            item={item}
             index={index}
             showToast={() => showToast(item?.quest?.xp_reward)}
           />

@@ -20,12 +20,14 @@ import { router } from "expo-router";
 import { usePressScale } from "@/hooks/use-press-scale";
 import { useAuth } from "@/context/AuthContext";
 import useUserQuests from "@/hooks/use-user-quests";
-import { QuestsProperties } from "@/types/quests.type";
+import { QuestCategory, QuestsProperties } from "@/types/quests.type";
 const { width } = Dimensions.get("window");
 export default function index() {
   const theme = useAppTheme();
   const translateX = useRef(new Animated.Value(-width)).current;
-  const { data: listDailyQuest } = useUserQuests();
+  const { data: listDailyQuest } = useUserQuests({
+    questCategory: QuestCategory?.DAILY,
+  });
   const scaleQuest = usePressScale();
   const scaleCoach = usePressScale();
   const { logout } = useAuth();
