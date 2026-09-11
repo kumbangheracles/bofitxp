@@ -31,20 +31,19 @@ interface QuestCardProps {
 const QuestCard = ({ item, index = 0, trigger, refetch }: QuestCardProps) => {
   const theme = useAppTheme();
   const progress = useSharedValue(0);
-  const [checked, setChecked] = useState<boolean>(false);
-  const { loading: loadingFinished, handleFinishedQuest } = useFinishedQuest({
+
+  const {
+    loading: loadingFinished,
+    handleFinishedQuest,
     checked,
     setChecked,
-  });
+  } = useFinishedQuest();
   const { fadeInLeftStyle } = useFadeInLeft(trigger, index);
-
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, { duration: 50 });
   }, [checked]);
-
   useEffect(() => {
-    setChecked(true);
-    refetch?.();
+    setChecked(!!item?.is_finished);
   }, [item?.is_finished]);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -87,6 +86,7 @@ const QuestCard = ({ item, index = 0, trigger, refetch }: QuestCardProps) => {
               backgroundColor: theme.surface,
               borderRadius: 16,
               marginTop: 12,
+              opacity: loadingFinished ? 0.5 : 1,
               borderWidth: 1,
               flexDirection: "row",
               gap: 8,

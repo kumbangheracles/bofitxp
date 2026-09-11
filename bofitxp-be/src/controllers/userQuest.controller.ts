@@ -91,6 +91,11 @@ export default {
         { quests: result },
         `Success update ${result.quest.title} quests`,
       );
+
+      return res.status(200).json({
+        message: "Success finishing quests",
+        data: result,
+      });
     } catch (error: any) {
       const status = error.message === "Invalid Id" ? 403 : 400;
       logger.error(error);

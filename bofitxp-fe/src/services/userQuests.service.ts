@@ -2,8 +2,16 @@ import { QuestCategory, QuestCategoryType } from "@/types/quests.type";
 import instance from "@/utils/axios/instance";
 
 export class UserQuestService {
-  async generateQuests(id: string) {
-    const result = await instance.post(`/generate-user-quests/${id}`);
+  async generateQuests(quest_category: QuestCategoryType) {
+    const result = await instance.post(
+      `/user-quests/generate`,
+      {},
+      {
+        params: {
+          quest_category,
+        },
+      },
+    );
 
     return result.data.message;
   }
@@ -47,10 +55,11 @@ export class UserQuestService {
   }
 
   async finsihedQuest(userQuestId: string, questId: string) {
+    console.log("BEFORE PATCH CALL");
     const result = await instance.patch(
       `/user-quests/${userQuestId}/${questId}`,
     );
-
+    console.log("AFTER PATCH CALL"); // <-- apakah ini muncul?
     return result.data.data;
   }
 }

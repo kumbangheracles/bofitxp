@@ -61,11 +61,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [authUser]);
 
+  // useEffect(() => {
+  //   if (token !== null) {
+  //     try {
+  //       const decoded = jwtDecode<JWTDecode>(token);
+
+  //       const currentTime = Date.now() / 1000;
+  //       if (decoded.expiresIn < currentTime) {
+  //         console.warn("Token has expired");
+  //         localStorage.removeItem("token");
+  //         setAuthUser(null);
+  //       } else {
+  //         setAuthUser(decoded);
+  //         console.log("Token");
+  //         console.log("Decoded: ", decoded);
+  //       }
+  //     } catch (error) {
+  //       console.error("Invalid token format:", error);
+  //     }
+  //   }
+  // }, [token]);
+
   useEffect(() => {
-    if (token !== null) {
+    if (!token) return;
+
+    const checkExpiry = () => {
       try {
         const decoded = jwtDecode<JWTDecode>(token);
-
         const currentTime = Date.now() / 1000;
         if (decoded.expiresIn < currentTime) {
           console.warn("Token has expired");
@@ -78,8 +100,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Invalid token format:", error);
+        logout();
       }
-    }
+    };
+
+    checkExpiry(); // cek langsung saat token berubah
+    const interval = setInterval(checkExpiry, 30_000); // cek tiap 30 detik
+
+    return () => clearInterval(interval);
   }, [token]);
 
   return (

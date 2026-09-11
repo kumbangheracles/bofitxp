@@ -3,6 +3,8 @@ import QuestCard from "@/components/QuestCard";
 import AnimatedTabButton from "@/components/Quests/AnimatedTabButton";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { Text } from "react-native";
+import Loader from "@/components/ui/loaders";
 import {
   difficultyStyle,
   exerciseStyle,
@@ -11,10 +13,17 @@ import {
 } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { useFadeInLeft } from "@/hooks/use-fadein-left";
+import useGenerateUserQuest from "@/hooks/use-generate-user-quests";
+import useUserQuests from "@/hooks/use-user-quests";
+import {
+  QuestCategory,
+  QuestCategoryType,
+  QuestsProperties,
+} from "@/types/quests.type";
 import { showSuccess } from "@/utils/toast";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect } from "react";
 import { View, ScrollView } from "react-native";
 
 export interface QuestCategoryTab {
@@ -29,13 +38,37 @@ const QuestsPage = () => {
   const router = useRouter();
 
   const params = useLocalSearchParams<{ tab?: string }>();
-  const activeTab = params.tab || "daily";
-  const { fadeInLeftStyle } = useFadeInLeft(activeTab);
+  const activeTab: QuestCategoryType =
+    params.tab === QuestCategory.WEEKLY
+      ? QuestCategory.WEEKLY
+      : params.tab === QuestCategory.SPECIAL
+        ? QuestCategory.SPECIAL
+        : QuestCategory.DAILY;
   const questCat: QuestCategoryTab[] = [
-    { id: 1, key: "daily", title: "Daily", iconName: "calendar" },
-    { id: 2, key: "weekly", title: "Weekly", iconName: "recycle" },
-    { id: 3, key: "special", title: "Special", iconName: "trophy" },
+    { id: 1, key: QuestCategory.DAILY, title: "Daily", iconName: "calendar" },
+    { id: 2, key: QuestCategory.WEEKLY, title: "Weekly", iconName: "recycle" },
+    { id: 3, key: QuestCategory.SPECIAL, title: "Special", iconName: "trophy" },
   ];
+
+  useEffect(() => {
+    console.log("Active tab: ", activeTab);
+  }, [activeTab]);
+
+  const {
+    handleGenerateUserQuests,
+    isLoading: loadingGenerate,
+    setLoading: setLoadingGenerate,
+  } = useGenerateUserQuest();
+
+  const {
+    data: listQuests,
+    isPending,
+    isFetched,
+    refetch,
+    error,
+  } = useUserQuests({
+    questCategory: activeTab,
+  });
 
   const mockQuestsDaily = [
     {
@@ -327,6 +360,11 @@ const QuestsPage = () => {
           icon={
             <MaterialCommunityIcons size={13} name="star" color={theme.text} />
           }
+          isLoading={loadingGenerate}
+          onPress={async () => {
+            const success = await handleGenerateUserQuests(activeTab);
+            if (success) refetch();
+          }}
           variantGrad="primary"
           viewStyle={{ width: 310, padding: 16 }}
           label={"Generate AI Quests"}
@@ -354,39 +392,61 @@ const QuestsPage = () => {
           </ThemedText>
         </View>
 
+        {/* Loading */}
+        {isPending && (
+          <View
+            style={{
+              padding: 20,
+              borderRadius: 16,
+              backgroundColor: theme.background,
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <Loader />
+          </View>
+        )}
+
+        {/* Empty */}
+        {isFetched && !isPending && listQuests?.length === 0 && (
+          <View
+            style={{
+              padding: 20,
+              borderRadius: 16,
+              borderColor: theme.textHint,
+              borderWidth: 1,
+              backgroundColor: theme.background,
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <MaterialCommunityIcons
+              color={theme.textHint}
+              name="database-off"
+              size={24}
+            />
+            <Text style={{ color: theme.textHint }}>No quests available</Text>
+          </View>
+        )}
+
         {/* List Quests */}
 
         {activeTab === "daily" &&
-          mockQuestsDaily.map((item, index) => {
-            return (
-              <QuestCard
-                key={item.id}
-                item={item}
-                index={index}
-                showToast={() => showToast(item.exp)}
-              />
-            );
+          listQuests?.map((item: QuestsProperties, index: number) => {
+            return <QuestCard key={item.id} item={item} index={index} />;
           })}
 
         {activeTab === "weekly" &&
-          mockQuestWeekly.map((item, index) => (
-            <QuestCard
-              key={item.id}
-              item={item}
-              index={index}
-              showToast={() => showToast(item.exp)}
-            />
-          ))}
+          listQuests?.map((item: QuestsProperties, index: number) => {
+            return <QuestCard key={item.id} item={item} index={index} />;
+          })}
 
         {activeTab === "special" &&
-          mockQuestSpecial.map((item, index) => (
-            <QuestCard
-              key={item.id}
-              item={item}
-              index={index}
-              showToast={() => showToast(item.exp)}
-            />
-          ))}
+          listQuests?.map((item: QuestsProperties, index: number) => {
+            return <QuestCard key={item.id} item={item} index={index} />;
+          })}
       </View>
     </ScrollView>
   );
