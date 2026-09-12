@@ -1,7 +1,9 @@
-import { UserQuest } from "../generated/prisma/client";
+import { Difficulty, UserQuest } from "../generated/prisma/client";
 import prisma from "../utils/prisma";
 
 import groq from "../utils/groq";
+import { XP_REWARD } from "../utils/constants/xp";
+import logger from "../utils/pino";
 
 export interface GeneratedQuest {
   title: string;
@@ -72,31 +74,25 @@ Available quest types:
 ${config.quest_type}
 
 Available difficulties:
-${config.difficulties}
+${config.difficulties.join(", ")}
 
 Quest category:
 ${config.quest_category}
 
-Allowed difficulties:
-${config.difficulties.join(", ")}
-
-XP range:
-${config.minXp} - ${config.maxXp} XP
-
 IMPORTANT RULES:
 
 1. Generate exactly the requested number of quests.
-2. Every quest must follow the allowed difficulty.
-3. Every quest must follow the allowed XP range.
-4. Do not generate duplicate quests.
-5. Quest titles must be written in Indonesian.
-6. Quests must be realistic and achievable.
-7. Avoid dangerous exercises.
-8. Avoid extreme exercise volume.
-9. The quest must match its quest type.
-10. Consider the user's level when determining difficulty.
-11. For special quests, make them significantly more challenging than normal quests.
-12. XP reward must accurately reflect the difficulty.
+2. Every quest must use one of the allowed difficulties.
+3. Do not generate duplicate quests.
+4. Quest titles must be written in Indonesian.
+5. Quests must be realistic and achievable.
+6. Avoid dangerous exercises.
+7. Avoid extreme exercise volume.
+8. The quest must match its quest type.
+9. Consider the user's level when determining difficulty.
+10. For special quests, make them significantly more challenging than normal quests.
+11. Difficulty must accurately reflect the actual difficulty of the quest.
+12. Do not generate XP values. XP rewards are determined by the BOFITXP backend based on difficulty.
 `,
         },
 
@@ -122,11 +118,10 @@ ${config.quest_category}
 Allowed difficulties:
 ${config.difficulties.join(", ")}
 
-XP:
-Minimum: ${config.minXp}
-Maximum: ${config.maxXp}
-
 Generate exactly ${config.total} quests.
+
+Do not include XP rewards.
+The backend will determine XP based on quest difficulty.
 
 Return only the requested JSON structure.
 `,
@@ -172,15 +167,9 @@ Return only the requested JSON structure.
                       type: "string",
                       enum: config.difficulties,
                     },
-
-                    xp_reward: {
-                      type: "integer",
-                      minimum: config.minXp,
-                      maximum: config.maxXp,
-                    },
                   },
 
-                  required: ["title", "quest_type", "difficulty", "xp_reward"],
+                  required: ["title", "quest_type", "difficulty"],
 
                   additionalProperties: false,
                 },
@@ -230,10 +219,6 @@ Return only the requested JSON structure.
       if (!config.difficulties.includes(quest.difficulty)) {
         throw new Error(`Invalid difficulty generated: ${quest.difficulty}`);
       }
-
-      if (quest.xp_reward < config.minXp || quest.xp_reward > config.maxXp) {
-        throw new Error(`Invalid XP reward generated: ${quest.xp_reward}`);
-      }
     }
 
     /*
@@ -246,8 +231,11 @@ Return only the requested JSON structure.
             title: quest.title,
             quest_type: quest.quest_type,
             difficulty: quest.difficulty,
-            xp_reward: quest.xp_reward,
+
+            xp_reward: XP_REWARD[quest.difficulty],
+
             quest_category: config.quest_category,
+
             userQuests: {
               create: {
                 userId,
@@ -271,18 +259,41 @@ Return only the requested JSON structure.
   }
 
   async generateQuests(userId: UserQuest["userId"], total: number = 5) {
+    const allDailyQuests = await this.getAllQuests(userId, "daily");
+
+    const mappingQuestId = allDailyQuests.map((item) => item.questId);
+
+    await prisma.userQuest.deleteMany({
+      where: {
+        userId,
+        questId: {
+          in: mappingQuestId,
+        },
+      },
+    });
+
     return this.generateQuestWithAI(userId, {
       total,
       quest_category: "daily",
-
       difficulties: ["easy", "medium", "hard"],
-
       minXp: 10,
       maxXp: 120,
     });
   }
 
   async generateQuestsWeekly(userId: UserQuest["userId"], total: number = 3) {
+    const allWeeklyQuest = await this.getAllQuests(userId, "weekly");
+    const mappingQuestId = allWeeklyQuest.map((item) => item.questId);
+
+    await prisma.userQuest.deleteMany({
+      where: {
+        userId,
+        questId: {
+          in: mappingQuestId,
+        },
+      },
+    });
+
     return this.generateQuestWithAI(userId, {
       total,
       quest_category: "weekly",
@@ -295,6 +306,18 @@ Return only the requested JSON structure.
   }
 
   async generateQuestsSpecial(userId: UserQuest["userId"], total: number = 2) {
+    const allSpecialQuest = await this.getAllQuests(userId, "special");
+    const mappingQuestId = allSpecialQuest.map((item) => item.questId);
+
+    await prisma.userQuest.deleteMany({
+      where: {
+        userId,
+        questId: {
+          in: mappingQuestId,
+        },
+      },
+    });
+
     return this.generateQuestWithAI(userId, {
       total,
       quest_category: "special",
@@ -305,7 +328,9 @@ Return only the requested JSON structure.
       maxXp: 1000,
     });
   }
-
+  private getQuestXpReward(difficulty: Difficulty): number {
+    return XP_REWARD[difficulty];
+  }
   async finishedQuest(
     id: UserQuest["id"],
     userId: UserQuest["userId"],
@@ -315,11 +340,30 @@ Return only the requested JSON structure.
       throw new Error("Invalid id");
     }
 
-    const finishedQuest = await prisma.userQuest.update({
+    // Pastikan quest memang milik user dan belum selesai
+    const userQuest = await prisma.userQuest.findFirst({
       where: {
         id,
         userId,
         questId,
+      },
+      include: {
+        quest: true,
+      },
+    });
+
+    if (!userQuest) {
+      throw new Error("Quest not found");
+    }
+
+    if (userQuest.is_finished) {
+      throw new Error("Quest already completed");
+    }
+
+    // Tandai quest sebagai selesai
+    const finishedQuest = await prisma.userQuest.update({
+      where: {
+        id: userQuest.id,
       },
       data: {
         is_finished: true,
@@ -329,7 +373,76 @@ Return only the requested JSON structure.
       },
     });
 
-    return finishedQuest;
+    // Ambil XP berdasarkan difficulty quest
+    const xpReward = this.getQuestXpReward(finishedQuest.quest.difficulty);
+
+    // Tambahkan XP ke user
+    const xpResult = await this.addXp(userId, xpReward);
+
+    return {
+      quest: finishedQuest,
+      xp: {
+        gained: xpReward,
+        total: xpResult.user.xp,
+        level: xpResult.currentLevel,
+        levelUp: xpResult.levelUp,
+      },
+    };
+  }
+  private calculateLevel(xp: number): number {
+    let level = 0;
+
+    while (xp >= this.getLevelThreshold(level + 1)) {
+      level++;
+    }
+
+    return level;
+  }
+
+  private getLevelThreshold(level: number): number {
+    if (level <= 0) return 0;
+
+    return Math.floor(100 * Math.pow(level, 1.35));
+  }
+  async addXp(userId: string, amount: number) {
+    const user = await prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const currentXp = user.xp ?? 0;
+    const currentLevel = user.level ?? 0;
+
+    const newXp = currentXp + amount;
+
+    const newLevel = this.calculateLevel(newXp);
+
+    const levelUp = newLevel > currentLevel;
+
+    const updatedUser = await prisma.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        xp: newXp,
+        level: newLevel,
+      },
+    });
+
+    logger.info({ message: "Success add xp", updatedUser });
+
+    return {
+      user: updatedUser,
+      xpGained: amount,
+      levelUp,
+      previousLevel: currentLevel,
+      currentLevel: newLevel,
+    };
   }
 
   //   async generateQuests(userId: UserQuest["userId"], total: number = 5) {

@@ -21,16 +21,35 @@ import { usePressScale } from "@/hooks/use-press-scale";
 import { useAuth } from "@/context/AuthContext";
 import useUserQuests from "@/hooks/use-user-quests";
 import { QuestCategory, QuestsProperties } from "@/types/quests.type";
+import { getLevelThreshold } from "@/helpers/xp";
 const { width } = Dimensions.get("window");
 export default function index() {
+  const { authUser } = useAuth();
   const theme = useAppTheme();
   const translateX = useRef(new Animated.Value(-width)).current;
   const { data: listDailyQuest } = useUserQuests({
     questCategory: QuestCategory?.DAILY,
   });
+  const level = authUser?.level ?? 0;
+  const xp = authUser?.xp ?? 0;
+
+  const currentLevelXp = getLevelThreshold(level);
+  const nextLevelXp = getLevelThreshold(level + 1);
+
+  const progress = Math.min(
+    1,
+    Math.max(0, (xp - currentLevelXp) / (nextLevelXp - currentLevelXp)),
+  );
+  console.log({
+    level,
+    xp,
+    currentLevelXp,
+    nextLevelXp,
+    progress,
+    percentage: `${progress * 100}%`,
+  });
   const scaleQuest = usePressScale();
   const scaleCoach = usePressScale();
-  const { logout } = useAuth();
   const completedQuests = listDailyQuest?.filter(
     (item: QuestsProperties) => item.is_finished === true,
   );
@@ -65,7 +84,7 @@ export default function index() {
     {
       id: 1,
       title: "Streak",
-      label: "7 Days",
+      label: `${authUser?.streak} Days`,
       icon: (
         <MaterialCommunityIcons name="fire" size={13} color={theme.combo} />
       ),
@@ -73,7 +92,7 @@ export default function index() {
     {
       id: 2,
       title: "Total XP",
-      label: "2,450",
+      label: authUser?.xp?.toLocaleString("id-ID"),
       icon: (
         <MaterialCommunityIcons
           name="lightning-bolt"
@@ -85,7 +104,7 @@ export default function index() {
     {
       id: 3,
       title: "Level",
-      label: "24",
+      label: authUser?.level,
       icon: (
         <MaterialCommunityIcons
           name="trophy"
@@ -161,7 +180,7 @@ export default function index() {
                 }}
               >
                 <MaterialCommunityIcons
-                  onPress={() => logout()}
+                  onPress={() => router.push("/private/(tabs)/account")}
                   style={{
                     color: theme.text,
                   }}
@@ -260,9 +279,11 @@ export default function index() {
                       fontSize: fontSize.xs,
                     }}
                   >
-                    Level 24
+                    Level {authUser?.level}
                   </Text>
-                  <Text style={{ color: theme.text }}>2,450 / 3,000 XP</Text>
+                  <Text style={{ color: theme.text }}>
+                    {authUser?.xp} / {nextLevelXp} XP
+                  </Text>
                 </View>
               </View>
 
@@ -278,7 +299,7 @@ export default function index() {
                     fontWeight: fontWeight.bold,
                   }}
                 >
-                  550 XP
+                  {nextLevelXp - (authUser?.xp ?? 0)} XP
                 </Text>
               </View>
             </View>
@@ -292,6 +313,7 @@ export default function index() {
                 borderRadius: 16,
               }}
             >
+              {/* Background */}
               <View
                 style={{
                   ...StyleSheet.absoluteFill,
@@ -299,20 +321,27 @@ export default function index() {
                 }}
               />
 
+              {/* Progress */}
               <View
                 style={{
-                  ...StyleSheet.absoluteFill,
-                  width: "60%",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: `${progress * 100}%`,
                   backgroundColor: theme.primaryMuted,
                   borderRadius: 12,
                 }}
               />
 
+              {/* Shine */}
               <Animated.View
                 style={{
-                  ...StyleSheet.absoluteFill,
-                  transform: [{ translateX }],
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
                   width: "100%",
+                  transform: [{ translateX }],
                 }}
               >
                 <LinearGradient
@@ -321,8 +350,8 @@ export default function index() {
                     "rgba(255, 255, 255, 0.4)",
                     "transparent",
                   ]}
-                  start={{ x: 0, y: 0 }} // [cite: 9]
-                  end={{ x: 1, y: 0 }} // [cite: 9]
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
                   style={StyleSheet.absoluteFill}
                 />
               </Animated.View>
