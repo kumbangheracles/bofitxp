@@ -87,10 +87,12 @@ export default {
         userId as string,
         questId,
       );
-      logger.info(
-        { quests: result },
-        `Success update ${result.quest.title} quests`,
-      );
+      // logger.info(
+      //   { quests: result },
+      //   `Success update ${result.quest.quest.title} quests`,
+      // );
+
+      console.log("Result: ", result);
 
       return res.status(200).json({
         message: "Success finishing quests",

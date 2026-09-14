@@ -1,5 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { UserQuestService } from "@/services/userQuests.service";
+import { QuestCategory } from "@/types/quests.type";
+import { useQueryClient } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import Toast from "react-native-toast-message";
 
@@ -9,12 +11,12 @@ interface PropTypes {
 }
 
 const useFinishedQuest = () => {
-  const { authUser } = useAuth();
+  const { authUser, setAuthUser } = useAuth();
   const userQuestService = new UserQuestService();
   const [loading, setLoading] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const inFlightRef = useRef(false); // guard sinkron, tidak nunggu render
-
+  const queryClient = useQueryClient();
   const handleFinishedQuest = async (
     id: string,
     questId: string,
@@ -34,12 +36,23 @@ const useFinishedQuest = () => {
     // optimistic update
     setChecked(true);
     try {
-      await userQuestService.finsihedQuest(id, questId);
+      const result = await userQuestService.finsihedQuest(id, questId);
       console.log({ id, questId, xp_reward });
       console.log("SUCCESS - about to show toast");
       Toast.show({
         type: "success",
         text1: `Quest completed reward +${xp_reward} XP`,
+      });
+
+      if (authUser && result?.xp) {
+        setAuthUser({
+          ...authUser,
+          xp: result.xp.total,
+          level: result.xp.level,
+        });
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["userQuests", authUser?.id, QuestCategory.DAILY],
       });
     } catch (error: any) {
       // rollback kalau gagal
