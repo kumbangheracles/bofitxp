@@ -8,10 +8,9 @@ import { IReqUser } from "../middlewares/auth.middleware";
 const userQuestService = new UserQuestService();
 export default {
   async generateQuests(req: Request, res: Response) {
+    const userId = (req as IReqUser).user?.id;
+    const { quest_category, total } = req.query;
     try {
-      const userId = (req as IReqUser).user?.id;
-      const { quest_category, total } = req.query;
-
       if (!userId) {
         return res.status(403).json({
           message: "Unauthorized",
@@ -69,7 +68,13 @@ export default {
         data: result.quests,
       });
     } catch (error: any) {
-      logger.error(error);
+      logger.error(
+        {
+          err: error,
+          quest_category: quest_category,
+        },
+        "Failed generate quests",
+      );
 
       return res.status(400).json({
         message: error.message,
@@ -87,12 +92,10 @@ export default {
         userId as string,
         questId,
       );
-      // logger.info(
-      //   { quests: result },
-      //   `Success update ${result.quest.quest.title} quests`,
-      // );
-
-      console.log("Result: ", result);
+      logger.info(
+        { quests: result },
+        `Success update ${result.quest.quest.title} quests`,
+      );
 
       return res.status(200).json({
         message: "Success finishing quests",
@@ -100,7 +103,12 @@ export default {
       });
     } catch (error: any) {
       const status = error.message === "Invalid Id" ? 403 : 400;
-      logger.error(error);
+      logger.error(
+        {
+          err: error,
+        },
+        "Failed finishing quests",
+      );
       return res.status(status).json({
         message: error.message,
         data: null,
@@ -109,6 +117,7 @@ export default {
   },
 
   async getAll(req: Request, res: Response) {
+    const { quest_category } = req.query;
     try {
       const userId = (req as IReqUser).user?.id;
 
@@ -118,8 +127,6 @@ export default {
           data: null,
         });
       }
-
-      const { quest_category } = req.query;
 
       const results = await userQuestService.getAllQuests(
         userId,
@@ -136,7 +143,13 @@ export default {
       });
     } catch (error: any) {
       const status = error.message === "Invalid Id" ? 403 : 400;
-      logger.error(error);
+      logger.error(
+        {
+          err: error,
+          quest_category,
+        },
+        `Failed get all quests ${quest_category}`,
+      );
       return res.status(status).json({
         message: error.message,
         data: null,

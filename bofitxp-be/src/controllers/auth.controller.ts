@@ -21,20 +21,34 @@ type TLogin = {
 const authService = new AuthService();
 export default {
   async register(req: Request, res: Response) {
-    const payload = req.body as unknown as TRegister;
+    const payload = req.body as TRegister;
+
+    logger.info({ username: payload.username }, "Start user registration");
 
     try {
       const result = await authService.register(payload);
+
+      logger.info(
+        { username: payload.username },
+        "User registration successful",
+      );
 
       res.status(200).json({
         message: "success",
         data: result.user,
       });
-    } catch (error: any) {
+    } catch (error) {
+      logger.error(
+        {
+          err: error,
+          username: payload.username,
+        },
+        "Failed user registration",
+      );
+
       response.error(res, error, "Failed registration");
     }
   },
-
   async login(req: Request, res: Response) {
     /**
      #swagger.requestBody = {
@@ -47,7 +61,6 @@ export default {
     const payload = req.body as unknown as TLogin;
     try {
       const result = await authService.login(payload);
-
       const userData = getUserData(result.token);
 
       logger.info({ user: userData }, "Login Success");
@@ -57,11 +70,18 @@ export default {
       });
     } catch (error: any) {
       const status = error.message === "User not found" ? 403 : 400;
-      logger.error(error);
+      logger.error(
+        {
+          err: error,
+          username: payload.email,
+        },
+        "Failed user registration",
+      );
       return res.status(status).json({
         message: error.message,
         data: null,
       });
+    } finally {
     }
   },
   async activation(req: IReqUser, res: Response) {
@@ -75,9 +95,21 @@ export default {
     try {
       const { activationCode } = req.body;
       const result = await authService.activationCode(activationCode);
-
+      logger.info(
+        {
+          username: result.updatedUser.username,
+          isVerified: result.updatedUser.isVerified,
+        },
+        "User activation successful",
+      );
       response.success(res, result.updatedUser, "User successfully activated");
     } catch (error) {
+      logger.error(
+        {
+          err: error,
+        },
+        "User is failed activated",
+      );
       response.error(res, error, "User is failed activated");
     }
   },
@@ -86,13 +118,24 @@ export default {
     const { email } = req.body;
     try {
       const result = await authService.resendActivationCode(email);
-
+      logger.info(
+        { username: result.updatedUser.username },
+        "Success resend activation code",
+      );
       response.success(
         res,
         result.updatedUser.activationCode,
         "Success resend activation code",
       );
     } catch (error) {
+      logger.error(
+        {
+          err: error,
+          email: email,
+        },
+        "Failed send activation code",
+      );
+
       response.error(res, error, "Failed send activation code");
     }
   },

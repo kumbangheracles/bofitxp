@@ -1,7 +1,7 @@
 import prisma from "../utils/prisma";
 import { renderMailHtml, sendMail } from "./mailer.service";
 import { TRegister } from "../controllers/auth.controller";
-import { EMAIL_SMTP_USER, EXPIRE_TTL_MINUTE } from "../utils/env";
+import { EMAIL_SMTP_USER } from "../utils/env";
 import { encrypt } from "../utils/encryption";
 import { generateVerificationCode } from "../utils/verificationCode";
 import { Users } from "../generated/prisma/client";
@@ -85,7 +85,6 @@ export class AuthService {
       subject: "Account Verificaton",
       html: contentMail,
     });
-
     return { user };
   }
 
