@@ -22,10 +22,12 @@ import { useAuth } from "@/context/AuthContext";
 import useUserQuests from "@/hooks/use-user-quests";
 import { QuestCategory, QuestsProperties } from "@/types/quests.type";
 import { getLevelThreshold } from "@/helpers/xp";
+import { useCustomToast } from "@/context/CostumToastProvider";
 const { width } = Dimensions.get("window");
 export default function index() {
   const { authUser } = useAuth();
   const theme = useAppTheme();
+  const { showToast } = useCustomToast();
   const translateX = useRef(new Animated.Value(-width)).current;
   const { data: listDailyQuest } = useUserQuests({
     questCategory: QuestCategory?.DAILY,
@@ -147,7 +149,10 @@ export default function index() {
                 backgroundColor: theme.elevated,
               }}
             >
-              <ThemedView
+              <Pressable
+                onPress={() =>
+                  showToast("KERJA WOYYYYY", "KERJA YANG BENER", "success")
+                }
                 style={{
                   padding: 10,
                   display: "flex",
@@ -166,7 +171,7 @@ export default function index() {
                   name="bell"
                   size={16}
                 />
-              </ThemedView>
+              </Pressable>
               <ThemedView
                 style={{
                   padding: 10,
