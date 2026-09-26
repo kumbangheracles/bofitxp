@@ -17,6 +17,16 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
+export const TargetFinal = {
+  weight_loss: 'weight_loss',
+  muscle_gain: 'muscle_gain',
+  maintain_fitness: 'maintain_fitness',
+  endurance: 'endurance'
+} as const
+
+export type TargetFinal = (typeof TargetFinal)[keyof typeof TargetFinal]
+
+
 export const QuestType = {
   cardio: 'cardio',
   lifting: 'lifting',

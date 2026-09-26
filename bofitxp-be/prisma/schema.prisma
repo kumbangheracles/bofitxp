@@ -20,7 +20,12 @@ enum Role {
   
 }
 
-
+enum TargetFinal {
+  weight_loss
+  muscle_gain
+  maintain_fitness
+  endurance
+}
 model Users {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   fullName  String
@@ -33,10 +38,11 @@ model Users {
   streak Int? @default(0)
   avatarUrl String?
   xp   Int? @default(0)
-  body_weight Int @default(0)
+  body_weight     Float @default(0)
   body_height Int @default(0)
-  body_mass_index Int @default(0)
+  body_mass_index Float?
   role Role @default(MEMBER)
+  target_final     TargetFinal  @default(maintain_fitness)
   expireAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -50,11 +50,16 @@ export class UserQuestService {
         body_weight: true,
         body_height: true,
         body_mass_index: true,
+        target_final: true,
       },
     });
 
     if (!user) {
       throw new Error("User not found");
+    }
+
+    if (user.body_mass_index == null) {
+      throw new Error("BMI is required!.");
     }
 
     const completion = await groq.chat.completions.create({
@@ -109,6 +114,7 @@ Current XP: ${user.xp ?? 0}
 Weight: ${user.body_weight} kg
 Height: ${user.body_height} cm
 BMI: ${user.body_mass_index}
+Final Target: ${user.target_final}
 
 Quest requirements:
 
@@ -117,6 +123,11 @@ ${config.quest_category}
 
 Allowed difficulties:
 ${config.difficulties.join(", ")}
+
+IMPORTANT GUIDELINES FOR PERSONALIZATION:
+- If Final Target is 'weight_loss' or BMI indicates overweight, prioritize cardio, endurance, and calorie-burning quests with safe, joint-friendly volumes (avoid high-impact stress on knees).
+- If Final Target is 'muscle_gain', emphasize lifting, progressive resistance, and structured body-weight strength quests.
+- Tailor the intensity of the quests strictly to the user's current Level (${user.level ?? 0}) and BMI.
 
 Generate exactly ${config.total} quests.
 
@@ -258,7 +269,7 @@ Return only the requested JSON structure.
     };
   }
 
-  async generateQuests(userId: UserQuest["userId"], total: number = 5) {
+  async generateQuestsDaily(userId: UserQuest["userId"], total: number = 5) {
     const allDailyQuests = await this.getAllQuests(userId, "daily");
 
     const mappingQuestId = allDailyQuests.map((item) => item.questId);

@@ -9,7 +9,7 @@ export class UserService {
       throw new Error("Invalid id");
     }
 
-    const user = prisma.users.findFirst({
+    const user = await prisma.users.findUnique({
       where: { id },
     });
 
@@ -19,23 +19,24 @@ export class UserService {
 
     await updateUserSchema.validate(payload);
 
-    let bmi: number;
+    const weight = payload.body_weight ?? user.body_weight;
+    const height = payload.body_height ?? user.body_height;
 
-    if (payload.body_height !== null && payload.body_weight !== null) {
-      bmi = payload.body_weight / payload.body_height ** 2;
-      const updatedUser = await prisma.users.update({
-        where: { id },
-        data: { ...payload, body_mass_index: bmi },
-      });
+    const data = {
+      ...payload,
+    };
 
-      return { updatedUser };
-    } else {
-      const updatedUser = await prisma.users.update({
-        where: { id },
-        data: { ...payload },
-      });
+    if (weight > 0 && height > 0) {
+      const heightInMeter = height / 100;
 
-      return { updatedUser };
+      data.body_mass_index = weight / heightInMeter ** 2;
     }
+
+    const updatedUser = await prisma.users.update({
+      where: { id },
+      data,
+    });
+
+    return { updatedUser };
   }
 }

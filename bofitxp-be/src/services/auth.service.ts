@@ -46,6 +46,9 @@ export class AuthService {
       avatarUrl: user.avatarUrl,
       xp: user.xp,
       createdAt: user.createdAt,
+      body_height: user.body_height,
+      body_weight: user.body_weight,
+      body_mass_index: user.body_mass_index,
     });
 
     return { token };

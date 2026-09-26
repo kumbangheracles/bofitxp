@@ -14,6 +14,11 @@ import { useAuth } from "@/context/AuthContext";
 import { ThemedView } from "@/components/themed-view";
 import { ThemedText } from "@/components/themed-text";
 import { spacing, radius, fontSize, fontWeight } from "@/constants/theme";
+import AppModal from "@/components/app-modal";
+import { useGlobalState } from "@/context/GlobalStateContext";
+import { Controller } from "react-hook-form";
+import AppInput from "@/components/app-input";
+import useUpdateUser from "@/hooks/use-update-user";
 
 interface MenuItem {
   id: string;
@@ -29,6 +34,14 @@ const AccountScreen = () => {
   const router = useRouter();
   const { authUser, logout } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
+  const { isOpenModalBmi, setIsOpenModalBmi } = useGlobalState();
+  const {
+    control: controlUpdateUser,
+    errors: errorsUpdateUser,
+    handleSubmit: handleSubmitUpdateUser,
+    handleUpdateUser: handleMutateUpdateUser,
+    isPendingUpdateUser,
+  } = useUpdateUser();
 
   const handleLogout = async () => {
     try {
@@ -51,9 +64,13 @@ const AccountScreen = () => {
       id: "edit-bmi",
       label: "Edit BMI",
       icon: "scale-bathroom",
-      //   onPress: () => router.push("/account/edit-bmi"),
+      onPress: () => setIsOpenModalBmi(true),
       badge: authUser?.body_mass_index
-        ? `${authUser.body_mass_index} BMI`
+        ? `${
+            authUser?.body_mass_index != null
+              ? Math.floor(authUser.body_mass_index * 100) / 100
+              : "—"
+          } BMI`
         : undefined,
     },
   ];
@@ -267,7 +284,9 @@ const AccountScreen = () => {
                 color={theme.combo}
               />
               <Text style={[styles.statValue, { color: theme.text }]}>
-                {authUser?.body_mass_index ?? "—"}
+                {authUser?.body_mass_index != null
+                  ? Math.floor(authUser.body_mass_index * 100) / 100
+                  : "—"}
               </Text>
               <Text style={[styles.statLabel, { color: theme.textHint }]}>
                 BMI
@@ -375,6 +394,69 @@ const AccountScreen = () => {
       >
         BofitXP v1.0.0
       </Text>
+
+      <AppModal
+        visible={isOpenModalBmi}
+        onConfirm={handleSubmitUpdateUser((data) => {
+          handleMutateUpdateUser(data);
+        })}
+        confirmText="Save"
+        isConfirmLoading={isPendingUpdateUser}
+        title={
+          authUser?.body_mass_index === null
+            ? "Input your BMI"
+            : "Calculate your BMI"
+        }
+        onClose={() => setIsOpenModalBmi(false)}
+      >
+        <View>
+          <Controller
+            control={controlUpdateUser}
+            name="body_weight"
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Body Weight"
+                disableFullscreenUI={isPendingUpdateUser}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  onChange(text === "" ? undefined : Number(text));
+                }}
+                value={value?.toString() ?? ""}
+                autoCapitalize="none"
+              />
+            )}
+          />
+
+          {errorsUpdateUser.body_weight && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errorsUpdateUser.body_weight.message}
+            </Text>
+          )}
+
+          <Controller
+            control={controlUpdateUser}
+            name="body_height"
+            render={({ field: { onChange, value } }) => (
+              <AppInput
+                label="Body Height"
+                disableFullscreenUI={isPendingUpdateUser}
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  onChange(text === "" ? undefined : Number(text));
+                }}
+                value={value?.toString() ?? ""}
+                autoCapitalize="none"
+              />
+            )}
+          />
+
+          {errorsUpdateUser.body_height && (
+            <Text style={{ color: theme.danger, marginBottom: 10 }}>
+              {errorsUpdateUser.body_height.message}
+            </Text>
+          )}
+        </View>
+      </AppModal>
     </ScrollView>
   );
 };

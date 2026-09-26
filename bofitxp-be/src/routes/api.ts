@@ -12,7 +12,7 @@ router.post("/auth/resend-activation", authController.resendActivationCode);
 router.get("/auth/me", authMiddleware, authController.me);
 
 // User
-router.patch("/user/:id", authMiddleware, userController.updateUser);
+router.patch("/user-update", authMiddleware, userController.updateUser);
 
 // Quests
 router.post(

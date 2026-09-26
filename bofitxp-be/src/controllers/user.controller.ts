@@ -4,15 +4,16 @@ import { Users } from "../generated/prisma/client";
 import response from "../utils/response";
 import { UserService } from "../services/user.service";
 import logger from "../utils/pino";
+import { IReqUser } from "../middlewares/auth.middleware";
 
 export type TUpdateUser = Omit<Users, "password" | "activationCode" | "id">;
 const userService = new UserService();
 export default {
   async updateUser(req: Request, res: Response) {
     const payload = req.body as unknown as TUpdateUser;
-    const { id } = req.params;
+    const userId = (req as IReqUser).user?.id;
     try {
-      const { updatedUser } = await userService.update(payload, id);
+      const { updatedUser } = await userService.update(payload, userId as string);
       logger.info({ user: updatedUser }, "Success update user");
       response.success(res, updatedUser, "Success update user");
     } catch (error) {

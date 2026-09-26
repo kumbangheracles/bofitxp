@@ -3,8 +3,6 @@ import { UserQuestService } from "@/services/userQuests.service";
 import { QuestCategoryType } from "@/types/quests.type";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
-import useUserQuests from "./use-user-quests";
-import { router } from "expo-router";
 
 const useGenerateUserQuest = () => {
   const userQuestService = new UserQuestService();
@@ -15,6 +13,15 @@ const useGenerateUserQuest = () => {
   ) => {
     if (!authUser) {
       Toast.show({ type: "error", text1: "Invalid user id" });
+      return;
+    }
+
+    if (authUser.body_mass_index === null) {
+      Toast.show({
+        type: "info",
+        text1: "BMI is required",
+        text2: "You need to filled the bmi before generating quests.",
+      });
       return;
     }
 

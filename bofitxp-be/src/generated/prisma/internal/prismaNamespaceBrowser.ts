@@ -76,6 +76,7 @@ export const UsersScalarFieldEnum = {
   body_height: 'body_height',
   body_mass_index: 'body_mass_index',
   role: 'role',
+  target_final: 'target_final',
   expireAt: 'expireAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

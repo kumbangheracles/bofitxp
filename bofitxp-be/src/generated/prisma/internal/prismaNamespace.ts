@@ -667,6 +667,7 @@ export const UsersScalarFieldEnum = {
   body_height: 'body_height',
   body_mass_index: 'body_mass_index',
   role: 'role',
+  target_final: 'target_final',
   expireAt: 'expireAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -760,6 +761,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -770,6 +785,20 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TargetFinal'
+ */
+export type EnumTargetFinalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TargetFinal'>
+    
+
+
+/**
+ * Reference to a field of type 'TargetFinal[]'
+ */
+export type ListEnumTargetFinalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TargetFinal[]'>
     
 
 
@@ -826,20 +855,6 @@ export type EnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'Difficulty[]'
  */
 export type ListEnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Difficulty[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**

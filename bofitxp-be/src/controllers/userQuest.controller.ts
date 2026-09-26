@@ -26,7 +26,7 @@ export default {
 
       switch (category) {
         case "daily":
-          result = await userQuestService.generateQuests(
+          result = await userQuestService.generateQuestsDaily(
             userId,
             questTotal ?? 5,
           );
