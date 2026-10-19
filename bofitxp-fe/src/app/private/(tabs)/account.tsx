@@ -19,6 +19,8 @@ import { useGlobalState } from "@/context/GlobalStateContext";
 import { Controller } from "react-hook-form";
 import AppInput from "@/components/app-input";
 import useUpdateUser from "@/hooks/use-update-user";
+import { getBmiCategory } from "@/helpers/bmi";
+import BmiClassificationCard from "@/components/BmiClassificationCard";
 
 interface MenuItem {
   id: string;
@@ -33,7 +35,8 @@ const AccountScreen = () => {
   const theme = useAppTheme();
   const router = useRouter();
   const { authUser, logout } = useAuth();
-  const [loggingOut, setLoggingOut] = useState(false);
+  const [loggingOut, setLoggingOut] = useState<boolean>(false);
+  const [isOpenBmiInfo, setIsOpenBmiInfo] = useState<boolean>(false);
   const { isOpenModalBmi, setIsOpenModalBmi } = useGlobalState();
   const {
     control: controlUpdateUser,
@@ -42,7 +45,7 @@ const AccountScreen = () => {
     handleUpdateUser: handleMutateUpdateUser,
     isPendingUpdateUser,
   } = useUpdateUser();
-
+  const bmiCategory = getBmiCategory(authUser?.body_mass_index, theme);
   const handleLogout = async () => {
     try {
       setLoggingOut(true);
@@ -277,21 +280,38 @@ const AccountScreen = () => {
               style={[styles.statDivider, { backgroundColor: theme.border }]}
             />
 
-            <View style={styles.statItem}>
+            <Pressable
+              onPress={() => setIsOpenBmiInfo(true)}
+              style={styles.statItem}
+            >
               <MaterialCommunityIcons
                 name="scale-bathroom"
                 size={16}
                 color={theme.combo}
               />
-              <Text style={[styles.statValue, { color: theme.text }]}>
-                {authUser?.body_mass_index != null
-                  ? Math.floor(authUser.body_mass_index * 100) / 100
-                  : "—"}
-              </Text>
+              <View
+                style={[
+                  styles.bmiBadge,
+                  {
+                    backgroundColor: bmiCategory.backgroundColor,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.bmiBadgeText,
+                    {
+                      color: bmiCategory.color,
+                    },
+                  ]}
+                >
+                  {bmiCategory.label}
+                </Text>
+              </View>
               <Text style={[styles.statLabel, { color: theme.textHint }]}>
                 BMI
               </Text>
-            </View>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -457,6 +477,14 @@ const AccountScreen = () => {
           )}
         </View>
       </AppModal>
+
+      <AppModal
+        visible={isOpenBmiInfo}
+        title="BMI Classification"
+        onClose={() => setIsOpenBmiInfo(false)}
+      >
+        <BmiClassificationCard theme={theme} />
+      </AppModal>
     </ScrollView>
   );
 };
@@ -511,6 +539,17 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 10,
+  },
+  bmiBadge: {
+    alignSelf: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 999,
+  },
+
+  bmiBadgeText: {
+    fontSize: 12,
+    fontWeight: "600",
   },
   statDivider: {
     width: 1,

@@ -59,6 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }, 1000);
       return () => clearTimeout(time);
     }
+
+    console.log("AUth User: ", authUser);
   }, [authUser]);
 
   // useEffect(() => {

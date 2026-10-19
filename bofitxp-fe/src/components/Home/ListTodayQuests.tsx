@@ -23,9 +23,9 @@ const ListTodayQuests = () => {
     error,
   } = useUserQuests({ questCategory: QuestCategory?.DAILY });
 
-  useEffect(() => {
-    console.log("Data quests: ", dataQuests);
-  }, [dataQuests]);
+  // useEffect(() => {
+  //   console.log("Data quests: ", dataQuests);
+  // }, [dataQuests]);
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withTiming(checked ? 1 : 0, {
