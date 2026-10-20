@@ -1,4 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
+import { useCustomToast } from "@/context/CostumToastProvider";
 import { UserQuestService } from "@/services/userQuests.service";
 import { QuestCategory } from "@/types/quests.type";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,6 +14,7 @@ interface PropTypes {
 const useFinishedQuest = () => {
   const { authUser, setAuthUser } = useAuth();
   const userQuestService = new UserQuestService();
+  const { showToast } = useCustomToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const inFlightRef = useRef(false); // guard sinkron, tidak nunggu render
@@ -39,16 +41,28 @@ const useFinishedQuest = () => {
       const result = await userQuestService.finsihedQuest(id, questId);
       console.log({ id, questId, xp_reward });
       console.log("SUCCESS - about to show toast");
-      Toast.show({
-        type: "success",
-        text1: `Quest completed reward +${xp_reward} XP`,
-      });
+
+      if (result?.event?.toast) {
+        showToast(
+          result.event.toast.title,
+          result.event.toast.subtitle,
+          result.event.toast.type,
+        );
+      } else {
+        Toast.show({
+          type: "success",
+          text1: `Quest completed reward +${xp_reward} XP`,
+        });
+      }
 
       if (authUser && result?.xp) {
         setAuthUser({
           ...authUser,
           xp: result.xp.total,
           level: result.xp.level,
+          streak: result?.streak?.triggered
+            ? result.streak.current
+            : authUser.streak,
         });
       }
       await queryClient.invalidateQueries({

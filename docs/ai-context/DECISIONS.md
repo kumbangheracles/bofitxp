@@ -1,6 +1,6 @@
 # DECISIONS.md
 
-Catatan keputusan desain yang didasarkan pada sumber kode yang terlihat sampai 2026-10-19.
+Catatan keputusan desain yang didasarkan pada source code yang aktif sampai 2026-10-20.
 
 ## 1. Backend dan frontend dipisah secara jelas
 
@@ -47,14 +47,14 @@ Bukti:
 
 - `activationCode` di pengguna
 - `AuthService.register` membuat code dan mengirim email
-- `AuthService.activationCode` mengaktifkan akun
+- activation flow menandai user sebagai verified
 
 ## 6. State auth di FE disimpan secara lokal dan dikontrol via context
 
 Bukti:
 
 - `AuthContext` menyimpan token di Secure Store
-- token expiry dicek tiap 30 detik
+- token expiry dicek di runtime
 - `login` dan `logout` hanya menangani state lokal untuk sesi
 
 ## 7. Validasi request ditaruh di layer validation
@@ -65,14 +65,29 @@ Bukti:
 
 Keputusan ini menjaga agar controller/service tidak menerima payload mentah tanpa guard.
 
-## 8. Catatan keputusan untuk masa depan
+## 8. Streak dan challenge dipandang sebagai event game loop
 
-Belum ada bukti final bahwa keputusan berikut sudah disetujui dalam implementasi lengkap:
+Keputusan: goal completion tidak hanya menghitung XP, tetapi juga menghasilkan event tambahan saat kombinasi syarat terpenuhi.
 
-- apakah semua API response harus standard `message + data`
-- apakah quest generation harus selalu AI-based atau ada fallback lokal
-- apakah fitur user quest generation akan selalu dipicu manual atau otomatis saat login/refresh
+Bukti:
 
-## 9. Kesimpulan
+- `UserQuestService.resolveQuestEvent()` menilai streak dan challenge
+- `finishedQuest()` mengembalikan `event` ke frontend
+- `use-finished-quest.ts` memanggil custom toast saat event tersedia
 
-Keputusan arsitektur yang terlihat adalah pendekatan yang masuk akal untuk MVP gamified fitness app: auth JWT, MongoDB, AI quest generation di backend, dan mobile-first frontend. Namun, keputusan yang lebih lanjut perlu dikonfirmasi lewat pengujian runtime dan review domain flow yang lebih luas.
+Implikasi:
+
+- reward bukan hanya per-quest biasa
+- bonus multiplier dibuat eksplisit untuk syarat tertentu
+- daftar event harus tetap mudah di-debug dan di-test per domain
+
+## 9. Manual black-box testing tetap dipisahkan dari verifikasi automated
+
+Keputusan yang dipakai saat ini:
+
+- unit test fokus dipakai untuk logic per domain (auth, quest, streak)
+- runtime/device testing tetap ditangani secara manual oleh pengguna untuk validasi UX dan screen flow
+
+## 10. Kesimpulan
+
+Keputusan arsitektur yang terlihat saat ini masuk akal untuk MVP gamified fitness app: auth JWT, MongoDB, AI quest generation di backend, dan mobile-first frontend. Dengan hadirnya logic combo/challenge dan toast event, repo sudah cukup maju untuk kebutuhan gamifikasi inti. Penilaian akhir UX dan end-to-end masih harus ditutup dengan black-box testing manual dari pengguna.

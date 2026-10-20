@@ -1,6 +1,6 @@
 # API.md
 
-Dibuat berdasarkan `bofitxp-be/src/routes/api.ts`, controller, service, dan middleware yang terlihat pada 2026-10-19.
+Dibuat dan diperbarui berdasarkan route, controller, dan service yang terlihat aktif pada 2026-10-20.
 
 ## 1. Base path
 
@@ -12,18 +12,11 @@ Semua endpoint backend berada di bawah:
 
 ### `POST /api/auth/register`
 
-Didefinisikan di `authController.register`.
-
 Fungsi:
 
 - registrasi user baru
 - membuat activation code
-- mengirim email verifikasi
-
-Bukti dari service:
-
-- `AuthService.register` membuat user dengan `activationCode`
-- mengirim email `Account Verificaton`
+- mengirim email aktivasi
 
 ### `POST /api/auth/login`
 
@@ -32,18 +25,12 @@ Fungsi:
 - validasi email/password
 - mengembalikan JWT jika sukses
 
-Response terdeteksi dari test:
-
-- status `200` jika login sukses
-- body: `{ message: "Login success", data: "<token>" }`
-
 ### `POST /api/auth/activation`
 
 Fungsi:
 
 - validasi activation code
 - menandai user `isVerified = true`
-- menghapus `activationCode` dan `expireAt`
 
 ### `POST /api/auth/resend-activation`
 
@@ -58,11 +45,6 @@ Proteksi:
 
 - harus lewat middleware auth
 
-Fungsionalitas:
-
-- `authMiddleware` memvalidasi bearer token
-- controller `me` dipanggil setelah validasi
-
 ## 3. User endpoints
 
 ### `PATCH /api/user-update`
@@ -71,8 +53,8 @@ Protected route.
 
 Fungsionalitas:
 
-- update data profile user
-- dijalankan setelah token valid
+- update data profil user
+- update BMI + data personal lainnya
 
 ## 4. Quest endpoints
 
@@ -82,15 +64,8 @@ Protected route.
 
 Fungsi:
 
-- generate quests baru berdasarkan profil user dan AI
+- generate quest baru berdasarkan profil user dan AI
 - memasukkan data ke model `Quests` dan `UserQuest`
-
-Bukti dari `UserQuestService`: quest generation mempertimbangkan:
-
-- `fullName`, `level`, `xp`, `weight`, `height`, `BMI`, `target_final`
-- `quest_category`
-- `difficulty`
-- Groq dan schema JSON response
 
 ### `GET /api/user-quests`
 
@@ -106,18 +81,55 @@ Protected route.
 
 Fungsi:
 
-- menandai quest selesai (`is_finished`)
+- menandai quest selesai (`is_finished = true`)
 - menyimpan `finishedAt`
+- menghitung reward XP, level, event combo/challenge
 
-## 5. Auth middleware behavior
+## 5. Quest completion response contract
+
+Saat quest selesai, service mengembalikan payload yang mencakup:
+
+- `quest`
+- `xp`
+- `streak`
+- `challenge`
+- `event`
+
+`event` berisi:
+
+```json
+{
+  "streak": {
+    "triggered": true,
+    "currentCombo": 3,
+    "threshold": 3,
+    "multiplier": 2,
+    "resetsIn24Hours": true
+  },
+  "challenge": {
+    "triggered": true,
+    "multiplier": 3,
+    "reason": "hard quest beyond user capability"
+  },
+  "toast": {
+    "title": "🔥 Combo Streak x2",
+    "subtitle": "3 quest daily berturut-turut aktif • bonus +2x",
+    "type": "success"
+  }
+}
+```
+
+Ini adalah payload yang dipakai frontend untuk menampilkan toast khusus.
+
+## 6. Auth middleware behavior
 
 Dari `bofitxp-be/src/middlewares/auth.middleware.ts`:
 
-- jika tidak ada header `Authorization`: response `403` dengan `{ message: "unauthorized", data: null }`
+- jika tidak ada header `Authorization`: response `403`
 - jika format header bukan `Bearer <token>`: response `403`
 - jika token tidak valid: response `403`
 
-## 6. Response pattern umum
+## 7. Response pattern umum
 
 Berdasarkan source code dan test, pola response yang terlihat adalah:
 
@@ -128,13 +140,12 @@ Berdasarkan source code dan test, pola response yang terlihat adalah:
 }
 ```
 
-## 7. Catatan implementasi yang perlu dikonfirmasi
+## 8. Catatan implementasi yang perlu diperhatikan
 
-- `authController.me` belum dipelajari lebih lanjut untuk perilaku exact response
-- `userController.updateUser` belum dibaca secara rinci dalam audit ini
-- `AuthService.me` masih kosong; perlu diperiksa apakah fungsi ini sengaja dibiar placeholder atau belum selesai
-- `AuthService` menandai beberapa error sebagai `Error("User not found")` walau konteksnya tidak selalu user absent
+- `AuthService.me` masih perlu diperiksa lebih lanjut jika ada kebutuhan untuk response endpoint me yang lebih rinci
+- status route dan controller harus tetap diverifikasi saat runtime manual testing dilakukan
+- end-to-end FE/BE perlu black-box testing pada screen dan alur quest yang nyata
 
-## 8. Kesimpulan
+## 9. Kesimpulan
 
-API backend saat ini setidaknya sudah memiliki skeleton autentikasi, user management, dan quest flow yang core. Rute utama relevan sudah dapat diidentifikasi dan dapat dijadikan dasar untuk dokumentasi lanjutan serta pengujian regresi.
+API backend saat ini sudah memiliki skeleton autentikasi, user management, dan quest flow yang core. Logika quest completion juga sudah menjadi lebih lengkap karena mencakup XP, level, streak, dan challenge event. Rute utama relevan sudah cukup jelas untuk pengembangan lanjutan dan pengujian regresi.

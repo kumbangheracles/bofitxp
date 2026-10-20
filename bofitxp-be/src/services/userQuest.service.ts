@@ -342,6 +342,94 @@ Return only the requested JSON structure.
   private getQuestXpReward(difficulty: Difficulty): number {
     return XP_REWARD[difficulty];
   }
+
+  resolveQuestEvent({
+    userLevel,
+    recentCompletedCount = 0,
+    questDifficulty,
+    questCategory,
+    lastQuestCompletedAt,
+  }: {
+    userLevel?: number | null;
+    recentCompletedCount?: number;
+    questDifficulty: Difficulty | "unknown" | string;
+    questCategory: "daily" | "weekly" | "special" | "unknown" | string;
+    lastQuestCompletedAt?: Date | null;
+  }) {
+    const now = new Date();
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    const hasGap =
+      lastQuestCompletedAt &&
+      now.getTime() - new Date(lastQuestCompletedAt).getTime() > oneDayMs;
+
+    const comboCount = hasGap ? 0 : Math.max(0, recentCompletedCount);
+    const comboTriggered = comboCount >= 3;
+    const comboMultiplier = comboTriggered ? 2 : 1;
+
+    const requiredLevelByDifficulty: Record<string, number> = {
+      easy: 1,
+      medium: 2,
+      hard: 4,
+      unknown: 1,
+    };
+    const requiredLevelByCategory: Record<string, number> = {
+      daily: 1,
+      weekly: 3,
+      special: 5,
+      unknown: 1,
+    };
+
+    const challengeTriggered =
+      (questCategory === "weekly" &&
+        (userLevel ?? 0) < requiredLevelByCategory.weekly) ||
+      (questCategory === "special" &&
+        (userLevel ?? 0) < requiredLevelByCategory.special) ||
+      (questDifficulty === "hard" &&
+        (userLevel ?? 0) < requiredLevelByDifficulty.hard);
+    const challengeMultiplier = challengeTriggered ? 3 : 1;
+
+    const title = comboTriggered
+      ? "🔥 Combo Streak x2"
+      : challengeTriggered
+        ? "⚡ Challenge Boost x3"
+        : "";
+
+    const subtitle = comboTriggered
+      ? `3 quest daily berturut-turut aktif • bonus +${comboMultiplier}x`
+      : challengeTriggered
+        ? `Quest challenge aktif • bonus +${challengeMultiplier}x untuk quest berikutnya`
+        : "";
+
+    const toast = title
+      ? {
+          title,
+          subtitle,
+          type: comboTriggered ? "success" : "info",
+        }
+      : null;
+
+    return {
+      streak: {
+        triggered: comboTriggered,
+        currentCombo: comboCount,
+        threshold: 3,
+        multiplier: comboMultiplier,
+        resetsIn24Hours: true,
+      },
+      challenge: {
+        triggered: challengeTriggered,
+        multiplier: challengeMultiplier,
+        reason:
+          questCategory === "special"
+            ? "special quest beyond user capability"
+            : questCategory === "weekly"
+              ? "weekly quest beyond user capability"
+              : "hard quest beyond user capability",
+      },
+      toast,
+    };
+  }
+
   async finishedQuest(
     id: UserQuest["id"],
     userId: UserQuest["userId"],
@@ -351,7 +439,6 @@ Return only the requested JSON structure.
       throw new Error("Invalid id");
     }
 
-    // Pastikan quest memang milik user dan belum selesai
     const userQuest = await prisma.userQuest.findFirst({
       where: {
         id,
@@ -371,33 +458,93 @@ Return only the requested JSON structure.
       throw new Error("Quest already completed");
     }
 
-    // Tandai quest sebagai selesai
     const finishedQuest = await prisma.userQuest.update({
       where: {
         id: userQuest.id,
       },
       data: {
         is_finished: true,
+        finishedAt: new Date(),
       },
       include: {
         quest: true,
       },
     });
 
-    // Ambil XP berdasarkan difficulty quest
     const xpReward = this.getQuestXpReward(finishedQuest.quest.difficulty);
 
-    // Tambahkan XP ke user
-    const xpResult = await this.addXp(userId, xpReward);
+    const lastCompletedQuest = await prisma.userQuest.findFirst({
+      where: {
+        userId,
+        is_finished: true,
+      },
+      orderBy: {
+        finishedAt: "desc",
+      },
+    });
+
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    const recentCompletedCount = await prisma.userQuest.count({
+      where: {
+        userId,
+        is_finished: true,
+        finishedAt: {
+          gte: oneDayAgo,
+        },
+        quest: {
+          quest_category: "daily",
+        },
+      },
+    });
+
+    const currentUser = await prisma.users.findUnique({
+      where: { id: userId },
+      select: {
+        level: true,
+        streak: true,
+      },
+    });
+
+    const event = this.resolveQuestEvent({
+      userLevel: currentUser?.level ?? 0,
+      recentCompletedCount,
+      questDifficulty: finishedQuest.quest.difficulty,
+      questCategory: finishedQuest.quest.quest_category,
+      lastQuestCompletedAt: lastCompletedQuest?.finishedAt ?? null,
+    });
+
+    const comboBonus = event.streak.triggered
+      ? xpReward * (event.streak.multiplier - 1)
+      : 0;
+    const challengeBonus = event.challenge.triggered
+      ? xpReward * (event.challenge.multiplier - 1)
+      : 0;
+    const finalXpBonus = comboBonus + challengeBonus;
+
+    if (event.streak.triggered) {
+      await prisma.users.update({
+        where: { id: userId },
+        data: {
+          streak: (currentUser?.streak ?? 0) + 1,
+        },
+      });
+    }
+
+    const xpResult = await this.addXp(userId, xpReward + finalXpBonus);
 
     return {
       quest: finishedQuest,
       xp: {
-        gained: xpReward,
+        gained: xpReward + finalXpBonus,
         total: xpResult.user.xp,
         level: xpResult.currentLevel,
         levelUp: xpResult.levelUp,
       },
+      streak: event.streak,
+      challenge: event.challenge,
+      event,
     };
   }
   private calculateLevel(xp: number): number {

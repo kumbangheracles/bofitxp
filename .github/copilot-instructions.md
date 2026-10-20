@@ -38,6 +38,12 @@ Buat juga atau perbarui .github/copilot-instructions.md agar Copilot selalu:
 3. Tandai informasi yang belum dapat diverifikasi.
 4. Hindari duplikasi dokumentasi dan instruksi yang bertentangan.
 5. Jangan melakukan refactor, mengubah schema, menginstal dependency, atau membuat commit dalam proses ini.
+6. Untuk testing, tiap fitur atau domain fungsional harus dibuat file test tersendiri sesuai domain-nya, misalnya:
+   - `auth.test.ts` untuk login/register/activation
+   - `quest.test.ts` untuk quest generation, streak, challenge, completion
+   - `user.test.ts` untuk profil, BMI, update user
+   - `integration` atau `e2e` hanya jika memang dibutuhkan untuk alur lintas fitur
+7. Jangan mencampur test auth dengan test quest atau user dalam satu file karena akan mengurangi fokus, debugging, dan maintainability.
 
 ## Final Report
 

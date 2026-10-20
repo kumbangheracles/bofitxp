@@ -1,12 +1,12 @@
 # ARCHITECTURE.md
 
-Dibuat berdasarkan audit codebase pada 2026-10-19.
+Dibuat dan diperbarui berdasarkan audit source code dan verifikasi status fitur hingga 2026-10-20.
 
 ## 1. Arsitektur umum
 
 Proyek ini adalah monorepo dengan dua aplikasi terpisah:
 
-- `bofitxp-fe`: mobile app berbasis Expo / React Native
+- `bofitxp-fe`: mobile app berbasis Expo/React Native
 - `bofitxp-be`: API backend berbasis Express + TypeScript
 
 Komunikasi antar layer utama adalah:
@@ -15,6 +15,7 @@ Komunikasi antar layer utama adalah:
 - frontend memanggil API backend melalui endpoint REST
 - backend memvalidasi token di middleware auth
 - backend memakai Prisma untuk akses database MongoDB
+- quest completion event diproses di backend lalu dikirim kembali ke frontend sebagai payload event untuk toast
 
 ## 2. Frontend
 
@@ -22,20 +23,20 @@ Bukti dari source code:
 
 - `bofitxp-fe/src/app/_layout.tsx` menyiapkan provider global:
   - `AuthProvider`
-  - `GlobalSatateProvider`
   - `QueryClientProvider`
-  - theme provider
   - toast manager
   - stack navigator `Stack`
-- `bofitxp-fe/src/context/AuthContext.tsx` menangani token, login, logout, dan pengecekan expiry token
-- FE memakai Expo Router (`app/`), `@tanstack/react-query`, `styled-components`, `react-hook-form`, `zustand`
+- `bofitxp-fe/src/context/AuthContext.tsx` menangani token, login, logout, dan expiry token
+- `bofitxp-fe/src/hooks/use-finished-quest.ts` menangani completion quest dan memanggil custom toast
+- `bofitxp-fe/src/components/CustomToastManager.tsx` menampilkan toast berdasarkan `type` dan message
 
 Arsitektur frontend yang terlihat:
 
 - state auth global via context
 - state app global via provider custom
-- data fetching dan cache via React Query
-- navigasi bersifat file-based routing expo-router
+- data fetching/cache via React Query
+- navigasi file-based via Expo Router
+- feedback event global via toast provider
 
 ## 3. Backend
 
@@ -53,24 +54,23 @@ Flow umum backend:
 
 1. request masuk ke route
 2. controller memanggil service
-3. service akses Prisma
-4. response dibungkus ke format standar `{ message, data }`
+3. service melakukan validasi bisnis dan akses Prisma
+4. response menggunakan format umum `{ message, data }`
+5. untuk quest completion, service mengembalikan `event` payload untuk frontend
 
 ## 4. Auth flow
 
 Bukti dari kode:
 
-- route `POST /api/auth/register`
-- route `POST /api/auth/login`
-- route `POST /api/auth/activation`
-- route `POST /api/auth/resend-activation`
-- route `GET /api/auth/me` dengan middleware `authMiddleware`
+- route auth register/login/activation/resend activation
+- middleware auth memvalidasi bearer token
+- frontend memprioritaskan token dari secure store
 
 `AuthService.login`:
 
-- find user by email
-- validasi password dengan `encrypt(password) === user.password`
-- generate JWT melalui `generateToken(...)`
+- mencari user by email
+- validasi password
+- generate JWT
 
 `auth.middleware.ts`:
 
@@ -86,6 +86,7 @@ Berdasarkan Prisma schema dan service, domain utama adalah:
 - user profile, level, streak, xp, BMI, target final
 - quest generation and tracking
 - gamification progress via `UserQuest`
+- challenge events dan combo rewards
 
 Quest generation menggunakan AI dari Groq di `UserQuestService.generateQuestWithAI` untuk menghasilkan quest berdasarkan:
 
@@ -95,22 +96,36 @@ Quest generation menggunakan AI dari Groq di `UserQuestService.generateQuestWith
 - level dan xp
 - category dan difficulty yang diizinkan
 
-## 6. Perbedaan struktur yang jelas
+## 6. Streak/challenge system
+
+Logika yang saat ini sudah diimplementasikan di backend:
+
+- `resolveQuestEvent()` mengecek combo streak berdasarkan quest harian berturut-turut dalam 24 jam
+- `finishedQuest()` menghitung event berdasarkan `recentCompletedCount`, difficulty, category, dan level user
+- challenge multiplier aktif ketika quest lebih sulit dari level user
+- event dikembalikan dalam payload untuk frontend toast
+
+Frontend juga sudah menangkap event tersebut:
+
+- `use-finished-quest.ts` memanggil custom toast saat `result.event.toast` ada
+- `CustomToastManager.tsx` menampilkan visual berbeda untuk `success` dan `info`
+
+## 7. Struktur keputusan desain
 
 - Frontend fokus ke UX mobile dan auth persistence
 - Backend fokus ke API + business logic + database + email verification
 - Database memakai MongoDB, bukan SQL relasional standard
 - Validasi request dan auth token ditempatkan di layer yang berbeda
+- Feedback event dengan toast dibuat sebagai bagian dari game-loop completion, bukan sekadar notifikasi acak
 
-## 7. Catatan risiko/ketidakpastian
+## 8. Catatan risiko/ketidakpastian
 
-Beberapa hal masih belum dapat diverifikasi sepenuhnya tanpa menjalankan app:
+Hal yang masih belum bisa dianggap final tanpa black-box/manual verification:
 
-- apakah semua screen mobile sudah terkoneksi dengan API
-- apakah `AuthService.me` benar-benar diimplementasikan atau masih placeholder
-- apakah semua controller/service konsisten terhadap response format
-- apakah build FE/BE masuk dalam kondisi clean
+- apakah semua screen mobile terkoneksi dengan API real
+- apakah semua route di FE benar-benar menjalankan flow yang diharapkan
+- apakah edge case lainnya (duplikasi quest, expired token, streak reset, challenge threshold) memenuhi kebutuhan produk saat runtime
 
-## 8. Kesimpulan
+## 9. Kesimpulan
 
-Arsitektur saat ini adalah arsitektur aplikasi terpisah yang sudah cukup matang untuk MVP: mobile frontend, backend API, database MongoDB, autentikasi JWT, dan AI quest generation. Namun, status fungsional penuh masih harus divalidasi lewat runtime dan test yang lebih lengkap.
+Arsitektur saat ini sudah cukup matang untuk MVP: mobile frontend, backend API, database MongoDB, autentikasi JWT, AI quest generation, dan game logic yang mencakup XP, level, streak, serta challenge event. Status fungsional yang sudah dibuktikan lewat source code dan test terfokus adalah kuat; verifikasi end-to-end UI tetap dibagi ke pengujian black-box pengguna.

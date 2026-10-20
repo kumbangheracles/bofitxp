@@ -1,6 +1,6 @@
 # DATABASE.md
 
-Dibuat berdasarkan `bofitxp-be/prisma/schema.prisma` pada 2026-10-19.
+Dibuat dan diperbarui berdasarkan `bofitxp-be/prisma/schema.prisma` serta service logic yang sedang aktif pada 2026-10-20.
 
 ## 1. Engine dan koneksi
 
@@ -94,15 +94,24 @@ Model ini mendukung fitur:
 - verifikasi akun via activation code
 - personalisasi target kesehatan
 - pemberian XP dan level progression
-- task/quest yang dikerjakan user
-- quest generation berbasis profil dan AI
+- quest assignment dan completion tracking
+- streak combo dan challenge bonus yang dihitung dari history completion
 
-## 7. Keterbatasan yang terlihat
+## 7. Kejadian game-state yang saat ini dipakai
 
-- Tidak ada model habit/exercise yang aktif di schema utama; kode yang dicomment-out menunjukkan kemungkinan fitur terencana tetapi belum aktif
-- Schema belum menunjukkan table untuk leaderboard, achievements, atau notification yang jelas
-- Belum ada bukti migrasi manual atau seed runtime yang dijalankan dalam audit ini
+Dari service logic, model tetap mendukung:
 
-## 8. Kesimpulan
+- `finishedAt` untuk mencatat waktu selesai quest
+- `Users.streak` untuk status streak harian / combo
+- `Users.xp` dan `Users.level` untuk pengalaman dan progression
+- `Quests.quest_category` dan `Quests.difficulty` untuk menentukan reward dan challenge threshold
 
-Skema database saat ini fokus pada core gamification: user profile, quest library, progress assignment, serta target kondisi fisik. Ini konsisten dengan flow auth dan generation quest AI yang sudah terlihat pada backend.
+## 8. Keterbatasan yang terlihat
+
+- belum ada model spesifik untuk leaderboard/achievement/notification pada schema utama
+- belum ada bukti penuh bahwa semua event streak/challenge disinkronkan dengan UI real-time di device
+- runtime integration di database masih harus diverifikasi melalui black-box testing end-to-end
+
+## 9. Kesimpulan
+
+Skema database saat ini mendukung core gamification: user profile, quest library, completion assignment, serta progression XP/level. Dengan adanya field `finishedAt`, `streak`, dan logic `UserQuestService`, model ini juga benar-benar mendukung ordinary quest flow dan challenge event yang saat ini sudah dibuktikan via source code dan test terfokus.
