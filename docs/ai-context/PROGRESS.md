@@ -78,6 +78,7 @@ Bukti utama:
 
 - basic auth: implemented
 - logout: implemented in frontend flow
+- logout on expired JWT: fixed and verified in frontend session logic
 - register + verification email: implemented
 - BMI edit: implemented
 - daily/weekly/special quest generation: implemented
@@ -86,6 +87,28 @@ Bukti utama:
 - custom toast infrastructure: implemented
 - streak business logic: implemented
 - challenge event logic: implemented
+
+## Perubahan terbaru yang sudah diverifikasi
+
+### Expired JWT / automatic logout fix
+
+Masalah yang ditemukan:
+- frontend mengecek `expiresIn` padahal JWT standard punya `exp`
+- storage cleanup memakai `localStorage` padahal project memakai `expo-secure-store`
+- auth state tidak dibersihkan sepenuhnya saat token invalid/expired
+
+Perbaikan yang sudah dibuat:
+- validasi expiry memakai klaim JWT yang benar di `jwtDecode<JWTDecode>(token).exp`
+- expired token diproses sebagai sesi tidak valid dan otomatis logout
+- `SecureStore.deleteItemAsync("user_token")` dipakai untuk membersihkan session
+- `authUser` di-reset ke `null` saat token expired atau tidak valid
+
+Bukti utama:
+- `bofitxp-fe/src/context/AuthContext.tsx`
+
+Status:
+- masalah login/expired-token yang teridentifikasi sudah diperbaiki
+- file auth context tidak menunjukkan error pada pemeriksaan file yang relevan
 
 ## Fitur yang masih perlu diverifikasi manual / black-box
 

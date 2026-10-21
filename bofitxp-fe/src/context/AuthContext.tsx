@@ -20,8 +20,22 @@ type AuthContextType = {
 };
 
 interface JWTDecode extends UserProps {
-  expiresIn: number;
+  exp?: number;
 }
+
+const isTokenExpired = (jwtToken: string) => {
+  try {
+    const decoded = jwtDecode<JWTDecode>(jwtToken);
+    if (typeof decoded.exp !== "number") {
+      return true;
+    }
+
+    return decoded.exp <= Date.now() / 1000;
+  } catch (error) {
+    console.error("Invalid token format:", error);
+    return true;
+  }
+};
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -29,9 +43,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [authUser, setAuthUser] = useState<UserProps | null>(null);
+
   useEffect(() => {
-    SecureStore.getItemAsync("user_token").then((t) => {
-      setToken(t);
+    SecureStore.getItemAsync("user_token").then((storedToken) => {
+      if (!storedToken) {
+        setToken(null);
+        setAuthUser(null);
+        setIsLoading(false);
+        return;
+      }
+
+      if (isTokenExpired(storedToken)) {
+        void logout();
+      } else {
+        setToken(storedToken);
+      }
+
       setIsLoading(false);
     });
   }, []);
@@ -44,70 +71,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     await SecureStore.deleteItemAsync("user_token");
     setToken(null);
+    setAuthUser(null);
   };
 
-  // useEffect(() => {
-  //   console.log("Token:", token);
-
-  //   const decoded = jwtDecode<JWTDecode>(token?.toString() as string);
-  //   console.log("decoded token: ", decoded);
-  // }, [token]);
   useEffect(() => {
-    if (authUser === null) {
-      const time = setTimeout(() => {
-        logout();
-      }, 1000);
-      return () => clearTimeout(time);
+    if (!token) {
+      setAuthUser(null);
+      return;
     }
 
-    console.log("AUth User: ", authUser);
-  }, [authUser]);
+    const checkExpiry = async () => {
+      if (isTokenExpired(token)) {
+        console.warn("Token has expired");
+        await logout();
+        return;
+      }
 
-  // useEffect(() => {
-  //   if (token !== null) {
-  //     try {
-  //       const decoded = jwtDecode<JWTDecode>(token);
-
-  //       const currentTime = Date.now() / 1000;
-  //       if (decoded.expiresIn < currentTime) {
-  //         console.warn("Token has expired");
-  //         localStorage.removeItem("token");
-  //         setAuthUser(null);
-  //       } else {
-  //         setAuthUser(decoded);
-  //         console.log("Token");
-  //         console.log("Decoded: ", decoded);
-  //       }
-  //     } catch (error) {
-  //       console.error("Invalid token format:", error);
-  //     }
-  //   }
-  // }, [token]);
-
-  useEffect(() => {
-    if (!token) return;
-
-    const checkExpiry = () => {
       try {
         const decoded = jwtDecode<JWTDecode>(token);
-        const currentTime = Date.now() / 1000;
-        if (decoded.expiresIn < currentTime) {
-          console.warn("Token has expired");
-          localStorage.removeItem("token");
-          setAuthUser(null);
-        } else {
-          setAuthUser(decoded);
-          console.log("Token");
-          console.log("Decoded: ", decoded);
-        }
+        setAuthUser(decoded);
+        console.log("Decoded token:", decoded);
       } catch (error) {
         console.error("Invalid token format:", error);
-        logout();
+        await logout();
       }
     };
 
-    checkExpiry(); // cek langsung saat token berubah
-    const interval = setInterval(checkExpiry, 30_000); // cek tiap 30 detik
+    void checkExpiry();
+    const interval = setInterval(() => {
+      void checkExpiry();
+    }, 30_000);
 
     return () => clearInterval(interval);
   }, [token]);
