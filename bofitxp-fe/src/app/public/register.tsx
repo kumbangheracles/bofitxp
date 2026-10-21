@@ -55,7 +55,7 @@ export default function RegisterScreen() {
               }}
             >
               <Text
-                style={{ fontSize: 16, color: "white", fontWeight: "bold" }}
+                style={{ fontSize: 16, color: theme.text, fontWeight: "bold" }}
               >
                 BoFit
               </Text>
@@ -268,7 +268,7 @@ export default function RegisterScreen() {
               {({ pressed }) => (
                 <Text
                   style={{
-                    color: pressed ? "#836dc5" : "#a78bfa",
+                    color: pressed ? theme.primaryHover : theme.primaryLabel,
                     fontWeight: "bold",
                     textDecorationLine: "underline",
                   }}
@@ -329,11 +329,11 @@ const makeStyles = (theme: AppTheme) =>
 
     loginText: {
       textAlign: "center",
-      color: "#c4b5fd",
+      color: theme.textSecondary,
       fontSize: 13,
     },
     loginLink: {
-      color: "#a78bfa",
+      color: theme.primaryLabel,
       fontWeight: "bold",
       textDecorationLine: "underline",
     },

@@ -11,7 +11,7 @@ const GlobalToastManager = () => {
 
   const isError = type === "error";
   const isInfo = type === "info";
-  const colors = isError
+  const colors: readonly [string, string, ...string[]] = isError
     ? ["#FF416C", "#FF4B2B"]
     : isInfo
       ? ["#F59E0B", "#F97316"]

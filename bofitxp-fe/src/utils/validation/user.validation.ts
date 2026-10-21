@@ -47,6 +47,24 @@ export const updateUserSchema = Yup.object({
     .min(8, "Password must be at least 8 characters")
     .notRequired(),
 
+  gender: Yup.string()
+    .oneOf(["pria", "wanita"], "Gender is invalid")
+    .notRequired(),
+
+  age: Yup.number()
+    .typeError("Age must be a number")
+    .integer("Age must be an integer")
+    .min(0, "Age cannot be negative")
+    .max(120, "Age is too high")
+    .notRequired(),
+
+  target_final: Yup.string()
+    .oneOf(
+      ["weight_loss", "muscle_gain", "maintain_fitness", "endurance"],
+      "Target final is invalid",
+    )
+    .notRequired(),
+
   avatarUrl: Yup.string().url("Invalid avatar URL").nullable().notRequired(),
 
   body_weight: Yup.number()

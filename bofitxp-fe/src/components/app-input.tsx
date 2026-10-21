@@ -136,13 +136,13 @@ const makeStyles = (theme: AppTheme) =>
     label: {
       fontSize: 13,
       fontWeight: "600",
-      color: "#ddd6fe",
+      color: theme.primaryLabel,
       fontFamily: Fonts.sans,
       marginBottom: 6,
     },
     input: {
       width: "100%",
-      color: "#f5f3ff",
+      color: theme.text,
       fontSize: 14,
     },
   });

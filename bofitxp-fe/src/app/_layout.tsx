@@ -10,11 +10,14 @@ import { useToastConfig } from "@/components/app-toast";
 import GlobalToastManager from "@/components/CustomToastManager";
 import { CustomToastProvider } from "@/context/CostumToastProvider";
 import { GlobalSatateProvider } from "@/context/GlobalStateContext";
+import { Colors } from "@/constants/theme";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
   const toastConfig = useToastConfig();
+  const appTheme = Colors[colorScheme === "dark" ? "dark" : "light"];
+
   return (
     <AuthProvider>
       <GlobalSatateProvider>
@@ -22,9 +25,7 @@ export default function RootLayout() {
           <ThemeProvider
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
           >
-            <StyledProvider
-              theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-            >
+            <StyledProvider theme={appTheme}>
               <CustomToastProvider>
                 <GlobalToastManager />
                 <AnimatedSplashOverlay />

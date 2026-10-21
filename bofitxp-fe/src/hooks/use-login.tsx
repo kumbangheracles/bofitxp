@@ -35,7 +35,7 @@ const useLogin = () => {
       console.log("Data: ", data.data);
       alert("Login success.");
       reset();
-      router.push("/private/(tabs)");
+      router.push("/private/(tabs)/home");
     },
   });
 

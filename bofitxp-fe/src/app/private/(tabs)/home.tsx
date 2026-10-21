@@ -6,6 +6,8 @@ import {
   Dimensions,
   ScrollView,
   Pressable,
+  Appearance,
+  useColorScheme,
 } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
@@ -27,8 +29,11 @@ const { width } = Dimensions.get("window");
 export default function index() {
   const { authUser } = useAuth();
   const theme = useAppTheme();
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
   const { showToast } = useCustomToast();
   const translateX = useRef(new Animated.Value(-width)).current;
+  const toggleKnob = useRef(new Animated.Value(isDarkMode ? 30 : 0)).current;
   const { data: listDailyQuest } = useUserQuests({
     questCategory: QuestCategory?.DAILY,
   });
@@ -82,6 +87,15 @@ export default function index() {
       }),
     ).start();
   }, [translateX]);
+
+  useEffect(() => {
+    Animated.spring(toggleKnob, {
+      toValue: isDarkMode ? 30 : 0,
+      friction: 8,
+      tension: 50,
+      useNativeDriver: true,
+    }).start();
+  }, [isDarkMode, toggleKnob]);
   const streak_list = [
     {
       id: 1,
@@ -151,6 +165,51 @@ export default function index() {
             >
               <Pressable
                 onPress={() =>
+                  Appearance.setColorScheme(isDarkMode ? "light" : "dark")
+                }
+                accessibilityLabel={
+                  isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+                }
+                style={{
+                  width: 64,
+                  height: 34,
+                  borderRadius: 999,
+                  paddingHorizontal: 4,
+                  justifyContent: "center",
+                  backgroundColor: isDarkMode
+                    ? theme.primarySoft
+                    : theme.border,
+                  borderWidth: 1,
+                  borderColor: isDarkMode ? theme.primaryLabel : theme.border,
+                }}
+              >
+                <Animated.View
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    backgroundColor: theme.surface,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 3,
+                    elevation: 3,
+                    transform: [{ translateX: toggleKnob }],
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    style={{
+                      color: isDarkMode ? theme.achievement : theme.primary,
+                    }}
+                    name={isDarkMode ? "weather-sunny" : "weather-night"}
+                    size={14}
+                  />
+                </Animated.View>
+              </Pressable>
+              <Pressable
+                onPress={() =>
                   showToast("KERJA WOYYYYY", "KERJA YANG BENER", "success")
                 }
                 style={{
@@ -172,7 +231,8 @@ export default function index() {
                   size={16}
                 />
               </Pressable>
-              <ThemedView
+              <Pressable
+                onPress={() => router.push("/private/(tabs)/account")}
                 style={{
                   padding: 10,
                   display: "flex",
@@ -185,14 +245,13 @@ export default function index() {
                 }}
               >
                 <MaterialCommunityIcons
-                  onPress={() => router.push("/private/(tabs)/account")}
                   style={{
                     color: theme.text,
                   }}
                   name="cog"
                   size={16}
                 />
-              </ThemedView>
+              </Pressable>
             </ThemedView>
           </ThemedView>
 

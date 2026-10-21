@@ -7,6 +7,7 @@ Daftar TODO yang muncul dari audit source code dan status repo saat ini.
 - [x] Verifikasi logika quest, streak, dan challenge di backend
 - [x] Menghubungkan event streak/challenge ke custom toast di frontend
 - [x] Memisahkan test per domain fitur (`auth`, `quest`, dan lain-lain)
+- [x] Membuat flow edit informasi user per row dengan modal dinamis dan integrasi API update-user
 - [ ] Lakukan black-box testing manual pada fitur yang sudah dibuat di device/simulator aplikasi mobile
 - [ ] Review controller/service `userController` dan `userQuestController` untuk konsistensi response dan edge case tambahan
 

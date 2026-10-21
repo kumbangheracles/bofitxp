@@ -81,32 +81,88 @@ Bukti utama:
 - logout on expired JWT: fixed and verified in frontend session logic
 - register + verification email: implemented
 - BMI edit: implemented
+- profile edit flow for user fields including gender/age/target final: implemented in FE and wired to backend update-user API
 - daily/weekly/special quest generation: implemented
 - checked quest completion: implemented
 - XP/level progression: implemented
 - custom toast infrastructure: implemented
 - streak business logic: implemented
 - challenge event logic: implemented
+- dark/light mode toggle via home header and account menu: implemented
+
+## Perkembangan terbaru: theme system + home control
+
+Tanggal: 2026-10-21
+
+### Update UI yang sudah diverifikasi
+
+- tema app sudah konsisten menggunakan token `darkTheme` / `lightTheme` di `bofitxp-fe/src/constants/theme.ts`
+- pengaturan mode sekarang bisa di-trigger dari screen account dan dari home header agar user tidak perlu masuk ke settings
+- tombol mode di header home ditempatkan di sisi kiri ikon bell dan menggunakan ikon `weather-sunny`/`weather-night` sesuai mode aktif
+- `Appearance.setColorScheme(...)` dipakai untuk memicu perubahan tema global realtime
+
+### Bukti utama
+
+- `bofitxp-fe/src/constants/theme.ts`
+- `bofitxp-fe/src/components/Account/index.tsx`
+- `bofitxp-fe/src/app/private/(tabs)/home.tsx`
+
+Status:
+
+- theme toggle functional pada aplikasi frontend sudah terintegrasi
+- validasi TypeScript akhir pada frontend juga telah berjalan tanpa error
 
 ## Perubahan terbaru yang sudah diverifikasi
+
+### User profile edit integration via modal row action
+
+Masalah yang ditemukan:
+
+- screen edit informasi masih placeholder static
+- field profil seperti gender, age, target final belum masuk ke flow update user
+- backend update endpoint sudah ada, tetapi FE belum terhubung ke field dinamis per-row
+
+Perbaikan yang sudah dibuat:
+
+- list informasi pada screen edit dibuat dengan card style yang konsisten dengan menu akun
+- tiap row bisa dibuka ke modal `AppModal`
+- modal menampilkan form yang disesuaikan berdasarkan field yang dipilih
+- field `gender`, `age`, `target_final` ditambahkan ke validasi dan tipe frontend
+- hasil update disimpan ke `authUser` dan dikirim ke API `PATCH /user-update`
+
+Bukti utama:
+
+- `bofitxp-fe/src/components/Account/EditInformations/index.tsx`
+- `bofitxp-fe/src/hooks/use-update-user.ts`
+- `bofitxp-fe/src/utils/validation/user.validation.ts`
+- `bofitxp-be/src/routes/api.ts`
+
+Status:
+
+- profile edit modal flow untuk row data user sudah masuk ke source code
+- verifikasi runtime real-device manual masih belum dilakukan
 
 ### Expired JWT / automatic logout fix
 
 Masalah yang ditemukan:
+
 - frontend mengecek `expiresIn` padahal JWT standard punya `exp`
 - storage cleanup memakai `localStorage` padahal project memakai `expo-secure-store`
 - auth state tidak dibersihkan sepenuhnya saat token invalid/expired
 
 Perbaikan yang sudah dibuat:
+
 - validasi expiry memakai klaim JWT yang benar di `jwtDecode<JWTDecode>(token).exp`
 - expired token diproses sebagai sesi tidak valid dan otomatis logout
 - `SecureStore.deleteItemAsync("user_token")` dipakai untuk membersihkan session
 - `authUser` di-reset ke `null` saat token expired atau tidak valid
 
 Bukti utama:
+
 - `bofitxp-fe/src/context/AuthContext.tsx`
 
 Status:
+
 - masalah login/expired-token yang teridentifikasi sudah diperbaiki
 - file auth context tidak menunjukkan error pada pemeriksaan file yang relevan
 

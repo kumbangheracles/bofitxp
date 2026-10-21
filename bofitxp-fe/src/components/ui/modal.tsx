@@ -9,6 +9,7 @@ import {
   useWindowDimensions,
   Platform,
 } from "react-native";
+import { useAppTheme } from "@/hooks/use-app-theme";
 
 export type ModalSize = "small" | "medium" | "large" | "full";
 
@@ -34,10 +35,13 @@ export const ReusableModal = ({
   showCloseButton = true,
 }: ReusableModalProps) => {
   const { width, height } = useWindowDimensions();
+  const theme = useAppTheme();
   const isTablet = width >= 768;
 
   const maxWidth = getMaxWidth(size, width, isTablet);
   const maxHeight = size === "full" ? height * 0.95 : height * 0.85;
+
+  const styles = makeStyles(theme);
 
   return (
     <Modal
@@ -110,71 +114,72 @@ function getMaxWidth(
   }
 }
 
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 16,
-  },
-  container: {
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    overflow: "hidden",
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 8,
-      },
-    }),
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 18,
-    paddingBottom: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e5e5e5",
-  },
-  title: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#1a1a1a",
-    marginRight: 12,
-  },
-  closeButton: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f2f2f2",
-  },
-  closeButtonText: {
-    fontSize: 14,
-    color: "#666",
-    fontWeight: "600",
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: "#e5e5e5",
-  },
-});
+const makeStyles = (theme: ReturnType<typeof useAppTheme>) =>
+  StyleSheet.create({
+    backdrop: {
+      flex: 1,
+      backgroundColor: theme.overlay,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 16,
+    },
+    container: {
+      backgroundColor: theme.surface,
+      borderRadius: 16,
+      overflow: "hidden",
+      ...Platform.select({
+        ios: {
+          shadowColor: theme.text,
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 10,
+        },
+        android: {
+          elevation: 8,
+        },
+      }),
+    },
+    header: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+      paddingHorizontal: 20,
+      paddingTop: 18,
+      paddingBottom: 12,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: theme.border,
+    },
+    title: {
+      flex: 1,
+      fontSize: 18,
+      fontWeight: "600",
+      color: theme.text,
+      marginRight: 12,
+    },
+    closeButton: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.elevated,
+    },
+    closeButtonText: {
+      fontSize: 14,
+      color: theme.textSecondary,
+      fontWeight: "600",
+    },
+    content: {
+      paddingHorizontal: 20,
+      paddingVertical: 16,
+    },
+    footer: {
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      gap: 10,
+      paddingHorizontal: 20,
+      paddingVertical: 14,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: theme.border,
+    },
+  });

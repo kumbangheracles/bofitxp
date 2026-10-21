@@ -7,6 +7,8 @@ export interface IUserToken {
   username: Users["username"];
   email: Users["email"];
   isVerified: Users["isVerified"];
+  gender?: string | null;
+  age?: number | null;
   body_mass_index: Users["body_mass_index"];
   body_weight: Users["body_weight"];
   body_height: Users["body_height"];
@@ -14,6 +16,7 @@ export interface IUserToken {
   streak: Users["streak"];
   avatarUrl: Users["avatarUrl"];
   xp: Users["xp"];
+  target_final?: string | null;
   createdAt: Users["createdAt"];
 }
 

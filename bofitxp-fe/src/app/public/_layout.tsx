@@ -5,7 +5,7 @@ export default function PublicLayout() {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Redirect href="/private/(tabs)" />;
+    return <Redirect href="/private/(tabs)/home" />;
   }
 
   return <Stack screenOptions={{ headerShown: false }} />;

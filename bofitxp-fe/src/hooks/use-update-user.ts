@@ -41,13 +41,11 @@ const useUpdateUser = () => {
         const updatedUser = result.data.data;
 
         setAuthUser((prev) => {
-          if (!prev) return prev;
+          if (!prev) return { ...updatedUser } as any;
 
           return {
             ...prev,
-            body_mass_index: updatedUser.body_mass_index,
-            body_weight: updatedUser.body_weight,
-            body_height: updatedUser.body_height,
+            ...updatedUser,
           };
         });
 
