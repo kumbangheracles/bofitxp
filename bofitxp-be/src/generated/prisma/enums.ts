@@ -27,6 +27,14 @@ export const TargetFinal = {
 export type TargetFinal = (typeof TargetFinal)[keyof typeof TargetFinal]
 
 
+export const Gender = {
+  pria: 'pria',
+  wanita: 'wanita'
+} as const
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
+
+
 export const QuestType = {
   cardio: 'cardio',
   lifting: 'lifting',

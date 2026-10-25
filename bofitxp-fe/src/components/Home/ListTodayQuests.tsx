@@ -94,7 +94,7 @@ const ListTodayQuests = () => {
           style={{
             padding: 20,
             borderRadius: 16,
-            borderColor: theme.textHint,
+            // borderColor: theme.textHint,
             borderWidth: 1,
             backgroundColor: theme.background,
             justifyContent: "center",

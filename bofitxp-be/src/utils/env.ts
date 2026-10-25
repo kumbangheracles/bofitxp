@@ -22,4 +22,11 @@ export const EMAIL_SMTP_SERVICE_NAME: string =
 export const EXPIRE_TTL_MINUTE: number =
   Number(process.env.EXPIRE_TTL_MINUTE) || 5;
 
+export const UPSTASH_REDIS_REST_URL: string =
+  process.env.UPSTASH_REDIS_REST_URL || "";
+export const UPSTASH_REDIS_REST_TOKEN: string =
+  process.env.UPSTASH_REDIS_REST_TOKEN || "";
+export const OTP_RATE_LIMIT_SECRET: string =
+  process.env.OTP_RATE_LIMIT_SECRET || "";
+
 export const GROQ_API_KEY: string = process.env.GROQ_API_KEY || "";

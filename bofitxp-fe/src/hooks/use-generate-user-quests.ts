@@ -1,4 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
+import { useGlobalState } from "@/context/GlobalStateContext";
 import { UserQuestService } from "@/services/userQuests.service";
 import { QuestCategoryType } from "@/types/quests.type";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import Toast from "react-native-toast-message";
 const useGenerateUserQuest = () => {
   const userQuestService = new UserQuestService();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { setIsOpenModalBmi } = useGlobalState();
   const { authUser } = useAuth();
   const handleGenerateUserQuests = async (
     quest_category: QuestCategoryType,
@@ -22,6 +24,8 @@ const useGenerateUserQuest = () => {
         text1: "BMI is required",
         text2: "You need to filled the bmi before generating quests.",
       });
+
+      setIsOpenModalBmi(true);
       return;
     }
 

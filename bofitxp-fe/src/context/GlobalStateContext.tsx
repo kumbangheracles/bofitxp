@@ -1,3 +1,8 @@
+import AppInput from "@/components/app-input";
+import AppModal from "@/components/app-modal";
+import BmiClassificationCard from "@/components/BmiClassificationCard";
+import { useAppTheme } from "@/hooks/use-app-theme";
+import useUpdateUser from "@/hooks/use-update-user";
 import {
   createContext,
   Dispatch,
@@ -5,6 +10,9 @@ import {
   useContext,
   useState,
 } from "react";
+import { Controller } from "react-hook-form";
+import { View, Text } from "react-native";
+import { useAuth } from "./AuthContext";
 type GlobalStateContextType = {
   isOpenModalBmi: boolean;
   setIsOpenModalBmi: Dispatch<SetStateAction<boolean>>;

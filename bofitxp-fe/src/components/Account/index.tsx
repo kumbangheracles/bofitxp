@@ -42,13 +42,7 @@ const AccountIndex = () => {
   const [isOpenBmiInfo, setIsOpenBmiInfo] = useState<boolean>(false);
   const { isOpenModalBmi, setIsOpenModalBmi } = useGlobalState();
   const isDarkMode = scheme === "dark";
-  const {
-    control: controlUpdateUser,
-    errors: errorsUpdateUser,
-    handleSubmit: handleSubmitUpdateUser,
-    handleUpdateUser: handleMutateUpdateUser,
-    isPendingUpdateUser,
-  } = useUpdateUser();
+
   const bmiCategory = getBmiCategory(authUser?.body_mass_index, theme);
   const handleLogout = async () => {
     try {
@@ -424,69 +418,6 @@ const AccountIndex = () => {
       >
         BofitXP v1.0.0
       </Text>
-
-      <AppModal
-        visible={isOpenModalBmi}
-        onConfirm={handleSubmitUpdateUser((data) => {
-          handleMutateUpdateUser(data);
-        })}
-        confirmText="Save"
-        isConfirmLoading={isPendingUpdateUser}
-        title={
-          authUser?.body_mass_index === null
-            ? "Input your BMI"
-            : "Calculate your BMI"
-        }
-        onClose={() => setIsOpenModalBmi(false)}
-      >
-        <View>
-          <Controller
-            control={controlUpdateUser}
-            name="body_weight"
-            render={({ field: { onChange, value } }) => (
-              <AppInput
-                label="Body Weight"
-                disableFullscreenUI={isPendingUpdateUser}
-                keyboardType="numeric"
-                onChangeText={(text) => {
-                  onChange(text === "" ? undefined : Number(text));
-                }}
-                value={value?.toString() ?? ""}
-                autoCapitalize="none"
-              />
-            )}
-          />
-
-          {errorsUpdateUser.body_weight && (
-            <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errorsUpdateUser.body_weight.message}
-            </Text>
-          )}
-
-          <Controller
-            control={controlUpdateUser}
-            name="body_height"
-            render={({ field: { onChange, value } }) => (
-              <AppInput
-                label="Body Height"
-                disableFullscreenUI={isPendingUpdateUser}
-                keyboardType="numeric"
-                onChangeText={(text) => {
-                  onChange(text === "" ? undefined : Number(text));
-                }}
-                value={value?.toString() ?? ""}
-                autoCapitalize="none"
-              />
-            )}
-          />
-
-          {errorsUpdateUser.body_height && (
-            <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errorsUpdateUser.body_height.message}
-            </Text>
-          )}
-        </View>
-      </AppModal>
 
       <AppModal
         visible={isOpenBmiInfo}

@@ -1,6 +1,7 @@
 import exporess from "express";
 import authController from "../controllers/auth.controller";
 import authMiddleware from "../middlewares/auth.middleware";
+import otpIpRateLimitMiddleware from "../middlewares/otpRateLimit.middleware";
 import userController from "../controllers/user.controller";
 import userQuestController from "../controllers/userQuest.controller";
 const router = exporess.Router();
@@ -12,6 +13,16 @@ router.post("/auth/resend-activation", authController.resendActivationCode);
 router.get("/auth/me", authMiddleware, authController.me);
 
 // User
+router.post(
+  "/user/send-otp-confirmation-code",
+  otpIpRateLimitMiddleware,
+  userController.sendOtpConfirmationCode,
+);
+router.post(
+  "/user/resend-otp-confirmation-code",
+  otpIpRateLimitMiddleware,
+  userController.resendOtpConfirmationCode,
+);
 router.patch("/user-update", authMiddleware, userController.updateUser);
 
 // Quests

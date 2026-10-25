@@ -76,7 +76,8 @@ export class AuthService {
         xp: 0,
         expireAt: expireTime,
         isVerified: false,
-      },
+        gender: null,
+      } as any,
     });
 
     const contentMail = await renderMailHtml("registration-success.ejs", {
@@ -165,5 +166,5 @@ export class AuthService {
     return { updatedUser };
   }
 
-  async me(payload: Users) {}
+  // async me(payload: Users) {}
 }

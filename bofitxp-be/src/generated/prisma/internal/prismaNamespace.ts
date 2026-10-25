@@ -658,17 +658,21 @@ export const UsersScalarFieldEnum = {
   email: 'email',
   password: 'password',
   activationCode: 'activationCode',
+  otpConfirmationCode: 'otpConfirmationCode',
   isVerified: 'isVerified',
   level: 'level',
   streak: 'streak',
   avatarUrl: 'avatarUrl',
   xp: 'xp',
+  gender: 'gender',
+  age: 'age',
   body_weight: 'body_weight',
   body_height: 'body_height',
   body_mass_index: 'body_mass_index',
   role: 'role',
   target_final: 'target_final',
   expireAt: 'expireAt',
+  otpConfirmationExpireAt: 'otpConfirmationExpireAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -757,6 +761,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Gender'
+ */
+export type EnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender'>
+    
+
+
+/**
+ * Reference to a field of type 'Gender[]'
+ */
+export type ListEnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender[]'>
     
 
 

@@ -12,7 +12,7 @@ import { useGlobalState } from "@/context/GlobalStateContext";
 
 const useUpdateUser = () => {
   const userService = new UserService();
-  const { setAuthUser } = useAuth();
+  const { login, setAuthUser } = useAuth();
   const { setIsOpenModalBmi } = useGlobalState();
   const {
     control,
@@ -24,7 +24,7 @@ const useUpdateUser = () => {
     resolver: yupResolver(updateUserSchema),
   });
 
-  const { mutate: mutateUpdateUser, isPending: isPendingUpdateUser } =
+  const { mutateAsync: mutateUpdateUser, isPending: isPendingUpdateUser } =
     useMutation({
       mutationFn: userService.updateUser,
       onError(error) {
@@ -37,8 +37,14 @@ const useUpdateUser = () => {
           text2: "Please try again.",
         });
       },
-      onSuccess: (result) => {
-        const updatedUser = result.data.data;
+      onSuccess: async (result) => {
+        const responseData = result?.data?.data ?? result?.data ?? {};
+        const updatedUser = responseData.updatedUser ?? responseData;
+        const nextToken = responseData.token;
+
+        if (nextToken) {
+          await login(nextToken);
+        }
 
         setAuthUser((prev) => {
           if (!prev) return { ...updatedUser } as any;
@@ -59,7 +65,7 @@ const useUpdateUser = () => {
       },
     });
 
-  const handleUpdateUser = (data: TUpdateUser) => mutateUpdateUser(data);
+  const handleUpdateUser = async (data: TUpdateUser) => mutateUpdateUser(data);
 
   return {
     handleSubmit,

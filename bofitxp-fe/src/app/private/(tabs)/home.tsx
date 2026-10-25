@@ -274,7 +274,8 @@ export default function index() {
                   borderColor: theme.textHint,
                   borderWidth: 1,
                   borderRadius: 16,
-                  minWidth: 90,
+                  width: "100%",
+                  maxWidth: 100,
                 }}
               >
                 <View

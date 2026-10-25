@@ -39,6 +39,7 @@ model Users {
   email     String   @unique
   password  String
   activationCode String?
+  otpConfirmationCode String?
   isVerified Boolean @default(false)
   level Int? @default(0)
   streak Int? @default(0)
@@ -52,6 +53,7 @@ model Users {
   role Role @default(MEMBER)
   target_final     TargetFinal  @default(maintain_fitness)
   expireAt DateTime?
+  otpConfirmationExpireAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -30,6 +30,7 @@ export type UsersAvgAggregateOutputType = {
   level: number | null
   streak: number | null
   xp: number | null
+  age: number | null
   body_weight: number | null
   body_height: number | null
   body_mass_index: number | null
@@ -39,6 +40,7 @@ export type UsersSumAggregateOutputType = {
   level: number | null
   streak: number | null
   xp: number | null
+  age: number | null
   body_weight: number | null
   body_height: number | null
   body_mass_index: number | null
@@ -51,17 +53,21 @@ export type UsersMinAggregateOutputType = {
   email: string | null
   password: string | null
   activationCode: string | null
+  otpConfirmationCode: string | null
   isVerified: boolean | null
   level: number | null
   streak: number | null
   avatarUrl: string | null
   xp: number | null
+  gender: $Enums.Gender | null
+  age: number | null
   body_weight: number | null
   body_height: number | null
   body_mass_index: number | null
   role: $Enums.Role | null
   target_final: $Enums.TargetFinal | null
   expireAt: Date | null
+  otpConfirmationExpireAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -73,17 +79,21 @@ export type UsersMaxAggregateOutputType = {
   email: string | null
   password: string | null
   activationCode: string | null
+  otpConfirmationCode: string | null
   isVerified: boolean | null
   level: number | null
   streak: number | null
   avatarUrl: string | null
   xp: number | null
+  gender: $Enums.Gender | null
+  age: number | null
   body_weight: number | null
   body_height: number | null
   body_mass_index: number | null
   role: $Enums.Role | null
   target_final: $Enums.TargetFinal | null
   expireAt: Date | null
+  otpConfirmationExpireAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -95,17 +105,21 @@ export type UsersCountAggregateOutputType = {
   email: number
   password: number
   activationCode: number
+  otpConfirmationCode: number
   isVerified: number
   level: number
   streak: number
   avatarUrl: number
   xp: number
+  gender: number
+  age: number
   body_weight: number
   body_height: number
   body_mass_index: number
   role: number
   target_final: number
   expireAt: number
+  otpConfirmationExpireAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -116,6 +130,7 @@ export type UsersAvgAggregateInputType = {
   level?: true
   streak?: true
   xp?: true
+  age?: true
   body_weight?: true
   body_height?: true
   body_mass_index?: true
@@ -125,6 +140,7 @@ export type UsersSumAggregateInputType = {
   level?: true
   streak?: true
   xp?: true
+  age?: true
   body_weight?: true
   body_height?: true
   body_mass_index?: true
@@ -137,17 +153,21 @@ export type UsersMinAggregateInputType = {
   email?: true
   password?: true
   activationCode?: true
+  otpConfirmationCode?: true
   isVerified?: true
   level?: true
   streak?: true
   avatarUrl?: true
   xp?: true
+  gender?: true
+  age?: true
   body_weight?: true
   body_height?: true
   body_mass_index?: true
   role?: true
   target_final?: true
   expireAt?: true
+  otpConfirmationExpireAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -159,17 +179,21 @@ export type UsersMaxAggregateInputType = {
   email?: true
   password?: true
   activationCode?: true
+  otpConfirmationCode?: true
   isVerified?: true
   level?: true
   streak?: true
   avatarUrl?: true
   xp?: true
+  gender?: true
+  age?: true
   body_weight?: true
   body_height?: true
   body_mass_index?: true
   role?: true
   target_final?: true
   expireAt?: true
+  otpConfirmationExpireAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -181,17 +205,21 @@ export type UsersCountAggregateInputType = {
   email?: true
   password?: true
   activationCode?: true
+  otpConfirmationCode?: true
   isVerified?: true
   level?: true
   streak?: true
   avatarUrl?: true
   xp?: true
+  gender?: true
+  age?: true
   body_weight?: true
   body_height?: true
   body_mass_index?: true
   role?: true
   target_final?: true
   expireAt?: true
+  otpConfirmationExpireAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -290,17 +318,21 @@ export type UsersGroupByOutputType = {
   email: string
   password: string
   activationCode: string | null
+  otpConfirmationCode: string | null
   isVerified: boolean
   level: number | null
   streak: number | null
   avatarUrl: string | null
   xp: number | null
+  gender: $Enums.Gender
+  age: number
   body_weight: number
   body_height: number
   body_mass_index: number | null
   role: $Enums.Role
   target_final: $Enums.TargetFinal
   expireAt: Date | null
+  otpConfirmationExpireAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UsersCountAggregateOutputType | null
@@ -335,17 +367,21 @@ export type UsersWhereInput = {
   email?: Prisma.StringFilter<"Users"> | string
   password?: Prisma.StringFilter<"Users"> | string
   activationCode?: Prisma.StringNullableFilter<"Users"> | string | null
+  otpConfirmationCode?: Prisma.StringNullableFilter<"Users"> | string | null
   isVerified?: Prisma.BoolFilter<"Users"> | boolean
   level?: Prisma.IntNullableFilter<"Users"> | number | null
   streak?: Prisma.IntNullableFilter<"Users"> | number | null
   avatarUrl?: Prisma.StringNullableFilter<"Users"> | string | null
   xp?: Prisma.IntNullableFilter<"Users"> | number | null
+  gender?: Prisma.EnumGenderFilter<"Users"> | $Enums.Gender
+  age?: Prisma.IntFilter<"Users"> | number
   body_weight?: Prisma.FloatFilter<"Users"> | number
   body_height?: Prisma.IntFilter<"Users"> | number
   body_mass_index?: Prisma.FloatNullableFilter<"Users"> | number | null
   role?: Prisma.EnumRoleFilter<"Users"> | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFilter<"Users"> | $Enums.TargetFinal
   expireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
+  otpConfirmationExpireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   userQuests?: Prisma.UserQuestListRelationFilter
@@ -358,17 +394,21 @@ export type UsersOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   activationCode?: Prisma.SortOrder
+  otpConfirmationCode?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
   role?: Prisma.SortOrder
   target_final?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
+  otpConfirmationExpireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userQuests?: Prisma.UserQuestOrderByRelationAggregateInput
@@ -384,17 +424,21 @@ export type UsersWhereUniqueInput = Prisma.AtLeast<{
   fullName?: Prisma.StringFilter<"Users"> | string
   password?: Prisma.StringFilter<"Users"> | string
   activationCode?: Prisma.StringNullableFilter<"Users"> | string | null
+  otpConfirmationCode?: Prisma.StringNullableFilter<"Users"> | string | null
   isVerified?: Prisma.BoolFilter<"Users"> | boolean
   level?: Prisma.IntNullableFilter<"Users"> | number | null
   streak?: Prisma.IntNullableFilter<"Users"> | number | null
   avatarUrl?: Prisma.StringNullableFilter<"Users"> | string | null
   xp?: Prisma.IntNullableFilter<"Users"> | number | null
+  gender?: Prisma.EnumGenderFilter<"Users"> | $Enums.Gender
+  age?: Prisma.IntFilter<"Users"> | number
   body_weight?: Prisma.FloatFilter<"Users"> | number
   body_height?: Prisma.IntFilter<"Users"> | number
   body_mass_index?: Prisma.FloatNullableFilter<"Users"> | number | null
   role?: Prisma.EnumRoleFilter<"Users"> | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFilter<"Users"> | $Enums.TargetFinal
   expireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
+  otpConfirmationExpireAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   userQuests?: Prisma.UserQuestListRelationFilter
@@ -407,17 +451,21 @@ export type UsersOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   activationCode?: Prisma.SortOrder
+  otpConfirmationCode?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
   role?: Prisma.SortOrder
   target_final?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
+  otpConfirmationExpireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UsersCountOrderByAggregateInput
@@ -437,17 +485,21 @@ export type UsersScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"Users"> | string
   password?: Prisma.StringWithAggregatesFilter<"Users"> | string
   activationCode?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
+  otpConfirmationCode?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
   isVerified?: Prisma.BoolWithAggregatesFilter<"Users"> | boolean
   level?: Prisma.IntNullableWithAggregatesFilter<"Users"> | number | null
   streak?: Prisma.IntNullableWithAggregatesFilter<"Users"> | number | null
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
   xp?: Prisma.IntNullableWithAggregatesFilter<"Users"> | number | null
+  gender?: Prisma.EnumGenderWithAggregatesFilter<"Users"> | $Enums.Gender
+  age?: Prisma.IntWithAggregatesFilter<"Users"> | number
   body_weight?: Prisma.FloatWithAggregatesFilter<"Users"> | number
   body_height?: Prisma.IntWithAggregatesFilter<"Users"> | number
   body_mass_index?: Prisma.FloatNullableWithAggregatesFilter<"Users"> | number | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"Users"> | $Enums.Role
   target_final?: Prisma.EnumTargetFinalWithAggregatesFilter<"Users"> | $Enums.TargetFinal
   expireAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
+  otpConfirmationExpireAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
 }
@@ -459,17 +511,21 @@ export type UsersCreateInput = {
   email: string
   password: string
   activationCode?: string | null
+  otpConfirmationCode?: string | null
   isVerified?: boolean
   level?: number | null
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  gender: $Enums.Gender
+  age?: number
   body_weight?: number
   body_height?: number
   body_mass_index?: number | null
   role?: $Enums.Role
   target_final?: $Enums.TargetFinal
   expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userQuests?: Prisma.UserQuestCreateNestedManyWithoutUserInput
@@ -482,17 +538,21 @@ export type UsersUncheckedCreateInput = {
   email: string
   password: string
   activationCode?: string | null
+  otpConfirmationCode?: string | null
   isVerified?: boolean
   level?: number | null
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  gender: $Enums.Gender
+  age?: number
   body_weight?: number
   body_height?: number
   body_mass_index?: number | null
   role?: $Enums.Role
   target_final?: $Enums.TargetFinal
   expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userQuests?: Prisma.UserQuestUncheckedCreateNestedManyWithoutUserInput
@@ -504,17 +564,21 @@ export type UsersUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
   body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userQuests?: Prisma.UserQuestUpdateManyWithoutUserNestedInput
@@ -526,17 +590,21 @@ export type UsersUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
   body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userQuests?: Prisma.UserQuestUncheckedUpdateManyWithoutUserNestedInput
@@ -549,17 +617,21 @@ export type UsersCreateManyInput = {
   email: string
   password: string
   activationCode?: string | null
+  otpConfirmationCode?: string | null
   isVerified?: boolean
   level?: number | null
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  gender: $Enums.Gender
+  age?: number
   body_weight?: number
   body_height?: number
   body_mass_index?: number | null
   role?: $Enums.Role
   target_final?: $Enums.TargetFinal
   expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -570,17 +642,21 @@ export type UsersUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
   body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -591,17 +667,21 @@ export type UsersUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
   body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -613,17 +693,21 @@ export type UsersCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   activationCode?: Prisma.SortOrder
+  otpConfirmationCode?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
   role?: Prisma.SortOrder
   target_final?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
+  otpConfirmationExpireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -632,6 +716,7 @@ export type UsersAvgOrderByAggregateInput = {
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
@@ -644,17 +729,21 @@ export type UsersMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   activationCode?: Prisma.SortOrder
+  otpConfirmationCode?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
   role?: Prisma.SortOrder
   target_final?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
+  otpConfirmationExpireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -666,17 +755,21 @@ export type UsersMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   activationCode?: Prisma.SortOrder
+  otpConfirmationCode?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
   role?: Prisma.SortOrder
   target_final?: Prisma.SortOrder
   expireAt?: Prisma.SortOrder
+  otpConfirmationExpireAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -685,6 +778,7 @@ export type UsersSumOrderByAggregateInput = {
   level?: Prisma.SortOrder
   streak?: Prisma.SortOrder
   xp?: Prisma.SortOrder
+  age?: Prisma.SortOrder
   body_weight?: Prisma.SortOrder
   body_height?: Prisma.SortOrder
   body_mass_index?: Prisma.SortOrder
@@ -717,7 +811,11 @@ export type NullableIntFieldUpdateOperationsInput = {
   unset?: boolean
 }
 
-export type FloatFieldUpdateOperationsInput = {
+export type EnumGenderFieldUpdateOperationsInput = {
+  set?: $Enums.Gender
+}
+
+export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
@@ -725,7 +823,7 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type IntFieldUpdateOperationsInput = {
+export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
@@ -780,17 +878,21 @@ export type UsersCreateWithoutUserQuestsInput = {
   email: string
   password: string
   activationCode?: string | null
+  otpConfirmationCode?: string | null
   isVerified?: boolean
   level?: number | null
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  gender: $Enums.Gender
+  age?: number
   body_weight?: number
   body_height?: number
   body_mass_index?: number | null
   role?: $Enums.Role
   target_final?: $Enums.TargetFinal
   expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -802,17 +904,21 @@ export type UsersUncheckedCreateWithoutUserQuestsInput = {
   email: string
   password: string
   activationCode?: string | null
+  otpConfirmationCode?: string | null
   isVerified?: boolean
   level?: number | null
   streak?: number | null
   avatarUrl?: string | null
   xp?: number | null
+  gender: $Enums.Gender
+  age?: number
   body_weight?: number
   body_height?: number
   body_mass_index?: number | null
   role?: $Enums.Role
   target_final?: $Enums.TargetFinal
   expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -839,17 +945,21 @@ export type UsersUpdateWithoutUserQuestsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
   body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -860,17 +970,21 @@ export type UsersUncheckedUpdateWithoutUserQuestsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
   body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
   body_height?: Prisma.IntFieldUpdateOperationsInput | number
   body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
   expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -913,17 +1027,21 @@ export type UsersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   email?: boolean
   password?: boolean
   activationCode?: boolean
+  otpConfirmationCode?: boolean
   isVerified?: boolean
   level?: boolean
   streak?: boolean
   avatarUrl?: boolean
   xp?: boolean
+  gender?: boolean
+  age?: boolean
   body_weight?: boolean
   body_height?: boolean
   body_mass_index?: boolean
   role?: boolean
   target_final?: boolean
   expireAt?: boolean
+  otpConfirmationExpireAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userQuests?: boolean | Prisma.Users$userQuestsArgs<ExtArgs>
@@ -939,22 +1057,26 @@ export type UsersSelectScalar = {
   email?: boolean
   password?: boolean
   activationCode?: boolean
+  otpConfirmationCode?: boolean
   isVerified?: boolean
   level?: boolean
   streak?: boolean
   avatarUrl?: boolean
   xp?: boolean
+  gender?: boolean
+  age?: boolean
   body_weight?: boolean
   body_height?: boolean
   body_mass_index?: boolean
   role?: boolean
   target_final?: boolean
   expireAt?: boolean
+  otpConfirmationExpireAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "body_weight" | "body_height" | "body_mass_index" | "role" | "target_final" | "expireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
+export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "otpConfirmationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "gender" | "age" | "body_weight" | "body_height" | "body_mass_index" | "role" | "target_final" | "expireAt" | "otpConfirmationExpireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
 export type UsersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userQuests?: boolean | Prisma.Users$userQuestsArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -972,17 +1094,21 @@ export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     email: string
     password: string
     activationCode: string | null
+    otpConfirmationCode: string | null
     isVerified: boolean
     level: number | null
     streak: number | null
     avatarUrl: string | null
     xp: number | null
+    gender: $Enums.Gender
+    age: number
     body_weight: number
     body_height: number
     body_mass_index: number | null
     role: $Enums.Role
     target_final: $Enums.TargetFinal
     expireAt: Date | null
+    otpConfirmationExpireAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["users"]>
@@ -1384,17 +1510,21 @@ export interface UsersFieldRefs {
   readonly email: Prisma.FieldRef<"Users", 'String'>
   readonly password: Prisma.FieldRef<"Users", 'String'>
   readonly activationCode: Prisma.FieldRef<"Users", 'String'>
+  readonly otpConfirmationCode: Prisma.FieldRef<"Users", 'String'>
   readonly isVerified: Prisma.FieldRef<"Users", 'Boolean'>
   readonly level: Prisma.FieldRef<"Users", 'Int'>
   readonly streak: Prisma.FieldRef<"Users", 'Int'>
   readonly avatarUrl: Prisma.FieldRef<"Users", 'String'>
   readonly xp: Prisma.FieldRef<"Users", 'Int'>
+  readonly gender: Prisma.FieldRef<"Users", 'Gender'>
+  readonly age: Prisma.FieldRef<"Users", 'Int'>
   readonly body_weight: Prisma.FieldRef<"Users", 'Float'>
   readonly body_height: Prisma.FieldRef<"Users", 'Int'>
   readonly body_mass_index: Prisma.FieldRef<"Users", 'Float'>
   readonly role: Prisma.FieldRef<"Users", 'Role'>
   readonly target_final: Prisma.FieldRef<"Users", 'TargetFinal'>
   readonly expireAt: Prisma.FieldRef<"Users", 'DateTime'>
+  readonly otpConfirmationExpireAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Users", 'DateTime'>
 }

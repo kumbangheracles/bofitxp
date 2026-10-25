@@ -142,7 +142,7 @@ const EditInformationIndex = () => {
     setDraftValue(currentValue);
   };
 
-  const handleSaveField = () => {
+  const handleSaveField = async () => {
     if (!selectedField) return;
 
     const payload: Record<string, string | number> = {};
@@ -164,9 +164,12 @@ const EditInformationIndex = () => {
       payload[selectedField.id] = draftValue.trim();
     }
 
-    handleUpdateUser(payload as any);
-    setSelectedField(null);
-    setDraftValue("");
+    try {
+      await handleUpdateUser(payload as any);
+    } finally {
+      setSelectedField(null);
+      setDraftValue("");
+    }
   };
 
   const renderFieldInput = () => {

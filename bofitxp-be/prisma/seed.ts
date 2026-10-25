@@ -7,8 +7,10 @@ import { encrypt } from "../src/utils/encryption";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.users.deleteMany();
-
+  await prisma.$transaction([
+    prisma.userQuest.deleteMany(),
+    prisma.users.deleteMany(),
+  ]);
   const password = encrypt("password123");
 
   await prisma.users.createMany({
@@ -16,24 +18,26 @@ async function main() {
       {
         fullName: "Ahmad Herkal",
         username: "herkaltest",
-        email: "ahmadherkal@test.com",
+        email: "herkal@raharja.info",
         password,
         activationCode: null,
         isVerified: true,
         level: 2,
         streak: 5,
         xp: 250,
+        gender: "pria",
       },
       {
         fullName: "Ahmad Fauzan",
         username: "ahmadf",
-        email: "ahmadf@test.com",
+        email: "fauzancool2026@yopmail.com",
         password,
         activationCode: null,
         isVerified: true,
         level: 2,
         streak: 5,
         xp: 250,
+        gender: "pria",
       },
       {
         fullName: "Siti Nurhaliza",
@@ -45,6 +49,7 @@ async function main() {
         level: 3,
         streak: 10,
         xp: 520,
+        gender: "pria",
       },
       {
         fullName: "Budi Santoso",
@@ -56,6 +61,7 @@ async function main() {
         level: 1,
         streak: 2,
         xp: 100,
+        gender: "pria",
       },
       {
         fullName: "Rina Marlina",
@@ -68,6 +74,7 @@ async function main() {
         streak: 18,
         xp: 860,
         expireAt: null,
+        gender: "pria",
       },
       {
         fullName: "Dedi Kurniawan",
@@ -80,6 +87,7 @@ async function main() {
         streak: 0,
         xp: 0,
         expireAt: null,
+        gender: "pria",
       },
       {
         fullName: "Maya Putri",
@@ -92,6 +100,7 @@ async function main() {
         streak: 0,
         expireAt: null,
         xp: 0,
+        gender: "pria",
       },
       {
         fullName: "Andi Wijaya",
@@ -104,6 +113,7 @@ async function main() {
         streak: 22,
         expireAt: null,
         xp: 1250,
+        gender: "pria",
       },
       {
         fullName: "Fajar Ramadhan",
@@ -116,6 +126,7 @@ async function main() {
         streak: 6,
         expireAt: null,
         xp: 340,
+        gender: "pria",
       },
       {
         fullName: "Nabila Azzahra",
@@ -128,6 +139,7 @@ async function main() {
         streak: 30,
         expireAt: null,
         xp: 1800,
+        gender: "pria",
       },
       {
         fullName: "Yoga Pratama",
@@ -140,6 +152,7 @@ async function main() {
         streak: 11,
         expireAt: null,
         xp: 650,
+        gender: "pria",
       },
     ],
   });

@@ -114,6 +114,37 @@ Status:
 
 ## Perubahan terbaru yang sudah diverifikasi
 
+### OTP abuse guard with Redis and fail-closed semantics
+
+Masalah yang ditemukan:
+
+- endpoint pengiriman kode OTP belum memiliki pembatasan rate limit yang konsisten di level IP dan email
+- tidak ada mekanisme fail-closed saat Redis tidak tersedia
+- request email publik bisa menembus spam/perulangan tanpa pembatasan distribusi serverless
+
+Perbaikan yang sudah dibuat:
+
+- dibuat utilitas pusat `otpGuard.ts` untuk normalisasi email, hashing email dengan HMAC-SHA256, IP extraction aman, dan konfigurasi limit OTP
+- dibuat middleware `otpRateLimit.middleware.ts` untuk membatasi IP pada `5 request / 15 menit` dan mengembalikan `429` serta `Retry-After`
+- dibuat reservation email dengan cooldown 60 detik dan quota rolling 24 jam sebanyak 10 request per email, menggunakan script Redis atomik
+- service `UserService.sendOtpConfirmationCode()` memanggil reservation email sebelum mencari user dan sebelum mengirim email
+- error `AppRateLimitError` dan `AppDependencyError` diarahkan ke response HTTP `429` dan `503` sesuai pola fail-closed
+- semua secret dan OTP tidak di-log; key Redis hanya memakai hash email + namespace
+
+Bukti utama:
+
+- `bofitxp-be/src/utils/otpGuard.ts`
+- `bofitxp-be/src/middlewares/otpRateLimit.middleware.ts`
+- `bofitxp-be/src/services/user.service.ts`
+- `bofitxp-be/src/routes/api.ts`
+- `bofitxp-be/src/tests/otp-guard.test.ts`
+
+Status:
+
+- guard OTP dasar sudah masuk ke codebase dan sesuai with project requirement
+- verifikasi automated testing fokus : utilitas guard OTP lulus
+- build normal repo masih memunculkan issue lingkungan/Prisma (izin rename generated file) dan bukan sekadar bug patch OTP
+
 ### User profile edit integration via modal row action
 
 Masalah yang ditemukan:

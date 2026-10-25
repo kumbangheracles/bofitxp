@@ -87,7 +87,7 @@ export default function LoginScreen() {
           <Controller
             control={control}
             name="email"
-            defaultValue="ahmadherkal@test.com"
+            defaultValue="herkal@raharja.info"
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
