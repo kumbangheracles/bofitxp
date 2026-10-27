@@ -12,6 +12,7 @@ export type TRegister = {
   email: string;
   password: string;
   confirmPassword: string;
+  gender: "pria" | "wanita";
 };
 
 type TLogin = {

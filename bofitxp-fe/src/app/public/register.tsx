@@ -1,10 +1,17 @@
 import AppGradButton from "@/components/app-gradient-btn";
 import AppInput from "@/components/app-input";
-import { AppTheme, Fonts, spacing } from "@/constants/theme";
+import {
+  AppTheme,
+  Fonts,
+  fontSize,
+  fontWeight,
+  spacing,
+} from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import useRegister from "@/hooks/use-register";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   KeyboardAvoidingView,
@@ -22,6 +29,24 @@ export default function RegisterScreen() {
   const { control, errors, handleRegister, handleSubmit, isPendingRegister } =
     useRegister();
 
+  type GenderValue = "pria" | "wanita";
+  type GenderIcon = "gender-male" | "gender-female";
+
+  const [gender, setGender] = useState<GenderValue | "">("");
+  const GENDER_OPTIONS: Array<{
+    label: string;
+    value: GenderValue;
+    icon: GenderIcon;
+    color: string;
+  }> = [
+    { label: "Men", value: "pria", icon: "gender-male", color: "#3B82F6" },
+    {
+      label: "Woman",
+      value: "wanita",
+      icon: "gender-female",
+      color: "#EC4899",
+    },
+  ];
   // useEffect(() => {
   //   console.log("Error: ", errors);
   // }, [errors]);
@@ -144,6 +169,74 @@ export default function RegisterScreen() {
               {errors.email.message || "This field is required."}
             </Text>
           )}
+
+          <Controller
+            control={control}
+            name="gender"
+            render={({ field: { onChange, value } }) => (
+              <View>
+                <Text style={[styles.label, { color: theme.textHint }]}>
+                  Gender
+                </Text>
+
+                <View style={styles.row}>
+                  {GENDER_OPTIONS.map((option) => {
+                    const isActive = value === option.value;
+
+                    return (
+                      <Pressable
+                        key={option.value}
+                        onPress={() => onChange(option.value)}
+                        disabled={isPendingRegister}
+                        style={({ pressed }) => [
+                          styles.option,
+                          {
+                            backgroundColor: isActive
+                              ? `${option.color}1A`
+                              : theme.elevated,
+                            borderColor: isActive ? option.color : theme.border,
+                            borderWidth: isActive ? 1.5 : 1,
+                            opacity: isPendingRegister
+                              ? 0.6
+                              : pressed
+                                ? 0.8
+                                : 1,
+                          },
+                        ]}
+                      >
+                        <View
+                          style={[
+                            styles.iconWrap,
+                            {
+                              backgroundColor: isActive
+                                ? option.color
+                                : `${option.color}1A`,
+                            },
+                          ]}
+                        >
+                          <MaterialCommunityIcons
+                            name={option.icon}
+                            size={22}
+                            color={isActive ? "#FFFFFF" : option.color}
+                          />
+                        </View>
+
+                        <Text
+                          style={[
+                            styles.optionText,
+                            { color: isActive ? option.color : theme.text },
+                          ]}
+                        >
+                          {option.label}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+            )}
+          />
+
           <Controller
             control={control}
             name="password"
@@ -336,5 +429,38 @@ const makeStyles = (theme: AppTheme) =>
       color: theme.primaryLabel,
       fontWeight: "bold",
       textDecorationLine: "underline",
+    },
+    label: {
+      fontSize: fontSize.xs,
+      marginBottom: 8,
+    },
+    row: {
+      flexDirection: "row",
+      gap: 12,
+    },
+    option: {
+      flex: 1,
+      paddingVertical: 16,
+      borderRadius: 16,
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 8,
+    },
+    iconWrap: {
+      width: 30,
+      height: 30,
+      borderRadius: 22,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    optionText: {
+      fontSize: fontSize.sm,
+      fontWeight: fontWeight.medium,
+    },
+    check: {
+      position: "absolute",
+      top: 8,
+      right: 8,
     },
   });

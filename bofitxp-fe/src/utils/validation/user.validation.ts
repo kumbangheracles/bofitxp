@@ -19,6 +19,9 @@ export const registerValidateSchema = Yup.object({
     .required("Please input your password"),
   // activationCode: Yup.string() // Pastikan semua field dari TRegister ada di skema
   //   .default(""),
+  gender: Yup.string()
+    .oneOf(["pria", "wanita"], "Gender is required.")
+    .required("Gender is required."),
 }).required(); // <-- Tambahkan .required() di ujung objek schema
 
 export const loginValidateSchema = Yup.object({
@@ -45,6 +48,14 @@ export const updateUserSchema = Yup.object({
 
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
+    .notRequired(),
+
+  currentPassword: Yup.string()
+    .min(8, "Current password must be at least 8 characters")
+    .notRequired(),
+
+  confirmPassword: Yup.string()
+    .min(8, "Confirm password must be at least 8 characters")
     .notRequired(),
 
   gender: Yup.string()

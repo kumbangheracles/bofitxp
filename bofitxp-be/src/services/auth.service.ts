@@ -76,7 +76,7 @@ export class AuthService {
         xp: 0,
         expireAt: expireTime,
         isVerified: false,
-        gender: null,
+        gender: payload.gender,
       } as any,
     });
 

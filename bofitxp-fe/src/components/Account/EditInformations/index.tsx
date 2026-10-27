@@ -9,6 +9,9 @@ import { useAppTheme } from "@/hooks/use-app-theme";
 import AppModal from "@/components/app-modal";
 import AppInput from "@/components/app-input";
 import useUpdateUser from "@/hooks/use-update-user";
+import { useGlobalState } from "@/context/GlobalStateContext";
+import { router } from "expo-router";
+import { UserService } from "@/services/user.service";
 
 interface InformationItem {
   id:
@@ -29,11 +32,21 @@ interface InformationItem {
 const EditInformationIndex = () => {
   const theme = useAppTheme();
   const { authUser } = useAuth();
+  const userService = new UserService();
   const { handleUpdateUser, isPendingUpdateUser } = useUpdateUser();
+  const {
+    setEmailForOtp,
+    setPendingNewEmail,
+    setPendingPassword,
+    setCurrentPassword,
+  } = useGlobalState();
   const [selectedField, setSelectedField] = useState<InformationItem | null>(
     null,
   );
   const [draftValue, setDraftValue] = useState<string>("");
+  const [localCurrentPassword, setLocalCurrentPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fieldError, setFieldError] = useState("");
 
   const getDisplayValue = (field: InformationItem["id"]) => {
     const value = authUser?.[field as keyof typeof authUser];
@@ -148,9 +161,90 @@ const EditInformationIndex = () => {
     const payload: Record<string, string | number> = {};
 
     if (selectedField.id === "password") {
-      if (!draftValue.trim()) return;
-      payload.password = draftValue.trim();
-    } else if (selectedField.id === "age") {
+      if (!localCurrentPassword.trim()) {
+        setFieldError("Current password is required.");
+        return;
+      }
+
+      if (!draftValue.trim()) {
+        setFieldError("New password is required.");
+        return;
+      }
+
+      if (draftValue.trim().length < 8) {
+        setFieldError("Password must be at least 8 characters long.");
+        return;
+      }
+
+      if (!confirmPassword.trim()) {
+        setFieldError("Please confirm your new password.");
+        return;
+      }
+
+      if (confirmPassword.trim() !== draftValue.trim()) {
+        setFieldError("Password confirmation does not match.");
+        return;
+      }
+
+      setCurrentPassword(localCurrentPassword.trim());
+      setPendingPassword(draftValue.trim());
+      setEmailForOtp(authUser?.email ?? null);
+      router.push({
+        pathname: "/private/send-otp",
+        params: { key: "password" },
+      });
+      setSelectedField(null);
+      setDraftValue("");
+      setLocalCurrentPassword("");
+      setConfirmPassword("");
+      setFieldError("");
+      return;
+    }
+
+    if (selectedField.id === "email") {
+      const trimmedEmail = draftValue.trim();
+
+      if (!trimmedEmail) {
+        setFieldError("Email cannot be empty.");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmedEmail)) {
+        setFieldError("Please enter a valid email address.");
+        return;
+      }
+
+      if (
+        authUser?.email &&
+        trimmedEmail.toLowerCase() === authUser.email.toLowerCase()
+      ) {
+        setFieldError("This is already your current email address.");
+        return;
+      }
+
+      try {
+        await userService.requestEmailChange(trimmedEmail);
+        setPendingNewEmail(trimmedEmail);
+        setEmailForOtp(trimmedEmail);
+        setFieldError("");
+        router.push({
+          pathname: "/private/send-otp",
+          params: { key: "email" },
+        });
+        setSelectedField(null);
+        setDraftValue("");
+      } catch (error: any) {
+        const message =
+          error?.response?.data?.message ||
+          error?.message ||
+          "This email cannot be used.";
+        setFieldError(message);
+      }
+      return;
+    }
+
+    if (selectedField.id === "age") {
       if (draftValue.trim() === "") return;
       payload.age = Number(draftValue);
     } else if (selectedField.id === "gender") {
@@ -169,11 +263,57 @@ const EditInformationIndex = () => {
     } finally {
       setSelectedField(null);
       setDraftValue("");
+      setLocalCurrentPassword("");
+      setConfirmPassword("");
+      setFieldError("");
     }
   };
 
   const renderFieldInput = () => {
     if (!selectedField) return null;
+
+    if (selectedField.id === "password") {
+      return (
+        <View style={styles.passwordGroup}>
+          <AppInput
+            label="Current password"
+            value={localCurrentPassword}
+            onChangeText={(value) => {
+              setLocalCurrentPassword(value);
+              if (fieldError) setFieldError("");
+            }}
+            secureTextEntry
+            isPassword
+            placeholder="Current password"
+            error={fieldError}
+          />
+          <AppInput
+            label="New password"
+            value={draftValue}
+            onChangeText={(value) => {
+              setDraftValue(value);
+              if (fieldError) setFieldError("");
+            }}
+            secureTextEntry
+            isPassword
+            placeholder="New password"
+            error={fieldError}
+          />
+          <AppInput
+            label="Confirm new password"
+            value={confirmPassword}
+            onChangeText={(value) => {
+              setConfirmPassword(value);
+              if (fieldError) setFieldError("");
+            }}
+            secureTextEntry
+            isPassword
+            placeholder="Confirm new password"
+            error={fieldError}
+          />
+        </View>
+      );
+    }
 
     if (selectedField.type === "select") {
       return (
@@ -210,16 +350,34 @@ const EditInformationIndex = () => {
       );
     }
 
+    const friendlyLabel =
+      selectedField.id === "email"
+        ? "New email address"
+        : selectedField.type === "password"
+          ? "New password"
+          : selectedField.label;
+
+    const friendlyPlaceholder =
+      selectedField.id === "email"
+        ? "Enter your new email address"
+        : selectedField.type === "password"
+          ? "Create a new password"
+          : `Enter ${selectedField.label.toLowerCase()}`;
+
     return (
       <AppInput
-        label={selectedField.label}
+        label={friendlyLabel}
         value={draftValue}
-        onChangeText={setDraftValue}
+        onChangeText={(value) => {
+          setDraftValue(value);
+          if (fieldError) setFieldError("");
+        }}
         keyboardType={selectedField.type === "number" ? "numeric" : "default"}
         secureTextEntry={selectedField.type === "password"}
         isPassword={selectedField.type === "password"}
-        placeholder={`Input ${selectedField.label.toLowerCase()}`}
+        placeholder={friendlyPlaceholder}
         autoCapitalize={selectedField.id === "email" ? "none" : "sentences"}
+        error={fieldError}
       />
     );
   };
@@ -296,10 +454,19 @@ const EditInformationIndex = () => {
 
       <AppModal
         visible={!!selectedField}
-        title={selectedField?.label ?? "Edit Information"}
+        title={
+          selectedField?.id === "email"
+            ? "Update email address"
+            : selectedField?.id === "password"
+              ? "Update password"
+              : (selectedField?.label ?? "Edit Information")
+        }
         onClose={() => {
           setSelectedField(null);
           setDraftValue("");
+          setFieldError("");
+          setLocalCurrentPassword("");
+          setConfirmPassword("");
         }}
         onConfirm={handleSaveField}
         confirmText="Save"
@@ -352,6 +519,9 @@ const styles = StyleSheet.create({
   valueText: {
     fontSize: fontSize.md,
     fontWeight: fontWeight.medium,
+  },
+  passwordGroup: {
+    gap: 12,
   },
   optionGroup: {
     flexDirection: "row",

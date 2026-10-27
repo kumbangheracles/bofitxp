@@ -23,6 +23,21 @@ router.post(
   otpIpRateLimitMiddleware,
   userController.resendOtpConfirmationCode,
 );
+router.post(
+  "/user/request-email-change",
+  authMiddleware,
+  userController.requestEmailChange,
+);
+router.post(
+  "/user/confirm-email-change",
+  authMiddleware,
+  userController.confirmEmailChange,
+);
+router.patch(
+  "/user/change-password",
+  authMiddleware,
+  userController.changePassword,
+);
 router.patch("/user-update", authMiddleware, userController.updateUser);
 
 // Quests

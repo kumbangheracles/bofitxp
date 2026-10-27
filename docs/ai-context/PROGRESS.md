@@ -197,6 +197,47 @@ Status:
 - masalah login/expired-token yang teridentifikasi sudah diperbaiki
 - file auth context tidak menunjukkan error pada pemeriksaan file yang relevan
 
+## Perubahan terbaru yang sudah diverifikasi (2026-10-27): secure account update via OTP
+
+Masalah yang ditemukan:
+
+- alur edit email/password masih memakai pattern generic profile update, padahal kebutuhan bisnis menuntut validasi keamanan dan OTP khusus
+- form edit email masih bisa lolos input tidak valid
+- OTP untuk email baru tidak benar-benar dikirim karena flow hanya menyimpan kode di DB tanpa trigger email
+- setelah konfirmasi email berhasil, UI masih menampilkan email lama karena auth state belum di-refresh
+
+Perbaikan yang sudah dibuat:
+
+- dibuat route dan controller terpisah untuk `requestEmailChange`, `confirmEmailChange`, dan `changePassword` di backend
+- validasi email dilakukan di frontend sebelum masuk ke OTP: format email, cek apakah email kosong, cek duplikasi, cek apakah email sama dengan current email
+- validasi password ditambahkan di modal: current password wajib, password minimal 8 karakter, confirm password wajib dan harus cocok
+- OTP verify email memakai UX mirip activation screen dengan pola input 6 digit dan tombol resend
+- backend `requestEmailChange()` sekarang memanggil `renderMailHtml` dan `sendMail` untuk mengirim OTP ke email baru
+- backend `confirmEmailChange()` menghasilkan token baru dan mengembalikan payload user terbaru agar frontend langsung update `authUser`
+- frontend `SendOtpIndex` memanggil `login(nextToken)` dan `setAuthUser(...)` setelah konfirmasi berhasil, sehingga screen edit informasi langsung menampilkan email baru
+- back button pada OTP screen sekarang membersihkan state pending dan kembali ke layar sebelumnya
+
+Bukti utama:
+
+- `bofitxp-be/src/controllers/user.controller.ts`
+- `bofitxp-be/src/services/user.service.ts`
+- `bofitxp-be/src/routes/api.ts`
+- `bofitxp-fe/src/components/Account/EditInformations/index.tsx`
+- `bofitxp-fe/src/components/Account/SendOtp/index.tsx`
+- `bofitxp-fe/src/context/GlobalStateContext.tsx`
+- `bofitxp-fe/src/components/app-input.tsx`
+
+Status:
+
+- alur update email dan password dengan OTP telah berjalan sesuai kebutuhan bisnis dan telah diverifikasi melalui regression di backend
+- validasi front-end dan back-end untuk email/password sudah masuk ke source code
+- smoke test UI real device masih direkomendasikan untuk pengecekan visual akhir dan pengalaman pengguna di perangkat mobile
+
+Bukti testing yang ada:
+
+- `npm test -- --runInBand src/tests/user.test.ts`
+- hasil: `Test Suites: 1 passed, 1 total` dan `Tests: 5 passed, 5 total`
+
 ## Fitur yang masih perlu diverifikasi manual / black-box
 
 - runtime UI tiap screen di mobile app

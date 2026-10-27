@@ -24,6 +24,7 @@ interface PropTypes extends TextInputProps {
   isPassword?: boolean;
   containerStyles?: React.CSSProperties;
   labelStyles?: React.CSSProperties;
+  error?: string;
 }
 
 const AppInput = ({
@@ -32,6 +33,7 @@ const AppInput = ({
   containerStyles,
   labelStyles,
   isPassword = false,
+  error,
   ...props
 }: PropTypes) => {
   const theme = useAppTheme();
@@ -40,6 +42,7 @@ const AppInput = ({
 
   const progress = useSharedValue<number>(0);
   const styles = makeStyles(theme);
+  const passwordToggleLabel = openPass ? "Hide password" : "Show password";
   useEffect(() => {
     progress.value = withTiming(isFocus ? 1 : 0, { duration: 300 });
   }, [isFocus]);
@@ -74,31 +77,29 @@ const AppInput = ({
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             style={{ ...styles.input, ...props.style }}
-            secureTextEntry={openPass}
+            secureTextEntry={!openPass}
             {...props}
           />
         </View>
 
         {isPassword && (
-          <Pressable>
-            {openPass ? (
-              <MaterialCommunityIcons
-                onPress={() => setOpenPass(false)}
-                style={{ color: theme.textHint, marginRight: 20 }}
-                name="eye-closed"
-                size={20}
-              />
-            ) : (
-              <MaterialCommunityIcons
-                onPress={() => setOpenPass(true)}
-                style={{ color: theme.textHint, marginRight: 20 }}
-                name="eye"
-                size={20}
-              />
-            )}
+          <Pressable
+            onPress={() => setOpenPass((prev) => !prev)}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={passwordToggleLabel}
+            style={styles.eyeButton}
+          >
+            <MaterialCommunityIcons
+              name={openPass ? "eye-off-outline" : "eye-outline"}
+              style={styles.eyeIcon}
+              size={20}
+            />
           </Pressable>
         )}
       </AnimatedStyledContainer>
+
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
   );
 };
@@ -144,6 +145,21 @@ const makeStyles = (theme: AppTheme) =>
       width: "100%",
       color: theme.text,
       fontSize: 14,
+    },
+    eyeButton: {
+      paddingRight: 12,
+      paddingLeft: 8,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    eyeIcon: {
+      color: theme.textHint,
+    },
+    errorText: {
+      marginTop: 6,
+      color: theme.danger,
+      fontSize: 12,
+      fontFamily: Fonts.sans,
     },
   });
 
