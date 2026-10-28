@@ -197,6 +197,58 @@ Status:
 - masalah login/expired-token yang teridentifikasi sudah diperbaiki
 - file auth context tidak menunjukkan error pada pemeriksaan file yang relevan
 
+## Perubahan terbaru yang sudah diverifikasi (2026-10-28): Swagger docs sectioning per domain
+
+Masalah yang ditemukan:
+
+- dokumentasi Swagger masih tersebar tanpa pemisahan domain yang jelas
+- endpoint auth, user, dan user quests belum konsisten dalam label section di UI Swagger
+- perubahan endpoint baru berisiko tidak tercatat saat pengembangan lanjutan
+
+Perbaikan yang sudah dibuat:
+
+- label Swagger dibagi per section: `Auth`, `User`, dan `User Quests`
+- route yang relevan ditandai dengan `#swagger.tags` agar tampil sebagai kelompok terpisah di Swagger UI
+- dokumentasi endpoint diperbarui dan di-generate ulang ke `bofitxp-be/src/docs/swagger_output.json`
+- test coverage tambahan dibuat agar semua endpoint wajib ada di docs agar tidak regress ke belakang
+
+Bukti utama:
+
+- `bofitxp-be/src/routes/api.ts`
+- `bofitxp-be/src/docs/swagger.ts`
+- `bofitxp-be/src/docs/swagger_output.json`
+- `bofitxp-be/src/tests/swagger-docs.test.ts`
+
+Status:
+
+- pola dokumentasi per domain sekarang sudah konsisten untuk auth, user, dan user quests
+- langkah berikutnya adalah menjaga pola yang sama untuk endpoint baru agar dokumentasi tetap sinkron dengan source code
+
+## Perubahan terbaru yang sudah diverifikasi (2026-10-28): Swagger grouping fix verified on localhost
+
+Masalah yang ditemukan:
+
+- hasil generate Swagger sebelumnya masih menempatkan semua endpoint ke section `default` karena tag tidak diterapkan secara konsisten pada output JSON
+- endpoint yang memiliki prefix `/auth`, `/user`, dan `/user-quests` belum dibagi ke section yang benar di UI Swagger
+
+Perbaikan yang sudah dibuat:
+
+- generator Swagger di `bofitxp-be/src/docs/swagger.ts` diperbarui dengan `tags` global dan override `operation.tags` per route berdasarkan prefix endpoint
+- output JSON dire-generate ke `bofitxp-be/src/docs/swagger_output.json` agar UI menampilkan section terpisah: Auth, User, dan User Quests
+- dilakukan validasi langsung terhadap file JSON untuk memastikan route `/auth/register`, `/user/send-otp-confirmation-code`, dan `/user-quests` masuk ke tag yang sesuai
+- test coverage endpoint Swagger dijalankan dan lulus untuk memastikan dokumentasi tetap memuat semua path yang ada
+
+Bukti utama:
+
+- `bofitxp-be/src/docs/swagger.ts`
+- `bofitxp-be/src/docs/swagger_output.json`
+- `bofitxp-be/src/tests/swagger-docs.test.ts`
+
+Status:
+
+- grouping section Swagger di localhost berhasil diperbaiki dan sudah diverifikasi
+- dokumentasi backend sekarang konsisten untuk pembagian domain Auth, User, dan User Quests
+
 ## Perubahan terbaru yang sudah diverifikasi (2026-10-27): secure account update via OTP
 
 Masalah yang ditemukan:
