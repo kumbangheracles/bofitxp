@@ -27,6 +27,8 @@ Buat juga atau perbarui .github/copilot-instructions.md agar Copilot selalu:
 - Memeriksa dokumentasi dan source code sebelum melakukan perubahan signifikan.
 - Mengikuti pola coding yang sudah digunakan.
 - Menjaga kompatibilitas frontend, backend, dan database.
+- Memegang prinsip clean code: Separation of Concerns, Single Responsibility Principle, dan layered architecture.
+- Menjaga pemisahan tanggung jawab: controller hanya menangani HTTP/response, service menangani business logic, validation terpisah, dan data access di layer yang tepat.
 - Menjalankan pemeriksaan yang relevan setelah perubahan.
 - Memperbarui dokumentasi saat implementasi atau keputusan berubah.
 - Melaporkan file yang berubah, hasil verifikasi, risiko, dan pekerjaan lanjutan.

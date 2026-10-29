@@ -65,7 +65,19 @@ Bukti:
 
 Keputusan ini menjaga agar controller/service tidak menerima payload mentah tanpa guard.
 
-## 8. Streak dan challenge dipandang sebagai event game loop
+## 8. Pemisahan controller-service mengikuti layered OOP clean code
+
+Keputusan: backend memakai pola controller-service yang jelas, bukan menaruh seluruh business logic di controller.
+
+Bukti:
+
+- `auth.controller.ts` hanya menangani request/response
+- `auth.service.ts` menangani login, register, activation, dan akses Prisma
+- `userQuest.controller.ts` memanggil `UserQuestService` untuk generate dan finish quest
+
+Hal ini sesuai prinsip clean code yang umum dipakai: Separation of Concerns, Single Responsibility Principle, dan layered architecture. Tujuan utamanya adalah membuat fitur lebih mudah dipelihara, diuji, dan dikembangkan tanpa menumpuk logika bisnis di satu file.
+
+## 9. Streak dan challenge dipandang sebagai event game loop
 
 Keputusan: goal completion tidak hanya menghitung XP, tetapi juga menghasilkan event tambahan saat kombinasi syarat terpenuhi.
 

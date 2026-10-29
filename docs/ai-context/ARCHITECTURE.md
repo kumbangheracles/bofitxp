@@ -58,7 +58,29 @@ Flow umum backend:
 4. response menggunakan format umum `{ message, data }`
 5. untuk quest completion, service mengembalikan `event` payload untuk frontend
 
-## 4. Auth flow
+## 4. Pola controller-service dan clean code
+
+Pemisahan antara controller dan service sudah ada di backend, dan mengikuti pola layered architecture yang umum dalam OOP/clean code:
+
+- `controller` bertugas menangani HTTP request/response, validasi input dasar, dan delegasi ke service
+- `service` memuat business logic, orchestration, dan akses data (Prisma)
+- model/domain logic tidak dibenamkan di controller agar fungsi lebih fokus, mudah diuji, dan reusable
+
+Bukti dari code:
+
+- `bofitxp-be/src/controllers/auth.controller.ts` hanya memproses `req`/`res` dan memanggil `AuthService`
+- `bofitxp-be/src/services/auth.service.ts` menangani login/register/activation logic dan access database
+- `bofitxp-be/src/controllers/userQuest.controller.ts` bertindak sebagai adapter HTTP, sementara `UserQuestService` memegang flow generate/finish quest dan reward event
+
+Konsep clean code yang paling tepat untuk pola ini adalah:
+
+- Separation of Concerns (SoC): tiap layer punya tanggung jawab berbeda
+- Single Responsibility Principle (SRP): satu class/service fokus pada satu domain behavior
+- Layered Architecture: HTTP layer, service layer, data access layer
+
+Dengan kata lain, pendekatan ini bukan hanya "OOP style" semata, tetapi pola desain clean code yang membuat kode lebih mudah dipelihara, diuji, dan dikembangkan secara modular.
+
+## 5. Auth flow
 
 Bukti dari kode:
 
