@@ -38,9 +38,11 @@ const AccountIndex = () => {
   const scheme = useColorScheme();
   const router = useRouter();
   const { authUser, logout } = useAuth();
+
   const [loggingOut, setLoggingOut] = useState<boolean>(false);
   const [isOpenBmiInfo, setIsOpenBmiInfo] = useState<boolean>(false);
-  const { isOpenModalBmi, setIsOpenModalBmi } = useGlobalState();
+  const { setIsOpenModalBmi } = useGlobalState();
+  const [modalLogout, setModalLogout] = useState<boolean>(false);
   const isDarkMode = scheme === "dark";
 
   const bmiCategory = getBmiCategory(authUser?.body_mass_index, theme);
@@ -379,7 +381,7 @@ const AccountIndex = () => {
           ]}
         >
           <Pressable
-            onPress={handleLogout}
+            onPress={() => setModalLogout(true)}
             disabled={loggingOut}
             style={({ pressed }) => [
               styles.menuRow,
@@ -426,6 +428,23 @@ const AccountIndex = () => {
       >
         <BmiClassificationCard theme={theme} />
       </AppModal>
+
+      <AppModal
+        visible={modalLogout}
+        cancelText="Cancel"
+        onClose={() => setModalLogout(false)}
+        confirmText="Yes"
+        onCancel={() => setModalLogout(false)}
+        confirmVariant="primary"
+        cancelVariant="default"
+        onConfirm={handleLogout}
+        isCancelLoading={loggingOut}
+        isConfirmLoading={loggingOut}
+      >
+        <Text style={[styles.modalLogoutTitle, { color: theme.text }]}>
+          Are you sure want to log out ?.
+        </Text>
+      </AppModal>
     </ScrollView>
   );
 };
@@ -433,6 +452,9 @@ const AccountIndex = () => {
 const styles = StyleSheet.create({
   avatarWrap: {
     position: "relative",
+  },
+  modalLogoutTitle: {
+    fontSize: fontSize.lg,
   },
   avatarRing: {
     width: 96,

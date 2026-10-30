@@ -9,6 +9,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
 import { UserProps } from "@/types/user.type";
+import Toast from "react-native-toast-message";
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -70,6 +71,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     await SecureStore.deleteItemAsync("user_token");
+
+    Toast.show({
+      type: "success",
+      text1: "Logout Success",
+    });
     setToken(null);
     setAuthUser(null);
   };

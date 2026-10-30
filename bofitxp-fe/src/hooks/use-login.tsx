@@ -7,7 +7,6 @@ import {
 import { AuthService } from "@/services/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import { useAuth } from "@/context/AuthContext";
 import Toast from "react-native-toast-message";
 const useLogin = () => {
@@ -38,8 +37,14 @@ const useLogin = () => {
     onSuccess: async (data) => {
       await loginSaveToken(data.data); // data.data = token string
       console.log("Data: ", data.data);
-      alert("Login success.");
+      Toast.show({
+        type: "success",
+        text1: "Login Success",
+        text2: `Welcome back`,
+      });
+
       reset();
+
       router.push("/private/(tabs)/home");
     },
   });

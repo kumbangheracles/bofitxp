@@ -394,10 +394,25 @@ const EditInformationIndex = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerRow}>
-          <ThemedText style={styles.title}>Edit Information</ThemedText>
-          <Text style={[styles.subtitle, { color: theme.textHint }]}>
-            Personal details
-          </Text>
+          <Pressable onPress={() => router.push("/private/(tabs)/account")}>
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={24}
+              style={{
+                borderColor: theme.border,
+                borderRadius: 8,
+                borderWidth: 1,
+                padding: spacing.sm,
+              }}
+              color={theme.textHint}
+            />
+          </Pressable>
+          <View>
+            <ThemedText style={styles.title}>Edit Information</ThemedText>
+            <Text style={[styles.subtitle, { color: theme.textHint }]}>
+              Personal details
+            </Text>
+          </View>
         </View>
 
         <ThemedView
@@ -481,6 +496,9 @@ const EditInformationIndex = () => {
 const styles = StyleSheet.create({
   headerRow: {
     marginBottom: spacing.md,
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
   },
   title: {
     fontSize: fontSize.xl,

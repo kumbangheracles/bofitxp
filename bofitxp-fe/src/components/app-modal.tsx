@@ -37,6 +37,14 @@ interface AppModalProps {
     | "danger"
     | "warning"
     | "success";
+  cancelVariant?:
+    | "default"
+    | "combo"
+    | "primary"
+    | "secondary"
+    | "danger"
+    | "warning"
+    | "success";
 
   onCancel?: () => void;
   cancelText?: string;
@@ -55,6 +63,7 @@ const AppModal = ({
   confirmText = "SAVE",
   isConfirmLoading = false,
   confirmVariant = "primary",
+  cancelVariant = "primary",
   onCancel,
   cancelText = "CANCEL",
   isCancelLoading = false,
@@ -198,8 +207,8 @@ const AppModal = ({
                       label={cancelText}
                       onPress={onCancel}
                       isLoading={isCancelLoading}
-                      variantGrad="secondary"
-                      isGrad={false}
+                      variantGrad={cancelVariant}
+                      isGrad={true}
                       title={"Cancel"}
                     />
                   </View>
