@@ -5,9 +5,29 @@
 Workflow backend asli di `bofitxp-be/.github/workflow/ci-cd.yaml` belum valid untuk GitHub Actions karena:
 
 - GitHub hanya membaca workflow yang berada di `.github/workflows/` di root repository, bukan di subfolder aplikasi.
-- repository ini adalah monorepo, jadi backend berada di `bofitxp-be/` dan membutuhkan `working-directory` agar `npm ci`, `prisma generate`, test, dan build berjalan dari folder yang benar.
+- repository ini bukan strict monorepo; backend dan frontend dipisah sebagai project yang bisa dideploy secara mandiri, tetapi CI/CD tetap disimpan di root repo sebagai single source of truth.
+- backend berada di `bofitxp-be/` dan membutuhkan `working-directory` agar `npm ci`, `prisma generate`, test, dan build berjalan dari folder yang benar.
 - backend memakai Prisma dengan MongoDB, sehingga CI harus menyediakan container MongoDB dan `DATABASE_URL` yang valid untuk test.
 - deploy ke Vercel untuk backend harus diarahkan ke subfolder `./bofitxp-be` agar project yang dipublish sesuai dengan app backend, bukan repo root.
+
+## Root cause runtime Vercel terbaru
+
+Log runtime Vercel menunjukkan bahwa aplikasi berhasil build dan mulai proses, tetapi crash terjadi saat modul Groq diinisialisasi karena `GROQ_API_KEY` tidak ada di environment produksi Vercel.
+
+Artinya:
+
+- masalah bukan lagi di GitHub Actions atau lockfile
+- masalah aktif adalah konfigurasi environment produksi di Vercel
+- backend harus memiliki variabel environment yang valid di project Vercel, terutama `GROQ_API_KEY`, sebelum request ke endpoint AI aktif
+
+Variabel environment yang wajib dicek di Vercel untuk backend:
+
+- `DATABASE_URL`
+- `SECRET`
+- `PORT`
+- `GROQ_API_KEY`
+- `OTP_RATE_LIMIT_SECRET`
+- variabel email / SMTP bila fitur aktivasi email aktif di production
 
 ## Arsitektur CI/CD yang benar
 

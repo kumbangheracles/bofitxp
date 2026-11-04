@@ -3,6 +3,19 @@ process.env.GROQ_API_KEY = process.env.GROQ_API_KEY ?? "test-key";
 import { UserQuestService } from "../services/userQuest.service";
 
 describe("UserQuestService streak and challenge evaluation", () => {
+  test("mengembalikan konfigurasi Groq yang aman ketika API key tidak tersedia", async () => {
+    const previousKey = process.env.GROQ_API_KEY;
+    delete process.env.GROQ_API_KEY;
+    jest.resetModules();
+
+    const { getGroqClient } = await import("../utils/groq");
+    expect(getGroqClient()).toBeNull();
+
+    if (previousKey) {
+      process.env.GROQ_API_KEY = previousKey;
+    }
+  });
+
   test("mengaktifkan combo x2 setelah 3 quest daily berturut-turut", () => {
     const service = new UserQuestService();
 

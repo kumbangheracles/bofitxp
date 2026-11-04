@@ -1,7 +1,7 @@
 import { Difficulty, UserQuest } from "../generated/prisma/client";
 import prisma from "../utils/prisma";
 
-import groq from "../utils/groq";
+import { ensureGroqClient } from "../utils/groq";
 import { XP_REWARD } from "../utils/constants/xp";
 import logger from "../utils/pino";
 
@@ -61,6 +61,8 @@ export class UserQuestService {
     if (user.body_mass_index == null) {
       throw new Error("BMI is required!.");
     }
+
+    const groq = ensureGroqClient();
 
     const completion = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",

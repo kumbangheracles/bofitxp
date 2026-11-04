@@ -197,13 +197,14 @@ Status:
 - masalah login/expired-token yang teridentifikasi sudah diperbaiki
 - file auth context tidak menunjukkan error pada pemeriksaan file yang relevan
 
-## Perubahan terbaru yang sudah diverifikasi (2026-11-04): CI/CD workflow cleanup dan single source of truth
+## Perubahan terbaru yang sudah diverifikasi (2026-11-04): CI/CD workflow cleanup dan root cause runtime Vercel
 
 Masalah yang ditemukan:
 
 - workflow GitHub Actions dibuat duplikat di subfolder backend dan di root repository, sehingga struktur repo menjadi membingungkan
 - GitHub hanya akan membaca workflow yang ada di root `.github/workflows`, bukan di folder aplikasi
 - project backend dan frontend dipisah secara deployment, tetapi repository masih tetap satu source of truth untuk development dan CI/CD
+- log runtime Vercel menunjukkan crash pada module Groq karena `GROQ_API_KEY` tidak tersedia di environment produksi
 
 Perbaikan yang sudah dibuat:
 
@@ -211,11 +212,13 @@ Perbaikan yang sudah dibuat:
 - file workflow duplikat di `bofitxp-be/.github/workflow/` dibersihkan agar tidak ada konflik konfigurasi
 - konfigurasi Jest dibuat eksplisit agar tidak memuat konfigurasi ganda serial `.js` dan `.ts`
 - dokumentasi CI/CD dibuat di `docs/ai-context/CI-CD.md` agar alur test dan deploy dijelaskan secara eksplisit untuk sesi berikutnya
+- inisialisasi Groq dibuat lazy agar server tidak crash saat key belum ada; error sekarang muncul hanya saat AI quest generation dipanggil dan key belum dikonfigurasi
 
 Status:
 
 - struktur workflow sudah konsisten dan hanya tersisa satu workflow utama yang valid
 - validasi backend terhadap test suite dan build masih perlu dibedakan antara environment lokal Windows dan runner Ubuntu GitHub Actions
+- masalah aktif di Vercel adalah konfigurasi environment produksi, bukan pipeline CI/CD itu sendiri
 
 ## Perubahan terbaru yang sudah diverifikasi (2026-10-28): Swagger docs sectioning per domain
 
