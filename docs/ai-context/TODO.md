@@ -9,6 +9,7 @@ Daftar TODO yang muncul dari audit source code dan status repo saat ini.
 - [x] Memisahkan test per domain fitur (`auth`, `quest`, dan lain-lain)
 - [x] Membuat flow edit informasi user per row dengan modal dinamis dan integrasi API update-user
 - [x] Tambahkan guard OTP abuse berbasis Redis dengan rate limit IP, cooldown email, daily cap, dan fail-closed saat Redis gagal
+- [x] Membersihkan duplikasi workflow GitHub Actions dan menyisakan satu workflow utama di root repository
 - [ ] Lakukan black-box testing manual pada fitur yang sudah dibuat di device/simulator aplikasi mobile
 - [ ] Review controller/service `userController` dan `userQuestController` untuk konsistensi response dan edge case tambahan
 - [ ] Verifikasi flow lengkap resend OTP terhadap endpoint dan controller konkret saat runtime Vercel/Upstash aktif

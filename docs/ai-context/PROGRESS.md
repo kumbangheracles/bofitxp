@@ -197,6 +197,26 @@ Status:
 - masalah login/expired-token yang teridentifikasi sudah diperbaiki
 - file auth context tidak menunjukkan error pada pemeriksaan file yang relevan
 
+## Perubahan terbaru yang sudah diverifikasi (2026-11-04): CI/CD workflow cleanup dan single source of truth
+
+Masalah yang ditemukan:
+
+- workflow GitHub Actions dibuat duplikat di subfolder backend dan di root repository, sehingga struktur repo menjadi membingungkan
+- GitHub hanya akan membaca workflow yang ada di root `.github/workflows`, bukan di folder aplikasi
+- project backend dan frontend dipisah secara deployment, tetapi repository masih tetap satu source of truth untuk development dan CI/CD
+
+Perbaikan yang sudah dibuat:
+
+- workflow aktif dipastikan berada di root repo: `.github/workflows/backend-ci-cd.yml`
+- file workflow duplikat di `bofitxp-be/.github/workflow/` dibersihkan agar tidak ada konflik konfigurasi
+- konfigurasi Jest dibuat eksplisit agar tidak memuat konfigurasi ganda serial `.js` dan `.ts`
+- dokumentasi CI/CD dibuat di `docs/ai-context/CI-CD.md` agar alur test dan deploy dijelaskan secara eksplisit untuk sesi berikutnya
+
+Status:
+
+- struktur workflow sudah konsisten dan hanya tersisa satu workflow utama yang valid
+- validasi backend terhadap test suite dan build masih perlu dibedakan antara environment lokal Windows dan runner Ubuntu GitHub Actions
+
 ## Perubahan terbaru yang sudah diverifikasi (2026-10-28): Swagger docs sectioning per domain
 
 Masalah yang ditemukan:
