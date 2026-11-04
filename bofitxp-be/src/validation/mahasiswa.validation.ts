@@ -1,6 +1,12 @@
 import * as Yup from "yup";
-import { Mahasiswa } from "../generated/prisma/client";
-export interface MahasiswaDTO extends Mahasiswa {}
+
+export interface MahasiswaDTO {
+  fullName: string;
+  noHp: string;
+  email: string;
+  nim: string;
+  jurusan: string;
+}
 
 export const MahasiswaValidation = Yup.object<MahasiswaDTO>({
   fullName: Yup.string().required(),

@@ -7,6 +7,7 @@ export interface IUserToken {
   username: Users["username"];
   email: Users["email"];
   isVerified: Users["isVerified"];
+  role?: Users["role"] | null;
   gender?: string | null;
   age?: number | null;
   body_mass_index: Users["body_mass_index"];
