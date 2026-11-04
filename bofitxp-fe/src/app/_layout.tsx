@@ -10,31 +10,34 @@ import { useToastConfig } from "@/components/app-toast";
 import GlobalToastManager from "@/components/CustomToastManager";
 import { CustomToastProvider } from "@/context/CostumToastProvider";
 import { GlobalSatateProvider } from "@/context/GlobalStateContext";
+import { Colors } from "@/constants/theme";
+import BmiModal from "@/components/BmiModal";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
   const toastConfig = useToastConfig();
+  const appTheme = Colors[colorScheme === "dark" ? "dark" : "light"];
+
   return (
     <AuthProvider>
-      <GlobalSatateProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <GlobalSatateProvider>
           <ThemeProvider
             value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
           >
-            <StyledProvider
-              theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-            >
+            <StyledProvider theme={appTheme}>
               <CustomToastProvider>
                 <GlobalToastManager />
                 <AnimatedSplashOverlay />
                 <Stack screenOptions={{ headerShown: false }} />
                 <Toast config={toastConfig} />
+                <BmiModal />
               </CustomToastProvider>
             </StyledProvider>
           </ThemeProvider>
-        </QueryClientProvider>
-      </GlobalSatateProvider>
+        </GlobalSatateProvider>
+      </QueryClientProvider>
     </AuthProvider>
   );
 }

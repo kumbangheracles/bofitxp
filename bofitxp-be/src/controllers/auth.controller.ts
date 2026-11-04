@@ -12,6 +12,7 @@ export type TRegister = {
   email: string;
   password: string;
   confirmPassword: string;
+  gender: "pria" | "wanita";
 };
 
 type TLogin = {
@@ -50,14 +51,6 @@ export default {
     }
   },
   async login(req: Request, res: Response) {
-    /**
-     #swagger.requestBody = {
-     required: true,
-     schema: {
-     $ref: "#components/schemas/LoginRequest"}
-     }
-     
-     */
     const payload = req.body as unknown as TLogin;
     try {
       const result = await authService.login(payload);
@@ -85,13 +78,6 @@ export default {
     }
   },
   async activation(req: IReqUser, res: Response) {
-    /**
-    #swagger.tags = ['Auth']
-    #swagger.requestBody = {
-    required: true,
-    schema: {$ref: '#/components/schemas/ActivationRequest'}
-    }
-     */
     try {
       const { activationCode } = req.body;
       const result = await authService.activationCode(activationCode);
@@ -141,11 +127,6 @@ export default {
   },
 
   async me(req: IReqUser, res: Response) {
-    /**
-    #swagger.security = [{
-     "bearerAuth": []
-     }]
-     */
     try {
       const user = req.user;
       const result = await prisma.users.findFirst({ where: { id: user?.id } });

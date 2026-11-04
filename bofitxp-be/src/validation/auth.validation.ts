@@ -9,6 +9,9 @@ export const registerValidateSchema = Yup.object<UserDTO>({
   confirmPassword: Yup.string()
     .required()
     .oneOf([Yup.ref("password")], "Password not match"),
+  gender: Yup.string()
+    .oneOf(["pria", "wanita"], "Gender is required.")
+    .required("Gender is required."),
 });
 
 export const loginValidation = Yup.object({});

@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const ActivationScreen = () => {
   const theme = useAppTheme();
   const authService = new AuthService();
-  const [code, setCode] = useState<UserProps["activationCode"]>("");
+  const [code, setCode] = useState<string>("");
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (type: "activation" | "resendActivationCode") => {
@@ -28,9 +28,7 @@ const ActivationScreen = () => {
         return;
       }
       if (type === "activation") {
-        const res = await authService.activationCode(
-          code as UserProps["activationCode"],
-        );
+        const res = await authService.activationCode(code);
         if (res) {
           alert("Activation account success.");
 
@@ -93,7 +91,7 @@ const ActivationScreen = () => {
         </SafeAreaView>
         <AppActivationCodeCard
           subtitle="Activation code has sended to your email"
-          value={code as UserProps["activationCode"]}
+          value={code}
           onChangeCode={setCode}
           onSubmit={() => handleSubmit("activation")}
           onResend={() => handleSubmit("resendActivationCode")}

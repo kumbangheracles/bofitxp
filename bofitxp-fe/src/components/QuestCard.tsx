@@ -174,17 +174,19 @@ const QuestCard = ({ item, index = 0, trigger, refetch }: QuestCardProps) => {
                   alignItems: "center",
                   gap: 4,
                   borderRadius: 16,
-                  backgroundColor: "#DCFCE7",
-                  borderColor: "#BBF7D0",
+                  backgroundColor: theme.successSoft,
+                  borderColor: theme.xpProgress,
                   borderWidth: 1,
                 }}
               >
                 <MaterialCommunityIcons
                   name="lightning-bolt-outline"
-                  color={"#15803D"}
+                  color={theme.successStrong}
                   size={fontSize.sm}
                 />
-                <Text style={{ fontSize: fontSize.xs, color: "#15803D" }}>
+                <Text
+                  style={{ fontSize: fontSize.xs, color: theme.successStrong }}
+                >
                   +{quest?.quest?.xp_reward}XP
                 </Text>
               </View>

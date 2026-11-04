@@ -17,7 +17,7 @@ export interface ToastProps {
   title: string;
   subtitle?: string;
   icons?: React.ReactNode[];
-  colors?: string[];
+  colors?: readonly [string, string, ...string[]];
   containerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   subtitleStyle?: TextStyle;
@@ -28,7 +28,7 @@ export const AnimatedToast: React.FC<ToastProps> = ({
   title,
   subtitle,
   icons = [],
-  colors = ["#FF7A00", "#FF3D00"],
+  colors = ["#FF7A00", "#FF3D00"] as const,
   containerStyle,
   titleStyle,
   subtitleStyle,

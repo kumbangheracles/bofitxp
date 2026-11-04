@@ -1,6 +1,11 @@
 import { Response } from "express";
 import mongoose from "mongoose";
 import * as Yup from "yup";
+import {
+  AppDependencyError,
+  AppRateLimitError,
+  AppValidationError,
+} from "./otpGuard";
 
 type Pagination = {
   totalPages: number;
@@ -19,6 +24,37 @@ export default {
     });
   },
   error(res: Response, error: unknown, message: string) {
+    if (error instanceof AppRateLimitError) {
+      return res.status(429).json({
+        meta: {
+          status: 429,
+          message: error.message,
+        },
+        data: null,
+        retryAfterMs: error.retryAfterMs,
+      });
+    }
+
+    if (error instanceof AppDependencyError) {
+      return res.status(503).json({
+        meta: {
+          status: 503,
+          message: error.message,
+        },
+        data: null,
+      });
+    }
+
+    if (error instanceof AppValidationError) {
+      return res.status(400).json({
+        meta: {
+          status: 400,
+          message: error.message,
+        },
+        data: null,
+      });
+    }
+
     if (error instanceof Yup.ValidationError) {
       return res.status(400).json({
         meta: {

@@ -54,7 +54,7 @@ describe("POST /api/auth/activation", () => {
   });
 
   test("Harus mengembalikan status 200 dan mengaktifkan user jika kode valid", async () => {
-    const mockUpdatedUser: Users = {
+    const mockUpdatedUser = {
       id: "1",
       username: "wahyutest",
       email: "wahyu@mail.com",
@@ -68,7 +68,15 @@ describe("POST /api/auth/activation", () => {
       streak: 0,
       updatedAt: new Date(),
       xp: 0,
-    };
+      gender: "pria",
+      age: 25,
+      body_weight: 70,
+      body_height: 170,
+      body_mass_index: 24.2,
+      role: "MEMBER",
+      target_final: "maintain_fitness",
+      expireAt: null,
+    } as any as Users;
 
     MockedAuthService.prototype.activationCode.mockResolvedValue({
       updatedUser: mockUpdatedUser,

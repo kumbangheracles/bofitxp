@@ -47,7 +47,7 @@ export default function TabTwoScreen() {
       <ThemedView style={styles.container}>
         <ThemedText>Welcome To BoFitXp</ThemedText>
         <Pressable>
-          <Button title="Next" onPress={() => router.push("/login")} />
+          <Button title="Next" onPress={() => router.push("/public/login")} />
         </Pressable>
       </ThemedView>
     </ScrollView>

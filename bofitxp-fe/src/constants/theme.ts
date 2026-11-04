@@ -55,43 +55,59 @@ export const palette = {
   bgSurface: "#13131F",
   bgElevated: "#1C1C2E",
   bgBorder: "#252540",
+  bgAlt: "#1A1B2D",
 
   // --- Primary: Electric Violet ---
   violet: "#6C3FFF",
   violetHover: "#8B5CF6",
   violetLabel: "#A78BFA",
   violetMuted: "#C4B5FD",
+  violetSoft: "#E9D5FF",
 
   // --- Success / XP: Neon Teal ---
   teal: "#00D4AA",
   tealProgress: "#2EEFC7",
+  tealSoft: "#DCFCE7",
 
   // --- Achievement: Champion Gold ---
   gold: "#FFD700",
   goldGlow: "#FFE44D",
+  goldSoft: "#FEF3C7",
 
   // --- Energy / Combo: Fire Orange ---
   orange: "#FF6B35",
   orangeSecondary: "#FF8C5A",
+  orangeSoft: "#FFE4E6",
 
   // --- Alert ---
   danger: "#F43F5E",
+  dangerSoft: "#FEE2E2",
 
   // --- Text ---
   textPrimary: "#FFFFFF",
   textSecondary: "#B0B0C8",
   textHint: "#6B6B8A",
+  textInverse: "#0A0A0F",
 
   // --- Light mode backgrounds ---
   lightBgDeep: "#F0F0F7",
   lightBgSurface: "#FFFFFF",
   lightBgElevated: "#E8E8F5",
   lightBgBorder: "#D0D0E8",
+  lightBgAlt: "#F5F5FB",
 
   // --- Light mode text ---
   lightTextPrimary: "#0A0A0F",
   lightTextSecondary: "#3A3A5C",
   lightTextHint: "#7878A0",
+  lightTextInverse: "#FFFFFF",
+
+  // --- Shared overlay and soft surfaces ---
+  overlayDark: "rgba(10, 10, 15, 0.55)",
+  overlayLight: "rgba(15, 23, 42, 0.18)",
+  primarySoftDark: "#2B234C",
+  primarySoftLight: "#F1E8FF",
+  successStrong: "#15803D",
 } as const;
 
 // ─────────────────────────────────────────
@@ -100,15 +116,20 @@ export const palette = {
 export const darkTheme = {
   // Backgrounds
   background: palette.bgDeep,
+  backgroundElement: palette.bgSurface,
+  backgroundSelected: palette.bgElevated,
   surface: palette.bgSurface,
   elevated: palette.bgElevated,
   border: palette.bgBorder,
+  surfaceAlt: palette.bgAlt,
+  overlay: palette.overlayDark,
 
   // Primary
   primary: palette.violet,
   primaryHover: palette.violetHover,
   primaryLabel: palette.violetLabel,
   primaryMuted: palette.violetMuted,
+  primarySoft: palette.primarySoftDark,
 
   // Semantic colors
   xp: palette.teal,
@@ -118,11 +139,17 @@ export const darkTheme = {
   combo: palette.orange,
   comboSecondary: palette.orangeSecondary,
   danger: palette.danger,
+  success: palette.teal,
+  successStrong: palette.successStrong,
+  successSoft: palette.tealSoft,
+  warning: palette.gold,
+  warningSoft: palette.goldSoft,
 
   // Text
   text: palette.textPrimary,
   textSecondary: palette.textSecondary,
   textHint: palette.textHint,
+  textInverse: palette.textInverse,
 } as const;
 
 // ─────────────────────────────────────────
@@ -131,17 +158,22 @@ export const darkTheme = {
 export const lightTheme = {
   // Backgrounds
   background: palette.lightBgDeep,
+  backgroundElement: palette.lightBgSurface,
+  backgroundSelected: palette.lightBgElevated,
   surface: palette.lightBgSurface,
   elevated: palette.lightBgElevated,
   border: palette.lightBgBorder,
+  surfaceAlt: palette.lightBgAlt,
+  overlay: palette.overlayLight,
 
-  // Primary (sama, tetap vibrant)
+  // Primary
   primary: palette.violet,
   primaryHover: palette.violetHover,
   primaryLabel: palette.violetLabel,
   primaryMuted: palette.violetMuted,
+  primarySoft: palette.primarySoftLight,
 
-  // Semantic colors (sama)
+  // Semantic colors
   xp: palette.teal,
   xpProgress: palette.tealProgress,
   achievement: palette.gold,
@@ -149,11 +181,17 @@ export const lightTheme = {
   combo: palette.orange,
   comboSecondary: palette.orangeSecondary,
   danger: palette.danger,
+  success: palette.teal,
+  successStrong: palette.successStrong,
+  successSoft: palette.tealSoft,
+  warning: palette.gold,
+  warningSoft: palette.goldSoft,
 
   // Text
   text: palette.lightTextPrimary,
   textSecondary: palette.lightTextSecondary,
   textHint: palette.lightTextHint,
+  textInverse: palette.lightTextInverse,
 } as const;
 
 // ─────────────────────────────────────────
@@ -161,13 +199,18 @@ export const lightTheme = {
 // ─────────────────────────────────────────
 export type AppTheme = {
   background: string;
+  backgroundElement: string;
+  backgroundSelected: string;
   surface: string;
   elevated: string;
   border: string;
+  surfaceAlt: string;
+  overlay: string;
   primary: string;
   primaryHover: string;
   primaryLabel: string;
   primaryMuted: string;
+  primarySoft: string;
   xp: string;
   xpProgress: string;
   achievement: string;
@@ -175,9 +218,15 @@ export type AppTheme = {
   combo: string;
   comboSecondary: string;
   danger: string;
+  success: string;
+  successStrong: string;
+  successSoft: string;
+  warning: string;
+  warningSoft: string;
   text: string;
   textSecondary: string;
   textHint: string;
+  textInverse: string;
 };
 
 export const Colors = {

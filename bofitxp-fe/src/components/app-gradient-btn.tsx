@@ -46,7 +46,7 @@ const AppGradButton = ({
   const theme = useAppTheme();
 
   const gradColors = {
-    default: [theme.surface, theme.surface, theme.surface],
+    default: [theme.surface, theme.surface, theme.surface, theme.border],
     combo: [
       theme.combo,
       theme.combo,
