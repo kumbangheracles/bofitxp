@@ -63,3 +63,39 @@ export const QuestCategory = {
 } as const
 
 export type QuestCategory = (typeof QuestCategory)[keyof typeof QuestCategory]
+
+
+export const AiCoachSessionStatus = {
+  ACTIVE: 'ACTIVE',
+  CLOSED: 'CLOSED'
+} as const
+
+export type AiCoachSessionStatus = (typeof AiCoachSessionStatus)[keyof typeof AiCoachSessionStatus]
+
+
+export const AiCoachMessageSender = {
+  USER: 'USER',
+  AI: 'AI'
+} as const
+
+export type AiCoachMessageSender = (typeof AiCoachMessageSender)[keyof typeof AiCoachMessageSender]
+
+
+export const AiCoachReminderType = {
+  missed_quest: 'missed_quest',
+  streak_warning: 'streak_warning',
+  motivation: 'motivation',
+  wellness_checkin: 'wellness_checkin'
+} as const
+
+export type AiCoachReminderType = (typeof AiCoachReminderType)[keyof typeof AiCoachReminderType]
+
+
+export const AiCoachReminderStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  READ: 'READ',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type AiCoachReminderStatus = (typeof AiCoachReminderStatus)[keyof typeof AiCoachReminderStatus]

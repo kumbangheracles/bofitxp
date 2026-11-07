@@ -218,6 +218,34 @@ Status:
 
 - struktur workflow sudah konsisten dan hanya tersisa satu workflow utama yang valid
 - validasi backend terhadap test suite dan build masih perlu dibedakan antara environment lokal Windows dan runner Ubuntu GitHub Actions
+
+## Perubahan terbaru yang sudah diverifikasi (2026-11-07): AI Coach UI + routing + persistence flow
+
+Fitur yang sudah ditambahkan dan diverifikasi dari source code:
+
+- backend AI Coach sudah memiliki model `AiCoachSession`, `AiCoachMessage`, dan `AiCoachReminder` di `bofitxp-be/prisma/schema.prisma`
+- flow chat dan reminder sudah dipisahkan dari business logic quest, dengan service layer yang fokus pada AI coaching dan reminder deduplication
+- endpoint backend untuk session, message, dan reminder proses sudah terdaftar di `bofitxp-be/src/routes/api.ts`
+- frontend memiliki hook `use-ai-coach.ts` dan service `aiCoach.service.ts` untuk mengakses session dan message dari API
+- home screen menambahkan tombol `Open AI Coach` yang mengarah ke route `/private/ai-coach`
+- screen chat AI Coach sudah dibuat dengan premium styling: gradient hero, avatar AI, tab sesi, bubble chat, input composer, dan indikator typing
+
+Bukti utama:
+
+- `bofitxp-be/src/services/aiCoach.service.ts`
+- `bofitxp-be/src/controllers/aiCoach.controller.ts`
+- `bofitxp-be/src/jobs/aiCoachReminder.job.ts`
+- `bofitxp-fe/src/hooks/use-ai-coach.ts`
+- `bofitxp-fe/src/services/aiCoach.service.ts`
+- `bofitxp-fe/src/app/private/ai-coach.tsx`
+- `bofitxp-fe/src/app/private/(tabs)/home.tsx`
+
+Status:
+
+- AI coach flow dari backend sampai frontend sudah masuk ke codebase dan terhubung
+- validasi TypeScript frontend terbaru berhasil dijalankan tanpa error
+- uji runtime actual di device/simulator masih perlu dilakukan untuk memastikan session creation, message send, dan reminder delivery berjalan di kondisi nyata
+- pengiriman reminder push/notification production masih belum menjadi bagian dari scope saat ini dan perlu dipertimbangkan pada fase selanjutnya
 - masalah aktif di Vercel adalah konfigurasi environment produksi, bukan pipeline CI/CD itu sendiri
 
 ## Perubahan terbaru yang sudah diverifikasi (2026-10-28): Swagger docs sectioning per domain

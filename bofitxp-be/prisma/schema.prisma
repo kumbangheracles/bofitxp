@@ -58,6 +58,8 @@ model Users {
   updatedAt DateTime @updatedAt
 
   userQuests     UserQuest[]
+  aiCoachSessions AiCoachSession[]
+  aiCoachReminders AiCoachReminder[]
 
 }
 
@@ -81,6 +83,30 @@ enum QuestCategory {
   weekly
   special
   unknown
+}
+
+enum AiCoachSessionStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum AiCoachMessageSender {
+  USER
+  AI
+}
+
+enum AiCoachReminderType {
+  missed_quest
+  streak_warning
+  motivation
+  wellness_checkin
+}
+
+enum AiCoachReminderStatus {
+  PENDING
+  SENT
+  READ
+  DISMISSED
 }
 
 model Quests {
@@ -112,6 +138,50 @@ model UserQuest {
   updatedAt   DateTime @updatedAt
 
   @@unique([userId, questId])
+}
+
+model AiCoachSession {
+  id        String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                 @db.ObjectId
+  title     String?
+  summary   String?
+  status    AiCoachSessionStatus   @default(ACTIVE)
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+
+  user      Users                  @relation(fields: [userId], references: [id])
+  messages  AiCoachMessage[]
+  reminders AiCoachReminder[]
+}
+
+model AiCoachMessage {
+  id        String              @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId String              @db.ObjectId
+  sender    AiCoachMessageSender
+  content   String
+  createdAt DateTime            @default(now())
+
+  session   AiCoachSession      @relation(fields: [sessionId], references: [id])
+}
+
+model AiCoachReminder {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String                  @db.ObjectId
+  sessionId   String?                 @db.ObjectId
+  type        AiCoachReminderType
+  title       String
+  body        String
+  status      AiCoachReminderStatus   @default(PENDING)
+  scheduledAt DateTime
+  sentAt      DateTime?
+  metadata    Json?
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  user        Users                   @relation(fields: [userId], references: [id])
+  session     AiCoachSession?         @relation(fields: [sessionId], references: [id])
+
+  @@index([userId, status, scheduledAt])
 }
 
 // model Habits {

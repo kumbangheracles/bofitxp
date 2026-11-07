@@ -51,7 +51,10 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 export const ModelName = {
   Users: 'Users',
   Quests: 'Quests',
-  UserQuest: 'UserQuest'
+  UserQuest: 'UserQuest',
+  AiCoachSession: 'AiCoachSession',
+  AiCoachMessage: 'AiCoachMessage',
+  AiCoachReminder: 'AiCoachReminder'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -114,6 +117,48 @@ export const UserQuestScalarFieldEnum = {
 } as const
 
 export type UserQuestScalarFieldEnum = (typeof UserQuestScalarFieldEnum)[keyof typeof UserQuestScalarFieldEnum]
+
+
+export const AiCoachSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  summary: 'summary',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiCoachSessionScalarFieldEnum = (typeof AiCoachSessionScalarFieldEnum)[keyof typeof AiCoachSessionScalarFieldEnum]
+
+
+export const AiCoachMessageScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  sender: 'sender',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type AiCoachMessageScalarFieldEnum = (typeof AiCoachMessageScalarFieldEnum)[keyof typeof AiCoachMessageScalarFieldEnum]
+
+
+export const AiCoachReminderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sessionId: 'sessionId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  status: 'status',
+  scheduledAt: 'scheduledAt',
+  sentAt: 'sentAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiCoachReminderScalarFieldEnum = (typeof AiCoachReminderScalarFieldEnum)[keyof typeof AiCoachReminderScalarFieldEnum]
 
 
 export const SortOrder = {

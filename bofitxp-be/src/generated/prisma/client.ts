@@ -61,3 +61,18 @@ export type Quests = Prisma.QuestsModel
  * 
  */
 export type UserQuest = Prisma.UserQuestModel
+/**
+ * Model AiCoachSession
+ * 
+ */
+export type AiCoachSession = Prisma.AiCoachSessionModel
+/**
+ * Model AiCoachMessage
+ * 
+ */
+export type AiCoachMessage = Prisma.AiCoachMessageModel
+/**
+ * Model AiCoachReminder
+ * 
+ */
+export type AiCoachReminder = Prisma.AiCoachReminderModel

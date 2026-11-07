@@ -11,4 +11,7 @@
 export type * from './models/Users'
 export type * from './models/Quests'
 export type * from './models/UserQuest'
+export type * from './models/AiCoachSession'
+export type * from './models/AiCoachMessage'
+export type * from './models/AiCoachReminder'
 export type * from './commonInputTypes'

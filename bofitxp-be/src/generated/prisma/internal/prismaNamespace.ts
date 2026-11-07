@@ -392,7 +392,10 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Users: 'Users',
   Quests: 'Quests',
-  UserQuest: 'UserQuest'
+  UserQuest: 'UserQuest',
+  AiCoachSession: 'AiCoachSession',
+  AiCoachMessage: 'AiCoachMessage',
+  AiCoachReminder: 'AiCoachReminder'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "users" | "quests" | "userQuest"
+    modelProps: "users" | "quests" | "userQuest" | "aiCoachSession" | "aiCoachMessage" | "aiCoachReminder"
     txIsolationLevel: never
   }
   model: {
@@ -634,6 +637,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AiCoachSession: {
+      payload: Prisma.$AiCoachSessionPayload<ExtArgs>
+      fields: Prisma.AiCoachSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiCoachSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiCoachSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.AiCoachSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiCoachSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>
+        }
+        findMany: {
+          args: Prisma.AiCoachSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>[]
+        }
+        create: {
+          args: Prisma.AiCoachSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>
+        }
+        createMany: {
+          args: Prisma.AiCoachSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AiCoachSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>
+        }
+        update: {
+          args: Prisma.AiCoachSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiCoachSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiCoachSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AiCoachSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.AiCoachSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiCoachSession>
+        }
+        groupBy: {
+          args: Prisma.AiCoachSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiCoachSessionGroupByOutputType>[]
+        }
+        findRaw: {
+          args: Prisma.AiCoachSessionFindRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        aggregateRaw: {
+          args: Prisma.AiCoachSessionAggregateRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        count: {
+          args: Prisma.AiCoachSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiCoachSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AiCoachMessage: {
+      payload: Prisma.$AiCoachMessagePayload<ExtArgs>
+      fields: Prisma.AiCoachMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiCoachMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiCoachMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.AiCoachMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiCoachMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>
+        }
+        findMany: {
+          args: Prisma.AiCoachMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>[]
+        }
+        create: {
+          args: Prisma.AiCoachMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>
+        }
+        createMany: {
+          args: Prisma.AiCoachMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AiCoachMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>
+        }
+        update: {
+          args: Prisma.AiCoachMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.AiCoachMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiCoachMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AiCoachMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.AiCoachMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiCoachMessage>
+        }
+        groupBy: {
+          args: Prisma.AiCoachMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiCoachMessageGroupByOutputType>[]
+        }
+        findRaw: {
+          args: Prisma.AiCoachMessageFindRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        aggregateRaw: {
+          args: Prisma.AiCoachMessageAggregateRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        count: {
+          args: Prisma.AiCoachMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiCoachMessageCountAggregateOutputType> | number
+        }
+      }
+    }
+    AiCoachReminder: {
+      payload: Prisma.$AiCoachReminderPayload<ExtArgs>
+      fields: Prisma.AiCoachReminderFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiCoachReminderFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiCoachReminderFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>
+        }
+        findFirst: {
+          args: Prisma.AiCoachReminderFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiCoachReminderFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>
+        }
+        findMany: {
+          args: Prisma.AiCoachReminderFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>[]
+        }
+        create: {
+          args: Prisma.AiCoachReminderCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>
+        }
+        createMany: {
+          args: Prisma.AiCoachReminderCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AiCoachReminderDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>
+        }
+        update: {
+          args: Prisma.AiCoachReminderUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiCoachReminderDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiCoachReminderUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AiCoachReminderUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiCoachReminderPayload>
+        }
+        aggregate: {
+          args: Prisma.AiCoachReminderAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiCoachReminder>
+        }
+        groupBy: {
+          args: Prisma.AiCoachReminderGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiCoachReminderGroupByOutputType>[]
+        }
+        findRaw: {
+          args: Prisma.AiCoachReminderFindRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        aggregateRaw: {
+          args: Prisma.AiCoachReminderAggregateRawArgs<ExtArgs>
+          result: Prisma.JsonObject
+        }
+        count: {
+          args: Prisma.AiCoachReminderCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiCoachReminderCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -705,6 +930,48 @@ export const UserQuestScalarFieldEnum = {
 } as const
 
 export type UserQuestScalarFieldEnum = (typeof UserQuestScalarFieldEnum)[keyof typeof UserQuestScalarFieldEnum]
+
+
+export const AiCoachSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  summary: 'summary',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiCoachSessionScalarFieldEnum = (typeof AiCoachSessionScalarFieldEnum)[keyof typeof AiCoachSessionScalarFieldEnum]
+
+
+export const AiCoachMessageScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  sender: 'sender',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type AiCoachMessageScalarFieldEnum = (typeof AiCoachMessageScalarFieldEnum)[keyof typeof AiCoachMessageScalarFieldEnum]
+
+
+export const AiCoachReminderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sessionId: 'sessionId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  status: 'status',
+  scheduledAt: 'scheduledAt',
+  sentAt: 'sentAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiCoachReminderScalarFieldEnum = (typeof AiCoachReminderScalarFieldEnum)[keyof typeof AiCoachReminderScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -875,6 +1142,69 @@ export type EnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 export type ListEnumDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Difficulty[]'>
     
 
+
+/**
+ * Reference to a field of type 'AiCoachSessionStatus'
+ */
+export type EnumAiCoachSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachSessionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachSessionStatus[]'
+ */
+export type ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachSessionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachMessageSender'
+ */
+export type EnumAiCoachMessageSenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachMessageSender'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachMessageSender[]'
+ */
+export type ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachMessageSender[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachReminderType'
+ */
+export type EnumAiCoachReminderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachReminderType'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachReminderType[]'
+ */
+export type ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachReminderType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachReminderStatus'
+ */
+export type EnumAiCoachReminderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachReminderStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AiCoachReminderStatus[]'
+ */
+export type ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiCoachReminderStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -964,6 +1294,9 @@ export type GlobalOmitConfig = {
   users?: Prisma.UsersOmit
   quests?: Prisma.QuestsOmit
   userQuest?: Prisma.UserQuestOmit
+  aiCoachSession?: Prisma.AiCoachSessionOmit
+  aiCoachMessage?: Prisma.AiCoachMessageOmit
+  aiCoachReminder?: Prisma.AiCoachReminderOmit
 }
 
 /* Types for Logging */

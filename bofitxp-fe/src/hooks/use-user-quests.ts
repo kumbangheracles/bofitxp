@@ -14,7 +14,10 @@ const useUserQuests = ({ questCategory }: PropTypes) => {
   const { data, isError, isFetched, isPending, isSuccess, refetch, error } =
     useQuery({
       queryKey: ["userQuests", authUser?.id, questCategory],
-      queryFn: () => userQuestService.getAllUserQuests(questCategory),
+      queryFn: async () => {
+        const result = await userQuestService.getAllUserQuests(questCategory);
+        return Array.isArray(result) ? result : [];
+      },
       enabled: !!authUser?.id && !!questCategory,
     });
 

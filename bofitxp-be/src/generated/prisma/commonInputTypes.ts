@@ -361,6 +361,103 @@ export type EnumDifficultyWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
 }
 
+export type EnumAiCoachSessionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachSessionStatus | Prisma.EnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachSessionStatusFilter<$PrismaModel> | $Enums.AiCoachSessionStatus
+}
+
+export type EnumAiCoachSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachSessionStatus | Prisma.EnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachSessionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachSessionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachSessionStatusFilter<$PrismaModel>
+}
+
+export type EnumAiCoachMessageSenderFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachMessageSender | Prisma.EnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachMessageSenderFilter<$PrismaModel> | $Enums.AiCoachMessageSender
+}
+
+export type EnumAiCoachMessageSenderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachMessageSender | Prisma.EnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachMessageSenderWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachMessageSender
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachMessageSenderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachMessageSenderFilter<$PrismaModel>
+}
+
+export type EnumAiCoachReminderTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderType | Prisma.EnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderTypeFilter<$PrismaModel> | $Enums.AiCoachReminderType
+}
+
+export type EnumAiCoachReminderStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderStatus | Prisma.EnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderStatusFilter<$PrismaModel> | $Enums.AiCoachReminderStatus
+}
+
+export type JsonNullableFilter<$PrismaModel = never> =
+| Prisma.PatchUndefined<
+    Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+    Required<JsonNullableFilterBase<$PrismaModel>>
+  >
+| Prisma.OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+export type JsonNullableFilterBase<$PrismaModel = never> = {
+  equals?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  isSet?: boolean
+}
+
+export type EnumAiCoachReminderTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderType | Prisma.EnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderTypeWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachReminderType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachReminderTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachReminderTypeFilter<$PrismaModel>
+}
+
+export type EnumAiCoachReminderStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderStatus | Prisma.EnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderStatusWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachReminderStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachReminderStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachReminderStatusFilter<$PrismaModel>
+}
+
+export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+| Prisma.PatchUndefined<
+    Prisma.Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+    Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+  >
+| Prisma.OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+  equals?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedJsonNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
+  isSet?: boolean
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -702,6 +799,87 @@ export type NestedEnumDifficultyWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDifficultyFilter<$PrismaModel>
+}
+
+export type NestedEnumAiCoachSessionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachSessionStatus | Prisma.EnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachSessionStatusFilter<$PrismaModel> | $Enums.AiCoachSessionStatus
+}
+
+export type NestedEnumAiCoachSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachSessionStatus | Prisma.EnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachSessionStatus[] | Prisma.ListEnumAiCoachSessionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachSessionStatusWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachSessionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachSessionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachSessionStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAiCoachMessageSenderFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachMessageSender | Prisma.EnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachMessageSenderFilter<$PrismaModel> | $Enums.AiCoachMessageSender
+}
+
+export type NestedEnumAiCoachMessageSenderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachMessageSender | Prisma.EnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachMessageSender[] | Prisma.ListEnumAiCoachMessageSenderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachMessageSenderWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachMessageSender
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachMessageSenderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachMessageSenderFilter<$PrismaModel>
+}
+
+export type NestedEnumAiCoachReminderTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderType | Prisma.EnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderTypeFilter<$PrismaModel> | $Enums.AiCoachReminderType
+}
+
+export type NestedEnumAiCoachReminderStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderStatus | Prisma.EnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderStatusFilter<$PrismaModel> | $Enums.AiCoachReminderStatus
+}
+
+export type NestedEnumAiCoachReminderTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderType | Prisma.EnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderType[] | Prisma.ListEnumAiCoachReminderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderTypeWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachReminderType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachReminderTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachReminderTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumAiCoachReminderStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AiCoachReminderStatus | Prisma.EnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AiCoachReminderStatus[] | Prisma.ListEnumAiCoachReminderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAiCoachReminderStatusWithAggregatesFilter<$PrismaModel> | $Enums.AiCoachReminderStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAiCoachReminderStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAiCoachReminderStatusFilter<$PrismaModel>
+}
+
+export type NestedJsonNullableFilter<$PrismaModel = never> =
+| Prisma.PatchUndefined<
+    Prisma.Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+    Required<NestedJsonNullableFilterBase<$PrismaModel>>
+  >
+| Prisma.OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+  equals?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | null
+  isSet?: boolean
 }
 
 

@@ -10,6 +10,8 @@ Daftar TODO yang muncul dari audit source code dan status repo saat ini.
 - [x] Membuat flow edit informasi user per row dengan modal dinamis dan integrasi API update-user
 - [x] Tambahkan guard OTP abuse berbasis Redis dengan rate limit IP, cooldown email, daily cap, dan fail-closed saat Redis gagal
 - [x] Membersihkan duplikasi workflow GitHub Actions dan menyisakan satu workflow utama di root repository
+- [x] Menambahkan tombol `Open AI Coach` di home screen dan menghubungkannya ke route screen AI Coach
+- [x] Membuat UI AI Coach premium dengan gradient, avatar AI, tab sesi, dan indikator typing
 - [ ] Lakukan black-box testing manual pada fitur yang sudah dibuat di device/simulator aplikasi mobile
 - [ ] Review controller/service `userController` dan `userQuestController` untuk konsistensi response dan edge case tambahan
 - [ ] Verifikasi flow lengkap resend OTP terhadap endpoint dan controller konkret saat runtime Vercel/Upstash aktif

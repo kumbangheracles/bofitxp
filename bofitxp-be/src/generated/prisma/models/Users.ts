@@ -385,6 +385,8 @@ export type UsersWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   userQuests?: Prisma.UserQuestListRelationFilter
+  aiCoachSessions?: Prisma.AiCoachSessionListRelationFilter
+  aiCoachReminders?: Prisma.AiCoachReminderListRelationFilter
 }
 
 export type UsersOrderByWithRelationInput = {
@@ -412,6 +414,8 @@ export type UsersOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userQuests?: Prisma.UserQuestOrderByRelationAggregateInput
+  aiCoachSessions?: Prisma.AiCoachSessionOrderByRelationAggregateInput
+  aiCoachReminders?: Prisma.AiCoachReminderOrderByRelationAggregateInput
 }
 
 export type UsersWhereUniqueInput = Prisma.AtLeast<{
@@ -442,6 +446,8 @@ export type UsersWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   userQuests?: Prisma.UserQuestListRelationFilter
+  aiCoachSessions?: Prisma.AiCoachSessionListRelationFilter
+  aiCoachReminders?: Prisma.AiCoachReminderListRelationFilter
 }, "id" | "username" | "email">
 
 export type UsersOrderByWithAggregationInput = {
@@ -529,6 +535,8 @@ export type UsersCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userQuests?: Prisma.UserQuestCreateNestedManyWithoutUserInput
+  aiCoachSessions?: Prisma.AiCoachSessionCreateNestedManyWithoutUserInput
+  aiCoachReminders?: Prisma.AiCoachReminderCreateNestedManyWithoutUserInput
 }
 
 export type UsersUncheckedCreateInput = {
@@ -556,6 +564,8 @@ export type UsersUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userQuests?: Prisma.UserQuestUncheckedCreateNestedManyWithoutUserInput
+  aiCoachSessions?: Prisma.AiCoachSessionUncheckedCreateNestedManyWithoutUserInput
+  aiCoachReminders?: Prisma.AiCoachReminderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UsersUpdateInput = {
@@ -582,6 +592,8 @@ export type UsersUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userQuests?: Prisma.UserQuestUpdateManyWithoutUserNestedInput
+  aiCoachSessions?: Prisma.AiCoachSessionUpdateManyWithoutUserNestedInput
+  aiCoachReminders?: Prisma.AiCoachReminderUpdateManyWithoutUserNestedInput
 }
 
 export type UsersUncheckedUpdateInput = {
@@ -608,6 +620,8 @@ export type UsersUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userQuests?: Prisma.UserQuestUncheckedUpdateManyWithoutUserNestedInput
+  aiCoachSessions?: Prisma.AiCoachSessionUncheckedUpdateManyWithoutUserNestedInput
+  aiCoachReminders?: Prisma.AiCoachReminderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UsersCreateManyInput = {
@@ -871,6 +885,34 @@ export type UsersUpdateOneRequiredWithoutUserQuestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsersUpdateToOneWithWhereWithoutUserQuestsInput, Prisma.UsersUpdateWithoutUserQuestsInput>, Prisma.UsersUncheckedUpdateWithoutUserQuestsInput>
 }
 
+export type UsersCreateNestedOneWithoutAiCoachSessionsInput = {
+  create?: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachSessionsInput, Prisma.UsersUncheckedCreateWithoutAiCoachSessionsInput>
+  connectOrCreate?: Prisma.UsersCreateOrConnectWithoutAiCoachSessionsInput
+  connect?: Prisma.UsersWhereUniqueInput
+}
+
+export type UsersUpdateOneRequiredWithoutAiCoachSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachSessionsInput, Prisma.UsersUncheckedCreateWithoutAiCoachSessionsInput>
+  connectOrCreate?: Prisma.UsersCreateOrConnectWithoutAiCoachSessionsInput
+  upsert?: Prisma.UsersUpsertWithoutAiCoachSessionsInput
+  connect?: Prisma.UsersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsersUpdateToOneWithWhereWithoutAiCoachSessionsInput, Prisma.UsersUpdateWithoutAiCoachSessionsInput>, Prisma.UsersUncheckedUpdateWithoutAiCoachSessionsInput>
+}
+
+export type UsersCreateNestedOneWithoutAiCoachRemindersInput = {
+  create?: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachRemindersInput, Prisma.UsersUncheckedCreateWithoutAiCoachRemindersInput>
+  connectOrCreate?: Prisma.UsersCreateOrConnectWithoutAiCoachRemindersInput
+  connect?: Prisma.UsersWhereUniqueInput
+}
+
+export type UsersUpdateOneRequiredWithoutAiCoachRemindersNestedInput = {
+  create?: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachRemindersInput, Prisma.UsersUncheckedCreateWithoutAiCoachRemindersInput>
+  connectOrCreate?: Prisma.UsersCreateOrConnectWithoutAiCoachRemindersInput
+  upsert?: Prisma.UsersUpsertWithoutAiCoachRemindersInput
+  connect?: Prisma.UsersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsersUpdateToOneWithWhereWithoutAiCoachRemindersInput, Prisma.UsersUpdateWithoutAiCoachRemindersInput>, Prisma.UsersUncheckedUpdateWithoutAiCoachRemindersInput>
+}
+
 export type UsersCreateWithoutUserQuestsInput = {
   id?: string
   fullName: string
@@ -895,6 +937,8 @@ export type UsersCreateWithoutUserQuestsInput = {
   otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiCoachSessions?: Prisma.AiCoachSessionCreateNestedManyWithoutUserInput
+  aiCoachReminders?: Prisma.AiCoachReminderCreateNestedManyWithoutUserInput
 }
 
 export type UsersUncheckedCreateWithoutUserQuestsInput = {
@@ -921,6 +965,8 @@ export type UsersUncheckedCreateWithoutUserQuestsInput = {
   otpConfirmationExpireAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiCoachSessions?: Prisma.AiCoachSessionUncheckedCreateNestedManyWithoutUserInput
+  aiCoachReminders?: Prisma.AiCoachReminderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UsersCreateOrConnectWithoutUserQuestsInput = {
@@ -962,6 +1008,8 @@ export type UsersUpdateWithoutUserQuestsInput = {
   otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiCoachSessions?: Prisma.AiCoachSessionUpdateManyWithoutUserNestedInput
+  aiCoachReminders?: Prisma.AiCoachReminderUpdateManyWithoutUserNestedInput
 }
 
 export type UsersUncheckedUpdateWithoutUserQuestsInput = {
@@ -987,6 +1035,260 @@ export type UsersUncheckedUpdateWithoutUserQuestsInput = {
   otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiCoachSessions?: Prisma.AiCoachSessionUncheckedUpdateManyWithoutUserNestedInput
+  aiCoachReminders?: Prisma.AiCoachReminderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UsersCreateWithoutAiCoachSessionsInput = {
+  id?: string
+  fullName: string
+  username: string
+  email: string
+  password: string
+  activationCode?: string | null
+  otpConfirmationCode?: string | null
+  isVerified?: boolean
+  level?: number | null
+  streak?: number | null
+  avatarUrl?: string | null
+  xp?: number | null
+  gender: $Enums.Gender
+  age?: number
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number | null
+  role?: $Enums.Role
+  target_final?: $Enums.TargetFinal
+  expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userQuests?: Prisma.UserQuestCreateNestedManyWithoutUserInput
+  aiCoachReminders?: Prisma.AiCoachReminderCreateNestedManyWithoutUserInput
+}
+
+export type UsersUncheckedCreateWithoutAiCoachSessionsInput = {
+  id?: string
+  fullName: string
+  username: string
+  email: string
+  password: string
+  activationCode?: string | null
+  otpConfirmationCode?: string | null
+  isVerified?: boolean
+  level?: number | null
+  streak?: number | null
+  avatarUrl?: string | null
+  xp?: number | null
+  gender: $Enums.Gender
+  age?: number
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number | null
+  role?: $Enums.Role
+  target_final?: $Enums.TargetFinal
+  expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userQuests?: Prisma.UserQuestUncheckedCreateNestedManyWithoutUserInput
+  aiCoachReminders?: Prisma.AiCoachReminderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UsersCreateOrConnectWithoutAiCoachSessionsInput = {
+  where: Prisma.UsersWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachSessionsInput, Prisma.UsersUncheckedCreateWithoutAiCoachSessionsInput>
+}
+
+export type UsersUpsertWithoutAiCoachSessionsInput = {
+  update: Prisma.XOR<Prisma.UsersUpdateWithoutAiCoachSessionsInput, Prisma.UsersUncheckedUpdateWithoutAiCoachSessionsInput>
+  create: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachSessionsInput, Prisma.UsersUncheckedCreateWithoutAiCoachSessionsInput>
+  where?: Prisma.UsersWhereInput
+}
+
+export type UsersUpdateToOneWithWhereWithoutAiCoachSessionsInput = {
+  where?: Prisma.UsersWhereInput
+  data: Prisma.XOR<Prisma.UsersUpdateWithoutAiCoachSessionsInput, Prisma.UsersUncheckedUpdateWithoutAiCoachSessionsInput>
+}
+
+export type UsersUpdateWithoutAiCoachSessionsInput = {
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
+  expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userQuests?: Prisma.UserQuestUpdateManyWithoutUserNestedInput
+  aiCoachReminders?: Prisma.AiCoachReminderUpdateManyWithoutUserNestedInput
+}
+
+export type UsersUncheckedUpdateWithoutAiCoachSessionsInput = {
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
+  expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userQuests?: Prisma.UserQuestUncheckedUpdateManyWithoutUserNestedInput
+  aiCoachReminders?: Prisma.AiCoachReminderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UsersCreateWithoutAiCoachRemindersInput = {
+  id?: string
+  fullName: string
+  username: string
+  email: string
+  password: string
+  activationCode?: string | null
+  otpConfirmationCode?: string | null
+  isVerified?: boolean
+  level?: number | null
+  streak?: number | null
+  avatarUrl?: string | null
+  xp?: number | null
+  gender: $Enums.Gender
+  age?: number
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number | null
+  role?: $Enums.Role
+  target_final?: $Enums.TargetFinal
+  expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userQuests?: Prisma.UserQuestCreateNestedManyWithoutUserInput
+  aiCoachSessions?: Prisma.AiCoachSessionCreateNestedManyWithoutUserInput
+}
+
+export type UsersUncheckedCreateWithoutAiCoachRemindersInput = {
+  id?: string
+  fullName: string
+  username: string
+  email: string
+  password: string
+  activationCode?: string | null
+  otpConfirmationCode?: string | null
+  isVerified?: boolean
+  level?: number | null
+  streak?: number | null
+  avatarUrl?: string | null
+  xp?: number | null
+  gender: $Enums.Gender
+  age?: number
+  body_weight?: number
+  body_height?: number
+  body_mass_index?: number | null
+  role?: $Enums.Role
+  target_final?: $Enums.TargetFinal
+  expireAt?: Date | string | null
+  otpConfirmationExpireAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userQuests?: Prisma.UserQuestUncheckedCreateNestedManyWithoutUserInput
+  aiCoachSessions?: Prisma.AiCoachSessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UsersCreateOrConnectWithoutAiCoachRemindersInput = {
+  where: Prisma.UsersWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachRemindersInput, Prisma.UsersUncheckedCreateWithoutAiCoachRemindersInput>
+}
+
+export type UsersUpsertWithoutAiCoachRemindersInput = {
+  update: Prisma.XOR<Prisma.UsersUpdateWithoutAiCoachRemindersInput, Prisma.UsersUncheckedUpdateWithoutAiCoachRemindersInput>
+  create: Prisma.XOR<Prisma.UsersCreateWithoutAiCoachRemindersInput, Prisma.UsersUncheckedCreateWithoutAiCoachRemindersInput>
+  where?: Prisma.UsersWhereInput
+}
+
+export type UsersUpdateToOneWithWhereWithoutAiCoachRemindersInput = {
+  where?: Prisma.UsersWhereInput
+  data: Prisma.XOR<Prisma.UsersUpdateWithoutAiCoachRemindersInput, Prisma.UsersUncheckedUpdateWithoutAiCoachRemindersInput>
+}
+
+export type UsersUpdateWithoutAiCoachRemindersInput = {
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
+  expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userQuests?: Prisma.UserQuestUpdateManyWithoutUserNestedInput
+  aiCoachSessions?: Prisma.AiCoachSessionUpdateManyWithoutUserNestedInput
+}
+
+export type UsersUncheckedUpdateWithoutAiCoachRemindersInput = {
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  activationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpConfirmationCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  streak?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  xp?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  body_weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  body_height?: Prisma.IntFieldUpdateOperationsInput | number
+  body_mass_index?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  target_final?: Prisma.EnumTargetFinalFieldUpdateOperationsInput | $Enums.TargetFinal
+  expireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  otpConfirmationExpireAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userQuests?: Prisma.UserQuestUncheckedUpdateManyWithoutUserNestedInput
+  aiCoachSessions?: Prisma.AiCoachSessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -996,10 +1298,14 @@ export type UsersUncheckedUpdateWithoutUserQuestsInput = {
 
 export type UsersCountOutputType = {
   userQuests: number
+  aiCoachSessions: number
+  aiCoachReminders: number
 }
 
 export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userQuests?: boolean | UsersCountOutputTypeCountUserQuestsArgs
+  aiCoachSessions?: boolean | UsersCountOutputTypeCountAiCoachSessionsArgs
+  aiCoachReminders?: boolean | UsersCountOutputTypeCountAiCoachRemindersArgs
 }
 
 /**
@@ -1017,6 +1323,20 @@ export type UsersCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
  */
 export type UsersCountOutputTypeCountUserQuestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserQuestWhereInput
+}
+
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountAiCoachSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiCoachSessionWhereInput
+}
+
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountAiCoachRemindersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiCoachReminderWhereInput
 }
 
 
@@ -1045,6 +1365,8 @@ export type UsersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   userQuests?: boolean | Prisma.Users$userQuestsArgs<ExtArgs>
+  aiCoachSessions?: boolean | Prisma.Users$aiCoachSessionsArgs<ExtArgs>
+  aiCoachReminders?: boolean | Prisma.Users$aiCoachRemindersArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["users"]>
 
@@ -1079,6 +1401,8 @@ export type UsersSelectScalar = {
 export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "username" | "email" | "password" | "activationCode" | "otpConfirmationCode" | "isVerified" | "level" | "streak" | "avatarUrl" | "xp" | "gender" | "age" | "body_weight" | "body_height" | "body_mass_index" | "role" | "target_final" | "expireAt" | "otpConfirmationExpireAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
 export type UsersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userQuests?: boolean | Prisma.Users$userQuestsArgs<ExtArgs>
+  aiCoachSessions?: boolean | Prisma.Users$aiCoachSessionsArgs<ExtArgs>
+  aiCoachReminders?: boolean | Prisma.Users$aiCoachRemindersArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1086,6 +1410,8 @@ export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Users"
   objects: {
     userQuests: Prisma.$UserQuestPayload<ExtArgs>[]
+    aiCoachSessions: Prisma.$AiCoachSessionPayload<ExtArgs>[]
+    aiCoachReminders: Prisma.$AiCoachReminderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1475,6 +1801,8 @@ readonly fields: UsersFieldRefs;
 export interface Prisma__UsersClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   userQuests<T extends Prisma.Users$userQuestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Users$userQuestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiCoachSessions<T extends Prisma.Users$aiCoachSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Users$aiCoachSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiCoachSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiCoachReminders<T extends Prisma.Users$aiCoachRemindersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Users$aiCoachRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiCoachReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1918,6 +2246,54 @@ export type Users$userQuestsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.UserQuestScalarFieldEnum | Prisma.UserQuestScalarFieldEnum[]
+}
+
+/**
+ * Users.aiCoachSessions
+ */
+export type Users$aiCoachSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiCoachSession
+   */
+  select?: Prisma.AiCoachSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiCoachSession
+   */
+  omit?: Prisma.AiCoachSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiCoachSessionInclude<ExtArgs> | null
+  where?: Prisma.AiCoachSessionWhereInput
+  orderBy?: Prisma.AiCoachSessionOrderByWithRelationInput | Prisma.AiCoachSessionOrderByWithRelationInput[]
+  cursor?: Prisma.AiCoachSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiCoachSessionScalarFieldEnum | Prisma.AiCoachSessionScalarFieldEnum[]
+}
+
+/**
+ * Users.aiCoachReminders
+ */
+export type Users$aiCoachRemindersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiCoachReminder
+   */
+  select?: Prisma.AiCoachReminderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiCoachReminder
+   */
+  omit?: Prisma.AiCoachReminderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiCoachReminderInclude<ExtArgs> | null
+  where?: Prisma.AiCoachReminderWhereInput
+  orderBy?: Prisma.AiCoachReminderOrderByWithRelationInput | Prisma.AiCoachReminderOrderByWithRelationInput[]
+  cursor?: Prisma.AiCoachReminderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiCoachReminderScalarFieldEnum | Prisma.AiCoachReminderScalarFieldEnum[]
 }
 
 /**

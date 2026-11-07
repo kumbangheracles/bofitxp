@@ -4,6 +4,7 @@ import authMiddleware from "../middlewares/auth.middleware";
 import otpIpRateLimitMiddleware from "../middlewares/otpRateLimit.middleware";
 import userController from "../controllers/user.controller";
 import userQuestController from "../controllers/userQuest.controller";
+import aiCoachController from "../controllers/aiCoach.controller";
 const router = exporess.Router();
 
 /**
@@ -171,6 +172,71 @@ router.patch(
   "/user-quests/:userQuestId/:questId",
   authMiddleware,
   userQuestController.finishedQuest,
+);
+
+/**
+ * #swagger.tags = ['AI Coach']
+ * #swagger.summary = 'Buat sesi AI coach baru'
+ * #swagger.description = 'Membuat sesi percakapan AI coach untuk user.'
+ * #swagger.security = [{ "bearerAuth": [] }]
+ * #swagger.responses[200] = { description: 'Sesi berhasil dibuat' }
+ */
+router.post(
+  "/ai-coach/sessions",
+  authMiddleware,
+  aiCoachController.createSession,
+);
+
+/**
+ * #swagger.tags = ['AI Coach']
+ * #swagger.summary = 'Ambil semua sesi AI coach user'
+ * #swagger.description = 'Menampilkan semua sesi AI coach milik user.'
+ * #swagger.security = [{ "bearerAuth": [] }]
+ * #swagger.responses[200] = { description: 'Sesi berhasil diambil' }
+ */
+router.get(
+  "/ai-coach/sessions",
+  authMiddleware,
+  aiCoachController.listSessions,
+);
+
+/**
+ * #swagger.tags = ['AI Coach']
+ * #swagger.summary = 'Kirim pesan ke AI coach'
+ * #swagger.description = 'Mengirim pesan user ke AI coach dan menyimpan balasan AI.'
+ * #swagger.security = [{ "bearerAuth": [] }]
+ * #swagger.responses[200] = { description: 'Pesan berhasil dikirim' }
+ */
+router.post(
+  "/ai-coach/sessions/:sessionId/messages",
+  authMiddleware,
+  aiCoachController.sendMessage,
+);
+
+/**
+ * #swagger.tags = ['AI Coach']
+ * #swagger.summary = 'Ambil chat history sesi AI coach'
+ * #swagger.description = 'Mengambil semua pesan yang ada di sesi tertentu.'
+ * #swagger.security = [{ "bearerAuth": [] }]
+ * #swagger.responses[200] = { description: 'Chat berhasil diambil' }
+ */
+router.get(
+  "/ai-coach/sessions/:sessionId/messages",
+  authMiddleware,
+  aiCoachController.getMessages,
+);
+
+/**
+ * #swagger.tags = ['AI Coach']
+ * #swagger.summary = 'Jalankan reminder AI coach otomatis'
+ * #swagger.description = 'Memproses user yang menunggak quest dan membuat reminder otomatis.'
+ * #swagger.security = [{ "bearerAuth": [] }]
+ * #swagger.responses[200] = { description: 'Reminder berhasil diproses' }
+ */
+router.post(
+  "/ai-coach/reminders/process",
+  authMiddleware,
+  aiCoachController.processReminders,
 );
 // Mahasiswa
 

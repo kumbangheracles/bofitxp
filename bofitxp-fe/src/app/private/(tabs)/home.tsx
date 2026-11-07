@@ -553,7 +553,7 @@ export default function index() {
             </Animated.View>
           </Pressable>
           <Pressable
-            // onPress={() => router.push("/private/quests")}
+            onPress={() => router.push("/private/ai-coach")}
             onPressIn={scaleCoach.onPressIn}
             onPressOut={scaleCoach.onPressOut}
           >
@@ -578,7 +578,7 @@ export default function index() {
                     fontSize: fontSize.md,
                   }}
                 >
-                  AI Coach
+                  Open AI Coach
                 </Text>
                 <Text
                   style={{

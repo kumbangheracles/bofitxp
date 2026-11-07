@@ -17,13 +17,19 @@ export class UserQuestService {
   }
 
   async getAllUserQuests(quest_category: QuestCategoryType) {
-    const result = await instance.get(`/user-quests`, {
-      params: {
-        quest_category,
-      },
-    });
+    try {
+      const result = await instance.get(`/user-quests`, {
+        params: {
+          quest_category,
+        },
+      });
 
-    return result.data.data;
+      const payload = result?.data?.data ?? [];
+      return Array.isArray(payload) ? payload : [];
+    } catch (error) {
+      console.warn("Failed to fetch user quests:", error);
+      return [];
+    }
   }
 
   async getAllUserQuestsDaily() {
