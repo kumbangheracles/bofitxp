@@ -1,4 +1,5 @@
 .vercel
 .env*
 /bofitxp-cms
+# AI Agent Skills
 .agents/
