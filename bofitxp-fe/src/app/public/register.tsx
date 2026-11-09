@@ -32,7 +32,6 @@ export default function RegisterScreen() {
   type GenderValue = "pria" | "wanita";
   type GenderIcon = "gender-male" | "gender-female";
 
-  const [gender, setGender] = useState<GenderValue | "">("");
   const GENDER_OPTIONS: Array<{
     label: string;
     value: GenderValue;

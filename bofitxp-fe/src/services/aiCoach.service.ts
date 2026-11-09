@@ -23,7 +23,7 @@ export class AiCoachService {
     const result =
       await instance.get<ApiResponse<AiCoachSession[]>>("/ai-coach/sessions");
 
-    return result.data.data;
+    return Array.isArray(result.data?.data) ? result.data.data : [];
   }
 
   async getSessionMessages(sessionId: string) {
@@ -31,7 +31,7 @@ export class AiCoachService {
       `/ai-coach/sessions/${sessionId}/messages`,
     );
 
-    return result.data.data;
+    return Array.isArray(result.data?.data) ? result.data.data : [];
   }
 
   async sendMessage(sessionId: string, payload: SendAiCoachMessageRequest) {

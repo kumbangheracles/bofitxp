@@ -12,6 +12,10 @@ Daftar TODO yang muncul dari audit source code dan status repo saat ini.
 - [x] Membersihkan duplikasi workflow GitHub Actions dan menyisakan satu workflow utama di root repository
 - [x] Menambahkan tombol `Open AI Coach` di home screen dan menghubungkannya ke route screen AI Coach
 - [x] Membuat UI AI Coach premium dengan gradient, avatar AI, tab sesi, dan indikator typing
+- [x] Catat dan selesaikan core issue AI Coach: null-safe API response + async error handling supaya tidak terulang di fitur lain
+- [x] Perbaiki layout keyboard AI Coach agar input tetap terlihat saat keyboard muncul
+- [x] Rapikan render markdown AI Coach agar `**`, `*`, `|`, dan paragraf tampil lebih rapi dan user-friendly
+- [x] Tambahkan tab Exercise dengan katalog latihan berdasarkan kategori alat/non-alat, target otot, reward AI, dan custom routine
 - [ ] Lakukan black-box testing manual pada fitur yang sudah dibuat di device/simulator aplikasi mobile
 - [ ] Review controller/service `userController` dan `userQuestController` untuk konsistensi response dan edge case tambahan
 - [ ] Verifikasi flow lengkap resend OTP terhadap endpoint dan controller konkret saat runtime Vercel/Upstash aktif

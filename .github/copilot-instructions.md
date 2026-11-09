@@ -32,6 +32,7 @@ Buat juga atau perbarui .github/copilot-instructions.md agar Copilot selalu:
 - Menjaga satu source of truth untuk workflow CI/CD di root repository dan menghindari duplikasi workflow di subfolder proyek.
 - Menjalankan pemeriksaan yang relevan setelah perubahan.
 - Memperbarui dokumentasi saat implementasi atau keputusan berubah.
+- Menjaga catatan core issue yang sudah dibuktikan: semua API response harus dianggap bisa null/empty, dan semua async flow wajib punya error handling yang aman sebelum render UI atau melakukan state update.
 - Melaporkan file yang berubah, hasil verifikasi, risiko, dan pekerjaan lanjutan.
 
 ## Phase 3 — Quality Control

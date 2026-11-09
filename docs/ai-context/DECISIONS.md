@@ -100,6 +100,25 @@ Keputusan yang dipakai saat ini:
 - unit test fokus dipakai untuk logic per domain (auth, quest, streak)
 - runtime/device testing tetap ditangani secara manual oleh pengguna untuk validasi UX dan screen flow
 
-## 10. Kesimpulan
+## 10. Core issue: API response dan async handling harus selalu aman terhadap null dan error
+
+Keputusan: seluruh feature frontend yang memanggil API harus menganggap response bisa `null`, `undefined`, atau `[]` dan harus melakukan guard sebelum membaca properti seperti `.length`, `.map()`, atau mengakses `data[0]`.
+
+Bukti:
+
+- bug AI Coach muncul setelah backend mengembalikan payload kosong/invalid pada beberapa kondisi auth/session
+- UI memanggil `sessions.length`, `sessions[0]`, dan `messages.map()` tanpa checks
+- mutation `sendCoachMessage` dipanggil tanpa `try/catch`, sehingga rejection bisa menimbulkan crash runtime yang sulit dilacak
+
+Implikasi:
+
+- semua hook query harus menormalisasi response ke array kosong saat API tidak valid
+- semua screen rendering harus aman terhadap kondisi empty state
+- semua async action yang memicu network harus memiliki blok error handling yang eksplisit
+- `console.warn` atau `toast` harus dipakai untuk memberi tahu user tanpa crash app
+
+Keputusan ini ditetapkan sebagai pola project-level untuk mencegah regresi serupa di masa depan.
+
+## 11. Kesimpulan
 
 Keputusan arsitektur yang terlihat saat ini masuk akal untuk MVP gamified fitness app: auth JWT, MongoDB, AI quest generation di backend, dan mobile-first frontend. Dengan hadirnya logic combo/challenge dan toast event, repo sudah cukup maju untuk kebutuhan gamifikasi inti. Penilaian akhir UX dan end-to-end masih harus ditutup dengan black-box testing manual dari pengguna.

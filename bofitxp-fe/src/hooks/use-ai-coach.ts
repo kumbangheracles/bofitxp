@@ -14,12 +14,18 @@ export const aiCoachQueryKeys = {
   sessionMessages: (sessionId: string) => ["ai-coach", "messages", sessionId],
 };
 
+const normalizeArray = <T>(value: T[] | null | undefined): T[] =>
+  Array.isArray(value) ? value : [];
+
 export const useAiCoachSessions = () => {
   const { authUser } = useAuth();
 
   return useQuery<AiCoachSession[]>({
     queryKey: aiCoachQueryKeys.sessions,
-    queryFn: () => aiCoachService.getSessions(),
+    queryFn: async () => {
+      const sessions = await aiCoachService.getSessions();
+      return normalizeArray(sessions);
+    },
     enabled: !!authUser?.id,
   });
 };
@@ -31,11 +37,13 @@ export const useAiCoachSessionMessages = (sessionId?: string) => {
     queryKey: sessionId
       ? aiCoachQueryKeys.sessionMessages(sessionId)
       : ["ai-coach", "messages", "none"],
-    queryFn: () => {
+    queryFn: async () => {
       if (!sessionId) {
-        return Promise.resolve([]);
+        return [];
       }
-      return aiCoachService.getSessionMessages(sessionId);
+
+      const messages = await aiCoachService.getSessionMessages(sessionId);
+      return normalizeArray(messages);
     },
     enabled: !!authUser?.id && !!sessionId,
   });

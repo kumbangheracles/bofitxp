@@ -114,6 +114,78 @@ Status:
 
 ## Perubahan terbaru yang sudah diverifikasi
 
+### Core issue: null-safe API response + async mutation guard di AI Coach
+
+Tanggal: 2026-11-09
+
+Masalah yang ditemukan:
+
+- frontend AI Coach menganggap `sessions` dan `messages` selalu ada dan non-null
+- beberapa response API bisa mengembalikan `data: null` saat session tidak valid atau token expired
+- async mutation `sendCoachMessage` dipanggil tanpa `try/catch`, sehingga rejection bisa men-trigger crash runtime atau unhandled promise
+- beberapa `useQuery` di hook AI Coach tidak menormalisasi array, sehingga UI bisa crash saat backend mengirim data kosong atau error struktur
+
+Perbaikan yang sudah dibuat:
+
+- `bofitxp-fe/src/services/aiCoach.service.ts` normalizes semua response API ke `[]` saat `data` tidak valid
+- `bofitxp-fe/src/hooks/use-ai-coach.ts` menambahkan guard untuk query session/messages agar tetap aman saat `null` atau `undefined`
+- `bofitxp-fe/src/app/private/ai-coach.tsx` menangkap error saat mengirim pesan dan tidak membiarkan async rejection tidak tertangani
+- validasi TypeScript dijalankan untuk memastikan patch tidak menambah error kompilasi baru
+
+Status:
+
+- bug ini sudah ditangani di runtime UI AI Coach
+- issue ini harus diperlakukan sebagai core issue dan dihindari pada feature lain: semua API response harus dianggap bisa null/empty, dan semua async flow harus punya error boundary yang jelas
+
+### AI Coach input layout + markdown rendering polish
+
+Tanggal: 2026-11-09
+
+Masalah yang ditemukan:
+
+- keyboard terbuka menutupi input pada screen AI Coach dan membuat pengalaman chat terasa tidak stabil
+- format pesan AI yang muncul sering mengandung noise markdown seperti `*`, `_`, `|`, dan list marker yang tidak dibaca sebagai format
+- paragraf dari output AI kadang terlihat acak karena data dibersihkan secara parsial namun belum dirender sebagai markup visual
+
+Perbaikan yang sudah dibuat:
+
+- `bofitxp-fe/src/app/private/ai-coach.tsx` memakai `KeyboardAvoidingView` dengan konfigurasi platform-aware sehingga input tetap terlihat saat keyboard aktif
+- fungsi `sanitizeAiMessageText()` memfilter noise markdown dan spasi berlebih agar output AI lebih rapi sebelum masuk ke renderer
+- renderer markdown lokal di komponen sekarang menangani bold, italic, inline code, list, dan pemisahan paragraf supaya pesan AI tampil seperti teks terstruktur, bukan raw string literal
+- patch ini tetap menjaga guard null-safe dan `try/catch` pada async send flow agar tidak memicu force-close maupun unhandled promise
+
+Status:
+
+- layout keyboard dan render AI Coach sudah diperbaiki pada codebase frontend
+- validasi TypeScript terakhir pada frontend berjalan tanpa error (`npx tsc --noEmit --pretty false` exit 0)
+- hasil UI perlu divalidasi manual di simulator/device untuk memastikan keindahan paragraph dan markdown final sesuai ekspektasi human
+
+### Exercise tab: catalog exercise + AI reward + custom routine
+
+Tanggal: 2026-11-09
+
+Masalah yang ditemukan:
+
+- tab `Exercise` sudah ada di navigasi, tetapi screen-nya belum dibuat di frontend
+- user perlu melihat daftar latihan yang terorganisir berdasarkan kategori alat/non-alat dan target otot
+- reward XP harus dihitung otomatis dengan logika AI-like sederhana untuk tiap exercise
+- user juga perlu membuat custom routine pribadi tanpa harus menunggu backend CRUD
+
+Perbaikan yang sudah dibuat:
+
+- `bofitxp-fe/src/app/private/(tabs)/exercise.tsx` dibuat dan dipasang sebagai screen aktif tab Exercise
+- daftar exercise dibagi berdasarkan kategori `Dengan alat` dan `Tanpa alat`
+- sub-kategori target otot mencakup otot kaki, punggung, dada, perut, tangan, bahu, glutes, core, dan lainnya
+- logika `getAiReward()` menghitung reward otomatis berdasarkan kategori, target otot, dan tingkat kesulitan latihan
+- user dapat menambah exercise ke custom routine dan menyimpan routine lokal di state screen
+
+Status:
+
+- screen Exercise sekarang tersedia dan sudah terintegrasi ke tab bar aplikasi
+- validasi TypeScript frontend selesai tanpa error (`npx tsc --noEmit --pretty false` exit 0)
+- pengujian UI manual di device/simulator masih disarankan untuk melihat flow final di layar riil
+- custom routine saat ini masih bersifat lokal di UI dan belum tersimpan ke backend/database
+
 ### OTP abuse guard with Redis and fail-closed semantics
 
 Masalah yang ditemukan:
