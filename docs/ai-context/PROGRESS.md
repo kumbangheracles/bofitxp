@@ -452,6 +452,50 @@ Status paling akurat saat ini:
 - streak/challenge logic: implemented
 - full product verification on device: belum selesai, ditugaskan ke testing manual user
 
+## Perubahan terbaru yang sudah diverifikasi (2026-11-11): Refactor AI Coach Screen
+
+### Masalah yang ditemukan
+
+- Animasi typing menampilkan markdown mentah (`**bold**` kelihatan dulu, lalu "loncat" setelah selesai) karena renderer melewati markdown renderer selama reveal.
+- Animasi typing tidak stabil: `clearInterval` jalan di tengah animasi, `isAiTyping` bisa nyangkut, dan interval bocor saat unmount karena effect depend ke `animatingMessageId` dan `safeMessages` tanpa cleanup yang benar.
+- Pesan AI terakhir dari riwayat lama ikut dianimasikan setiap screen dibuka; riwayat harus langsung tampil penuh, animasi hanya untuk pesan AI yang baru.
+- `optimisticUserMessage` hanya di-reset di `catch`; harus dibersihkan di `finally`, dan saat gagal teks dikembalikan ke `draft`.
+- Ada dua typing indicator sekaligus (bubble teks yang sedang diketik + bubble titik tiga).
+- `sanitizeAiMessageText` menghapus bullet, nomor, dan `|`, dan regex `\s{2,}` ikut menghapus `\n\n`.
+- Tidak ada auto-scroll; FlatList harus scroll ke bawah saat ada pesan baru dan saat teks sedang diketik.
+- Crash runtime `TypeError: undefined is not a function` di `createStyles(theme)` karena `createStyles` tersisipkan di dalam `AiCoachScreen` setelah statement `return` dan `AiCoachScreen` tidak pernah ditutup, membuat `createStyles` tidak terdefinisi saat render.
+
+### Perbaikan yang sudah dibuat
+
+- `bofitxp-fe/src/app/private/ai-coach.tsx` direfactor lengkap:
+  - Pisahkan komponen tersendiri: `InlineText` (bold/italic/code), `MarkdownText` (paragraf, bullet, numbered list dengan hanging indent via `flexDirection: "row"`), `useTypewriter(fullText, enabled, speed)` (reveal per kata, cleanup di return effect, `enabled=false` langsung teks penuh), `AiBubbleContent`, `TypingDots` (animated pulse via Reanimated `withDelay`/`withRepeat`/`withTiming`), `TypingFooter`.
+  - `renderMarkdownText` tidak lagi didefinisikan di dalam komponen screen; duplikasi blok render yang ditulis 2x dihilangkan.
+  - Typewriter selama animasi tetap melewati renderer markdown, jadi tidak ada markdown mentah yang kelihatan.
+  - `useTypewriter` punya interval ref dengan cleanup yang benar di `return` effect; tidak ada interval bocor.
+  - `historyLoadedRef` + `lastHistoryAiMessageIdRef` mencegah riwayat lama di-animate; hanya pesan AI baru setelah screen terbuka yang di-animate.
+  - `handleSend` menggunakan `try/catch/finally`: `finally` selalu membersihkan `optimisticUserMessage`, `catch` mengembalikan teks ke `draft`.
+  - Hanya satu typing indicator: `TypingFooter` sebagai `ListFooterComponent` FlatList, hanya muncul saat `isSendingMessage`.
+  - `sanitizeAiMessageText` diganti dengan sanitizer ringan yang hanya membuang header (`#`), garis pemisah, blockquote, dan link markdown (sisakan teksnya), dengan `\n\n` tetap terjaga.
+  - Auto-scroll via `flatListRef` + `scrollToEnd({ animated: true })` saat `displayMessages.length` atau `typewriterText` berubah.
+  - `SafeAreaView` dari `react-native-safe-area-context` + `useSafeAreaInsets` mengganti `marginTop: 52` hardcoded.
+  - `import type { AppTheme }` karena hanya dipakai sebagai tipe.
+  - `bottom: 0` dihapus dari `inputRow`.
+  - Hapus `as any` dan `item: any`; pakai tipe `CoachMessage = AiCoachMessage`.
+  - Tutup `AiCoachScreen` dengan `}` sebelum `createStyles`, dan pindahkan `createStyles` ke module level agar tidak undefined saat render.
+
+### Bukti utama
+
+- `bofitxp-fe/src/app/private/ai-coach.tsx`
+- `bofitxp-fe/src/hooks/use-ai-coach.ts` (tidak diubah, API tetap preserved)
+- `bofitxp-fe/src/types/aiCoach.type.ts` (tidak diubah, tipe `AiCoachMessage` dipakai langsung)
+- `bofitxp-fe/src/services/aiCoach.service.ts` (tidak diubah)
+
+### Status
+
+- `npx tsc --noEmit` exit code 0, tidak ada error TypeScript.
+- Crash `TypeError: undefined is not a function` saat membuka AI Coach telah diperbaiki.
+- Verifikasi runtime pada device/simulator masih perlu dilakukan untuk memastikan session creation, message send, optimistic UI, dan typing animation berjalan di kondisi nyata.
+
 ## Kesimpulan
 
 Fitur utama BoFitXP sudah terbentuk dengan bukti konkret di source code dan test yang terfokus. Logika streak dan challenge secara teknis sudah ada dan terhubung ke toast UI. Verifikasi real-device / black-box masih diperlukan untuk menutup gap end-to-end di layer mobile app.

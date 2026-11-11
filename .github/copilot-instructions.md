@@ -1,54 +1,115 @@
-Saya ingin menyiapkan persistent AI development context untuk repository BoFitXP agar development bisa dilanjutkan lintas chat, lintas sesi, dan lintas model GitHub Copilot tanpa kehilangan pemahaman proyek.
+# BoFitXP — GitHub Copilot Instructions
 
-Repository ini memiliki frontend dan backend terpisah. Jangan berasumsi dokumentasi atau implementasi yang ada masih akurat sebelum memeriksa source code.
+## Project Context
 
-## Phase 1 — Repository Audit
+BoFitXP is a multi-application repository containing separate frontend, backend, and CMS applications.
 
-1. Periksa struktur repository, package.json, konfigurasi, source code, route, controller, service, middleware, Prisma schema, dan konfigurasi testing yang relevan.
-2. Periksa git status dan perubahan yang belum di-commit. Jangan mengubah atau menghapus perubahan pengguna.
-3. Identifikasi arsitektur frontend-backend, autentikasi, API flow, database, validasi, error handling, dan aturan bisnis.
-4. Identifikasi fitur yang sudah selesai, parsial, bermasalah, atau belum diimplementasikan. Gunakan bukti dari source code dan test, bukan asumsi.
-5. Jangan membaca atau menyalin nilai rahasia dari file .env. Catat hanya nama variabel dan tujuannya bila diperlukan.
+Before making significant changes, inspect the relevant source code and consult the corresponding documentation in `docs/ai-context/`.
 
-## Phase 2 — Persistent Documentation
+Documentation is a reference, not an unquestionable source of truth. When documentation conflicts with actual implementation, verify the source code and report the discrepancy.
 
-Buat atau perbarui dokumen berikut:
+## Context Management
 
-- docs/ai-context/PROJECT.md
-- docs/ai-context/ARCHITECTURE.md
-- docs/ai-context/DATABASE.md
-- docs/ai-context/API.md
-- docs/ai-context/PROGRESS.md
-- docs/ai-context/DECISIONS.md
-- docs/ai-context/TODO.md
+Load documentation progressively based on the task:
 
-Buat juga atau perbarui .github/copilot-instructions.md agar Copilot selalu:
+- `PROJECT.md`: Project overview and technology stack.
+- `ARCHITECTURE.md`: Application architecture and component interactions.
+- `DATABASE.md`: Database schema, relationships, and data constraints.
+- `API.md`: API endpoints, contracts, and response structures.
+- `DECISIONS.md`: Verified architectural and technical decisions.
+- `PROGRESS.md`: Current implementation status.
+- `TODO.md`: Known outstanding work.
 
-- Memeriksa dokumentasi dan source code sebelum melakukan perubahan signifikan.
-- Mengikuti pola coding yang sudah digunakan.
-- Menjaga kompatibilitas frontend, backend, dan database.
-- Memegang prinsip clean code: Separation of Concerns, Single Responsibility Principle, dan layered architecture.
-- Menjaga pemisahan tanggung jawab: controller hanya menangani HTTP/response, service menangani business logic, validation terpisah, dan data access di layer yang tepat.
-- Menjaga satu source of truth untuk workflow CI/CD di root repository dan menghindari duplikasi workflow di subfolder proyek.
-- Menjalankan pemeriksaan yang relevan setelah perubahan.
-- Memperbarui dokumentasi saat implementasi atau keputusan berubah.
-- Menjaga catatan core issue yang sudah dibuktikan: semua API response harus dianggap bisa null/empty, dan semua async flow wajib punya error handling yang aman sebelum render UI atau melakukan state update.
-- Melaporkan file yang berubah, hasil verifikasi, risiko, dan pekerjaan lanjutan.
+Do not load every document unnecessarily.
 
-## Phase 3 — Quality Control
+Inspect the affected application before modifying its implementation. Do not modify unrelated applications.
 
-1. Pastikan tidak ada klaim yang tidak didukung source code.
-2. Bedakan implementasi aktual dengan rencana atau target masa depan.
-3. Tandai informasi yang belum dapat diverifikasi.
-4. Hindari duplikasi dokumentasi dan instruksi yang bertentangan.
-5. Jangan melakukan refactor, mengubah schema, menginstal dependency, atau membuat commit dalam proses ini.
-6. Untuk testing, tiap fitur atau domain fungsional harus dibuat file test tersendiri sesuai domain-nya, misalnya:
-   - `auth.test.ts` untuk login/register/activation
-   - `quest.test.ts` untuk quest generation, streak, challenge, completion
-   - `user.test.ts` untuk profil, BMI, update user
-   - `integration` atau `e2e` hanya jika memang dibutuhkan untuk alur lintas fitur
-7. Jangan mencampur test auth dengan test quest atau user dalam satu file karena akan mengurangi fokus, debugging, dan maintainability.
+## Engineering Principles
 
-## Final Report
+- Follow existing project conventions and established architectural patterns.
+- Prefer simple, maintainable solutions over unnecessary abstractions.
+- Apply Separation of Concerns and Single Responsibility Principle.
+- Maintain clear layered responsibilities:
+  - Controllers: HTTP request and response handling.
+  - Services: Business logic.
+  - Validation: Input validation and request schemas.
+  - Data access: Database operations and persistence.
+- Reuse existing components, utilities, hooks, and services when appropriate.
+- Avoid unnecessary dependencies and unrelated refactoring.
+- Preserve existing behavior unless the task explicitly requires changing it.
 
-Laporkan struktur dokumentasi yang dibuat, ringkasan arsitektur yang ditemukan, status fitur yang bisa diverifikasi, pertanyaan yang belum terjawab, dan cara memverifikasi bahwa instruksi Copilot aktif pada chat baru.
+## Cross-Application Compatibility
+
+- Maintain compatibility between frontend, backend, CMS, and database contracts.
+- Verify API request and response structures before changing integration points.
+- Consider nullable, missing, empty, and unexpected API response values.
+- Never assume API responses always contain valid data.
+- Ensure asynchronous operations have safe error handling before rendering dependent UI or updating state.
+- Handle loading, success, empty, and error states where applicable.
+
+## Database and API Safety
+
+- Inspect the actual Prisma schema and implementation before changing database-related behavior.
+- Preserve referential integrity and existing business constraints.
+- Consider backward compatibility when modifying API contracts.
+- Do not assume a database migration is safe without examining affected models and relationships.
+
+## Testing and Verification
+
+- Every functional domain must have a separate test file.
+- Keep authentication, quest, user, and other domain tests isolated.
+- Examples:
+  - `auth.test.ts`
+  - `quest.test.ts`
+  - `user.test.ts`
+- Use integration or E2E tests only when cross-domain workflows require them.
+- Follow the existing test framework and conventions.
+- Run relevant tests, type checks, linting, and build verification when available.
+- Never claim a test passed without actually executing it.
+
+## CI/CD
+
+- Maintain a single source of truth for CI/CD workflows at the repository root.
+- Avoid duplicated workflows inside individual application directories unless explicitly required by the architecture.
+- Inspect existing deployment configuration before making changes.
+
+## Security and Sensitive Data
+
+- Never expose secrets, credentials, access tokens, or private environment values.
+- Do not read or reproduce `.env` values.
+- Only document environment variable names and their purposes when necessary.
+- Never weaken authentication, authorization, validation, or security controls to simplify implementation.
+
+## Documentation Maintenance
+
+Update relevant files in `docs/ai-context/` when verified implementation changes affect:
+
+- Project structure or technology stack.
+- Architecture and application responsibilities.
+- Database schema or relationships.
+- API contracts.
+- Architectural decisions.
+- Feature implementation status.
+- Outstanding tasks.
+
+Distinguish verified implementation from planned or proposed functionality.
+
+Do not introduce duplicate or contradictory documentation.
+
+## Change Management
+
+- Inspect `git status` before modifying files.
+- Preserve existing uncommitted user changes.
+- Never overwrite or discard unrelated work.
+- Do not install dependencies, modify database schemas, perform unrelated refactoring, or create commits unless explicitly requested.
+
+## Final Response
+
+After completing a task, report:
+
+1. Summary of changes.
+2. Files created or modified.
+3. Verification performed and actual results.
+4. Known limitations and risks.
+5. Documentation updates.
+6. Remaining work or unresolved questions.
