@@ -341,6 +341,79 @@ Return only the requested JSON structure.
       maxXp: 1000,
     });
   }
+
+  shouldRegenerateQuestCategory<T extends { createdAt?: Date | string | null }>(
+    quests: T[],
+    category: "daily" | "weekly" | "special",
+    now: Date = new Date(),
+  ): boolean {
+    if (category === "special") return false;
+
+    if (!quests.length) return true;
+
+    const validDates = quests
+      .map((item) => {
+        const value = item.createdAt;
+        if (!value) return null;
+
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? null : date;
+      })
+      .filter((date): date is Date => !!date);
+
+    if (!validDates.length) return true;
+
+    const latestCreatedAt = validDates.reduce(
+      (latest, date) => (date > latest ? date : latest),
+      validDates[0],
+    );
+
+    if (category === "daily") {
+      const startOfToday = new Date(now);
+      startOfToday.setHours(0, 0, 0, 0);
+      return latestCreatedAt.getTime() < startOfToday.getTime();
+    }
+
+    const startOfWeek = new Date(now);
+    const dayIndex = (startOfWeek.getDay() + 6) % 7;
+    startOfWeek.setDate(startOfWeek.getDate() - dayIndex);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    return latestCreatedAt.getTime() < startOfWeek.getTime();
+  }
+
+  async ensureQuestCategoryForUser(
+    userId: UserQuest["userId"],
+    category: GeneratedQuest["quest_category"],
+  ) {
+    if (!userId || (category !== "daily" && category !== "weekly")) {
+      return null;
+    }
+
+    const currentQuests = await this.getAllQuests(userId, category);
+
+    if (
+      !this.shouldRegenerateQuestCategory(
+        currentQuests.map((item) => ({
+          createdAt: item.quest?.createdAt ?? item.createdAt,
+        })),
+        category,
+      )
+    ) {
+      return currentQuests;
+    }
+
+    if (category === "daily") {
+      await this.generateQuestsDaily(userId, 5);
+    }
+
+    if (category === "weekly") {
+      await this.generateQuestsWeekly(userId, 3);
+    }
+
+    return this.getAllQuests(userId, category);
+  }
+
   private getQuestXpReward(difficulty: Difficulty): number {
     return XP_REWARD[difficulty];
   }

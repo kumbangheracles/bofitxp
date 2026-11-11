@@ -47,4 +47,38 @@ describe("UserQuestService streak and challenge evaluation", () => {
     expect(result.challenge.multiplier).toBe(3);
     expect(result.toast?.title).toBe("⚡ Challenge Boost x3");
   });
+
+  test("harus merefresh daily quest saat hari baru dimulai", () => {
+    const service = new UserQuestService();
+    const now = new Date("2026-11-10T09:00:00.000Z");
+
+    const result = service.shouldRegenerateQuestCategory(
+      [
+        {
+          createdAt: new Date("2026-11-09T08:00:00.000Z"),
+        },
+      ] as any,
+      "daily",
+      now,
+    );
+
+    expect(result).toBe(true);
+  });
+
+  test("harus merefresh weekly quest saat minggu baru dimulai", () => {
+    const service = new UserQuestService();
+    const now = new Date("2026-11-10T09:00:00.000Z");
+
+    const result = service.shouldRegenerateQuestCategory(
+      [
+        {
+          createdAt: new Date("2026-11-02T10:00:00.000Z"),
+        },
+      ] as any,
+      "weekly",
+      now,
+    );
+
+    expect(result).toBe(true);
+  });
 });

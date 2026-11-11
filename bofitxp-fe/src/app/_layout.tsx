@@ -12,6 +12,7 @@ import { CustomToastProvider } from "@/context/CostumToastProvider";
 import { GlobalSatateProvider } from "@/context/GlobalStateContext";
 import { Colors } from "@/constants/theme";
 import BmiModal from "@/components/BmiModal";
+import AiCoachFloatingWidget from "@/components/ai-coach-floating-widget";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -31,6 +32,7 @@ export default function RootLayout() {
                 <GlobalToastManager />
                 <AnimatedSplashOverlay />
                 <Stack screenOptions={{ headerShown: false }} />
+                {/* <AiCoachFloatingWidget /> */}
                 <Toast config={toastConfig} />
                 <BmiModal />
               </CustomToastProvider>

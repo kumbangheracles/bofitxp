@@ -257,8 +257,9 @@ export default function ExerciseScreen() {
   }, [customRoutines, hasHydrated]);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     void setSelectedDailyRoutineId(activeRoutineId);
-  }, [activeRoutineId]);
+  }, [activeRoutineId, hasHydrated]);
 
   useEffect(() => {
     if (!activeRoutineId) return;
@@ -270,7 +271,7 @@ export default function ExerciseScreen() {
 
   const handleToggleDailyRoutine = (routineId: string) => {
     setActiveRoutineId((current) => {
-      if (current === routineId) return null;
+      if (current === routineId) return current;
       return routineId;
     });
   };

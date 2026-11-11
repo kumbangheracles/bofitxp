@@ -108,7 +108,7 @@ const QuestsPage = () => {
 
   const handleToggleDailyRoutine = (routineId: string) => {
     setActiveRoutineId((current) => {
-      if (current === routineId) return null;
+      if (current === routineId) return current;
       return routineId;
     });
   };
@@ -694,7 +694,7 @@ const QuestsPage = () => {
           </View>
         )}
 
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <ThemedText style={{ fontSize: 14 }}>
             This Week's Challenges
           </ThemedText>
@@ -707,7 +707,7 @@ const QuestsPage = () => {
           >
             0/2 Completed
           </ThemedText>
-        </View>
+        </View> */}
 
         {/* Loading */}
         {isPending && (

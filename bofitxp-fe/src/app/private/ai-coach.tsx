@@ -221,7 +221,7 @@ export default function AiCoachScreen() {
     safeSessions[0] ??
     null;
   const safeSelectedSessionTitle = sanitizeAiMessageText(
-    selectedSession?.title ?? "Motivasi latihan hari ini",
+    selectedSession?.title ?? "",
   );
 
   useEffect(() => {
@@ -231,9 +231,7 @@ export default function AiCoachScreen() {
 
     const bootstrapSession = async () => {
       try {
-        const newSession = await createCoachSession(
-          "Motivasi latihan hari ini",
-        );
+        const newSession = await createCoachSession();
 
         if (newSession?.id) {
           setSelectedSessionId(newSession.id);
@@ -316,12 +314,14 @@ export default function AiCoachScreen() {
 
             <View style={styles.heroTextWrap}>
               <Text style={styles.heroTitle}>AI Coach</Text>
-              <Text style={styles.heroSubtitle}>
-                {safeSelectedSessionTitle || "Motivasi latihan hari ini"}
-              </Text>
+              {safeSelectedSessionTitle && (
+                <Text style={styles.heroSubtitle}>
+                  {safeSelectedSessionTitle}
+                </Text>
+              )}
             </View>
 
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 void createCoachSession("Sesi baru AI Coach")
                   .then((newSession) => {
@@ -345,7 +345,7 @@ export default function AiCoachScreen() {
                   color={theme.surface}
                 />
               )}
-            </Pressable>
+            </Pressable> */}
           </View>
 
           <View style={styles.statusRow}>
@@ -354,7 +354,7 @@ export default function AiCoachScreen() {
           </View>
         </LinearGradient>
 
-        {safeSessions.length > 0 && (
+        {/* {safeSessions.length > 0 && (
           <View style={styles.sessionTabsWrap}>
             <FlatList
               horizontal
@@ -384,7 +384,7 @@ export default function AiCoachScreen() {
               )}
             />
           </View>
-        )}
+        )} */}
 
         {isLoadingSessions || isLoadingMessages ? (
           <View style={styles.loadingWrap}>

@@ -97,13 +97,6 @@ const ListTodayQuests = () => {
     }
   }, [activeRoutineId, customRoutines]);
 
-  const handleToggleDailyRoutine = (routineId: string) => {
-    setActiveRoutineId((current) => {
-      if (current === routineId) return null;
-      return routineId;
-    });
-  };
-
   const activeRoutine =
     customRoutines.find((routine) => routine.id === activeRoutineId) ?? null;
 
@@ -195,7 +188,7 @@ const ListTodayQuests = () => {
         >
           Today's Quests
         </Text>
-        <Text
+        {/* <Text
           style={{
             fontSize: fontSize.md,
             color: theme.primaryLabel,
@@ -203,7 +196,7 @@ const ListTodayQuests = () => {
           }}
         >
           View All {">"}
-        </Text>
+        </Text> */}
       </View>
       {/* Loading */}
       {isPending && (

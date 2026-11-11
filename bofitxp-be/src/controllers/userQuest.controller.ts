@@ -128,10 +128,15 @@ export default {
         });
       }
 
-      const results = await userQuestService.getAllQuests(
-        userId,
-        quest_category as GeneratedQuest["quest_category"],
-      );
+      const results =
+        (await userQuestService.ensureQuestCategoryForUser(
+          userId,
+          (quest_category as GeneratedQuest["quest_category"]) ?? "daily",
+        )) ??
+        (await userQuestService.getAllQuests(
+          userId,
+          (quest_category as GeneratedQuest["quest_category"]) ?? "daily",
+        ));
       logger.info(
         { quests: results },
         `Success get all ${quest_category} quests`,
