@@ -1,4 +1,5 @@
 import "@/global.css";
+import "@/i18n";
 import Toast from "react-native-toast-message";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import { useColorScheme } from "react-native";

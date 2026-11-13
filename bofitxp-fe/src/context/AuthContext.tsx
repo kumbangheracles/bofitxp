@@ -10,6 +10,7 @@ import * as SecureStore from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
 import { UserProps } from "@/types/user.type";
 import Toast from "react-native-toast-message";
+import i18n from "@/i18n";
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -74,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     Toast.show({
       type: "success",
-      text1: "Logout Success",
+      text1: i18n.t("account.logoutSuccess"),
     });
     setToken(null);
     setAuthUser(null);

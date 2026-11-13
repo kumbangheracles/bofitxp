@@ -16,11 +16,13 @@ import AppInput from "@/components/app-input";
 import AppGradButton from "@/components/app-gradient-btn";
 import useLogin from "@/hooks/use-login";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "@/hooks/use-translation";
 
 // interface LoginForm extends LoginProps {}
 
 export default function LoginScreen() {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const styles = makeStyles(theme);
 
   const { control, errors, handleLogin, handleSubmit, isPendingLogin } =
@@ -76,13 +78,13 @@ export default function LoginScreen() {
                 marginBlock: 10,
               }}
             >
-              Level up your fitness journey
+              {t("auth.tagline")}
             </Text>
           </View>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.title}>{t("auth.welcomeBack")}</Text>
 
           <Controller
             control={control}
@@ -91,7 +93,7 @@ export default function LoginScreen() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
-                label="Email"
+                label={t("auth.email")}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 onChangeText={onChange}
@@ -109,7 +111,7 @@ export default function LoginScreen() {
           />
           {errors.email && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.email.message || "This field is required."}
+              {errors.email.message || t("common.required")}
             </Text>
           )}
 
@@ -120,7 +122,7 @@ export default function LoginScreen() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
-                label="Password"
+                label={t("auth.password")}
                 isPassword
                 onChangeText={onChange}
                 value={value}
@@ -138,7 +140,7 @@ export default function LoginScreen() {
 
           {errors.password && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.password.message || "This field is required."}
+              {errors.password.message || t("common.required")}
             </Text>
           )}
 
@@ -164,14 +166,14 @@ export default function LoginScreen() {
                     fontWeight: fontWeight.semibold,
                   }}
                 >
-                  Forgot Password?
+                  {t("auth.forgotPassword")}
                 </Text>
               )}
             </Pressable>
           </View>
 
           <AppGradButton
-            label="Login"
+            label={t("auth.login")}
             title=""
             isLoading={isPendingLogin}
             variantGrad="primary"
@@ -190,7 +192,7 @@ export default function LoginScreen() {
               flexDirection: "row",
             }}
           >
-            <Text style={styles.loginText}>Dont't have an account? </Text>
+            <Text style={styles.loginText}>{t("auth.noAccount")} </Text>
             <Pressable
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
@@ -205,7 +207,7 @@ export default function LoginScreen() {
                     textDecorationLine: "underline",
                   }}
                 >
-                  Sign Up
+                  {t("auth.signUp")}
                 </Text>
               )}
             </Pressable>

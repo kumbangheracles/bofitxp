@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "@/hooks/use-translation";
 
 const HORIZONTAL_PADDING = 10;
 
@@ -19,6 +20,7 @@ export default function CustomTabBar({
   navigation,
 }: BottomTabBarProps) {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const width = Dimensions.get("window").width;
 
   const containerWidth = width - HORIZONTAL_PADDING * 2;
@@ -39,10 +41,10 @@ export default function CustomTabBar({
   }));
 
   const listTabs = [
-    { key: "home", label: "Home", icon: "home-outline" },
-    { key: "quests", label: "Quests", icon: "circle-off-outline" },
-    { key: "exercise", label: "Exercise", icon: "dumbbell" },
-    { key: "achievements", label: "Achievements", icon: "trophy-variant" },
+    { key: "home", label: t("nav.home"), icon: "home-outline" },
+    { key: "quests", label: t("nav.quests"), icon: "circle-off-outline" },
+    { key: "exercise", label: t("nav.exercise"), icon: "dumbbell" },
+    { key: "achievements", label: t("nav.achievements"), icon: "trophy-variant" },
   ] as const;
 
   return (

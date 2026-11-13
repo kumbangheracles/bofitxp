@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { useAuth } from "@/context/AuthContext";
 import { useGlobalState } from "@/context/GlobalStateContext";
+import i18n from "@/i18n";
 
 const useUpdateUser = () => {
   const userService = new UserService();
@@ -33,8 +34,8 @@ const useUpdateUser = () => {
         });
         Toast.show({
           type: "error",
-          text1: "Failed update user",
-          text2: "Please try again.",
+          text1: i18n.t("validation.updateUserFail"),
+          text2: i18n.t("validation.tryAgain"),
         });
       },
       onSuccess: async (result) => {
@@ -60,7 +61,7 @@ const useUpdateUser = () => {
         setIsOpenModalBmi(false);
         Toast.show({
           type: "success",
-          text1: "Success update user",
+          text1: i18n.t("validation.updateUserSuccess"),
         });
       },
     });

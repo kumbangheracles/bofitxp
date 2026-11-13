@@ -1,15 +1,26 @@
 import { AppTheme } from "@/constants/theme";
 
+export type BmiCategoryKey =
+  | "notCalculated"
+  | "underweight"
+  | "normal"
+  | "overweight"
+  | "obesity";
+
 type BmiCategory = {
-  label: string;
+  key: BmiCategoryKey;
   color: string;
   backgroundColor: string;
+  borderColor: string;
 };
 
-const getBmiCategory = (bmi: number | null | undefined, theme: AppTheme) => {
+const getBmiCategory = (
+  bmi: number | null | undefined,
+  theme: AppTheme,
+): BmiCategory => {
   if (bmi == null) {
     return {
-      label: "Not calculated",
+      key: "notCalculated",
       color: theme.textSecondary,
       backgroundColor: theme.elevated,
       borderColor: theme.border,
@@ -18,7 +29,7 @@ const getBmiCategory = (bmi: number | null | undefined, theme: AppTheme) => {
 
   if (bmi < 18.5) {
     return {
-      label: "Underweight",
+      key: "underweight",
       color: theme.combo,
       backgroundColor: `${theme.combo}20`,
       borderColor: `${theme.combo}40`,
@@ -27,7 +38,7 @@ const getBmiCategory = (bmi: number | null | undefined, theme: AppTheme) => {
 
   if (bmi < 25) {
     return {
-      label: "Normal",
+      key: "normal",
       color: theme.xp,
       backgroundColor: `${theme.xp}20`,
       borderColor: `${theme.xp}40`,
@@ -36,7 +47,7 @@ const getBmiCategory = (bmi: number | null | undefined, theme: AppTheme) => {
 
   if (bmi < 30) {
     return {
-      label: "Overweight",
+      key: "overweight",
       color: theme.comboSecondary,
       backgroundColor: `${theme.comboSecondary}20`,
       borderColor: `${theme.comboSecondary}40`,
@@ -44,7 +55,7 @@ const getBmiCategory = (bmi: number | null | undefined, theme: AppTheme) => {
   }
 
   return {
-    label: "Obesity",
+    key: "obesity",
     color: theme.danger,
     backgroundColor: `${theme.danger}20`,
     borderColor: `${theme.danger}40`,

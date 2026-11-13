@@ -12,6 +12,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useAppTheme } from "@/hooks/use-app-theme";
+import { useTranslation } from "@/hooks/use-translation";
 import { useAuth } from "@/context/AuthContext";
 import { ThemedView } from "@/components/themed-view";
 import { ThemedText } from "@/components/themed-text";
@@ -35,6 +36,7 @@ interface MenuItem {
 
 const AccountIndex = () => {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const scheme = useColorScheme();
   const router = useRouter();
   const { authUser, logout } = useAuth();
@@ -59,13 +61,13 @@ const AccountIndex = () => {
   const accountMenu: MenuItem[] = [
     {
       id: "edit-info",
-      label: "Edit Information",
+      label: t("account.editProfile"),
       icon: "account-edit-outline",
       onPress: () => router.push("/private/edit-information"),
     },
     {
       id: "edit-bmi",
-      label: "Edit BMI",
+      label: t("account.editBMI"),
       icon: "scale-bathroom",
       onPress: () => setIsOpenModalBmi(true),
       badge: authUser?.body_mass_index
@@ -81,19 +83,19 @@ const AccountIndex = () => {
   const supportMenu: MenuItem[] = [
     {
       id: "theme",
-      label: isDarkMode ? "Switch to light mode" : "Switch to dark mode",
+      label: isDarkMode ? t("account.switchToLight") : t("account.switchToDark"),
       icon: isDarkMode ? "weather-sunny" : "weather-night",
       onPress: () => Appearance.setColorScheme(isDarkMode ? "light" : "dark"),
     },
     {
       id: "settings",
-      label: "Settings",
+      label: t("account.settings"),
       icon: "cog-outline",
       //   onPress: () => router.push("/account/settings"),
     },
     {
       id: "faq",
-      label: "FAQ",
+      label: t("account.faq"),
       icon: "help-circle-outline",
       //   onPress: () => router.push("/account/faq"),
     },
@@ -404,7 +406,7 @@ const AccountIndex = () => {
               />
             </View>
             <Text style={[styles.menuLabel, { color: theme.danger }]}>
-              {loggingOut ? "Logging out..." : "Logout"}
+              {loggingOut ? t("account.loggingOut") : t("account.logout")}
             </Text>
           </Pressable>
         </ThemedView>
@@ -423,7 +425,7 @@ const AccountIndex = () => {
 
       <AppModal
         visible={isOpenBmiInfo}
-        title="BMI Classification"
+        title={t("account.bmiClassification")}
         onClose={() => setIsOpenBmiInfo(false)}
       >
         <BmiClassificationCard theme={theme} />
@@ -431,9 +433,9 @@ const AccountIndex = () => {
 
       <AppModal
         visible={modalLogout}
-        cancelText="Cancel"
+        cancelText={t("common.cancel")}
         onClose={() => setModalLogout(false)}
-        confirmText="Yes"
+        confirmText={t("common.yes")}
         onCancel={() => setModalLogout(false)}
         confirmVariant="primary"
         cancelVariant="default"
@@ -442,7 +444,7 @@ const AccountIndex = () => {
         isConfirmLoading={loggingOut}
       >
         <Text style={[styles.modalLogoutTitle, { color: theme.text }]}>
-          Are you sure want to log out ?.
+          {t("account.logoutConfirm")}
         </Text>
       </AppModal>
     </ScrollView>

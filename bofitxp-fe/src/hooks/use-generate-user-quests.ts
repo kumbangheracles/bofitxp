@@ -4,6 +4,7 @@ import { UserQuestService } from "@/services/userQuests.service";
 import { QuestCategoryType } from "@/types/quests.type";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
+import i18n from "@/i18n";
 
 const useGenerateUserQuest = () => {
   const userQuestService = new UserQuestService();
@@ -14,15 +15,15 @@ const useGenerateUserQuest = () => {
     quest_category: QuestCategoryType,
   ) => {
     if (!authUser) {
-      Toast.show({ type: "error", text1: "Invalid user id" });
+      Toast.show({ type: "error", text1: i18n.t("quests.invalidUser") });
       return;
     }
 
     if (authUser.body_mass_index === null) {
       Toast.show({
         type: "info",
-        text1: "BMI is required",
-        text2: "You need to filled the bmi before generating quests.",
+        text1: i18n.t("quests.bmiRequired"),
+        text2: i18n.t("quests.bmiRequiredHint"),
       });
 
       setIsOpenModalBmi(true);
@@ -36,15 +37,15 @@ const useGenerateUserQuest = () => {
       await userQuestService.generateQuests(quest_category);
       Toast.show({
         type: "success",
-        text1: `Success generated ${quest_category} quests`,
+        text1: i18n.t("quests.generateSuccess", { category: quest_category }),
       });
       return true;
     } catch (error: any) {
       console.error(error.message);
       Toast.show({
         type: "error",
-        text1: `Error generated ${quest_category} quests`,
-        text2: "Please try again later.",
+        text1: i18n.t("quests.generateError", { category: quest_category }),
+        text2: i18n.t("validation.tryAgain"),
       });
       return false;
     } finally {

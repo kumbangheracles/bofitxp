@@ -1,4 +1,5 @@
 import { useAppTheme } from "@/hooks/use-app-theme";
+import { useTranslation } from "@/hooks/use-translation";
 import {
   useAiCoachSessionMessages,
   useAiCoachSessions,
@@ -15,6 +16,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -37,7 +39,12 @@ type CoachMessage = AiCoachMessage;
 const INLINE_PATTERN = /(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|_[^_]+_|`[^`]+`)/g;
 
 type InlineNode = string | { type: "bold" | "italic" | "code"; value: string };
-
+const templateMessages = [
+  "Bagaimana Progress latihan saat ini?",
+  "Bagaimana cara meningkatkan stamina?",
+  "Butuh berapa kalori dan protein dalam sehari untuk saya?",
+  "Siapa kamu?",
+];
 const parseInlineMarkdown = (text: string): InlineNode[] => {
   const nodes: InlineNode[] = [];
   let lastIndex = 0;
@@ -360,6 +367,7 @@ const TypingFooter = ({ isSending, styles }: TypingFooterProps) => {
 
 export default function AiCoachScreen() {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { authUser } = useAuth();
   const insets = useSafeAreaInsets();
@@ -430,11 +438,13 @@ export default function AiCoachScreen() {
     void bootstrapSession();
   }, [authUser?.id, safeSessions.length, createCoachSession]);
 
-  const handleSend = async () => {
-    const trimmed = draft.trim();
+  const handleSend = async (message?: string) => {
+    const trimmed = (message ?? draft).trim();
+
     if (!trimmed || !selectedSessionId) return;
 
     const tempId = `optimistic-${Date.now()}`;
+
     const optimisticMsg: CoachMessage = {
       id: tempId,
       sessionId: selectedSessionId,
@@ -447,13 +457,19 @@ export default function AiCoachScreen() {
     setDraft("");
 
     try {
-      await sendCoachMessage(selectedSessionId, { content: trimmed });
+      await sendCoachMessage(selectedSessionId, {
+        content: trimmed,
+      });
     } catch (error) {
       console.warn("Failed to send AI Coach message:", error);
       setDraft(trimmed);
     } finally {
       setOptimisticUserMessage(null);
     }
+  };
+
+  const handleClickTempMsg = async (msg: string) => {
+    handleSend(msg);
   };
 
   const aiMessages = safeMessages.filter((m) => m.sender === "AI");
@@ -571,7 +587,7 @@ export default function AiCoachScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
       >
         <LinearGradient
           colors={[theme.primary, theme.primaryHover]}
@@ -642,34 +658,54 @@ export default function AiCoachScreen() {
         )}
 
         <View style={styles.inputRow}>
-          <TextInput
-            value={draft}
-            onChangeText={setDraft}
-            placeholder="Kirim pesan ke AI Coach..."
-            placeholderTextColor={theme.textHint}
-            multiline
-            style={styles.input}
-          />
-
-          <Pressable
-            onPress={handleSend}
-            disabled={!draft.trim() || !selectedSessionId || isSendingMessage}
-            style={[
-              styles.sendButton,
-              (!draft.trim() || !selectedSessionId || isSendingMessage) &&
-                styles.sendButtonDisabled,
-            ]}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.templateMsgContainer}
           >
-            {isSendingMessage ? (
-              <ActivityIndicator size="small" color={theme.surface} />
-            ) : (
-              <MaterialCommunityIcons
-                name="send"
-                size={18}
-                color={theme.surface}
-              />
-            )}
-          </Pressable>
+            {templateMessages.map((message, index) => (
+              <Pressable
+                key={index}
+                onPress={() => handleClickTempMsg(message)}
+                style={({ pressed }) => [
+                  styles.templateMsg,
+                  { opacity: pressed ? 0.3 : 1 },
+                ]}
+              >
+                <Text style={styles.templateMsgText}>{message}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={draft}
+              onChangeText={setDraft}
+              placeholder="Kirim pesan ke AI Coach..."
+              placeholderTextColor={theme.textHint}
+              multiline
+              style={styles.input}
+            />
+
+            <Pressable
+              onPress={() => handleSend()}
+              disabled={!draft.trim() || !selectedSessionId || isSendingMessage}
+              style={[
+                styles.sendButton,
+                (!draft.trim() || !selectedSessionId || isSendingMessage) &&
+                  styles.sendButtonDisabled,
+              ]}
+            >
+              {isSendingMessage ? (
+                <ActivityIndicator size="small" color={theme.surface} />
+              ) : (
+                <MaterialCommunityIcons
+                  name="send"
+                  size={18}
+                  color={theme.surface}
+                />
+              )}
+            </Pressable>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -677,222 +713,245 @@ export default function AiCoachScreen() {
 }
 
 const createStyles = (theme: AppTheme) =>
-    StyleSheet.create({
-      safeArea: {
-        flex: 1,
-        backgroundColor: theme.background,
-      },
-      container: {
-        flex: 1,
-        backgroundColor: theme.background,
-      },
-      heroCard: {
-        marginHorizontal: 14,
-        marginTop: 0,
-        paddingHorizontal: 14,
-        paddingVertical: 14,
-        borderRadius: 24,
-        shadowColor: "#6C3FFF",
-        shadowOffset: { width: 0, height: 12 },
-        shadowOpacity: 0.25,
-        shadowRadius: 20,
-        elevation: 8,
-      },
-      heroRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-      },
-      avatarWrap: {
-        width: 46,
-        height: 46,
-        borderRadius: 16,
-        backgroundColor: "rgba(255,255,255,0.2)",
-        alignItems: "center",
-        justifyContent: "center",
-        borderWidth: 1,
-        borderColor: "rgba(255,255,255,0.35)",
-      },
-      heroTextWrap: {
-        flex: 1,
-      },
-      heroTitle: {
-        fontSize: 18,
-        fontWeight: "700",
-        color: theme.surface,
-      },
-      statusRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
-        marginTop: 12,
-      },
-      statusDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: "#7CFFB2",
-      },
-      statusText: {
-        color: "rgba(255,255,255,0.86)",
-        fontSize: 12,
-        fontWeight: "500",
-      },
-      chatList: {
-        padding: 12,
-        paddingBottom: 18,
-        flexGrow: 1,
-      },
-      messageRow: {
-        flexDirection: "row",
-        marginBottom: 10,
-      },
-      messageRowLeft: {
-        justifyContent: "flex-start",
-      },
-      messageRowRight: {
-        justifyContent: "flex-end",
-      },
-      bubble: {
-        maxWidth: "78%",
-        borderRadius: 18,
-        paddingHorizontal: 14,
-        paddingVertical: 10,
-      },
-      aiBubble: {
-        backgroundColor: theme.surface,
-        borderWidth: 1,
-        borderColor: theme.border,
-      },
-      userBubble: {
-        backgroundColor: theme.primary,
-      },
-      optimisticRow: {
-        opacity: 0.75,
-      },
-      optimisticBubble: {
-        borderColor: theme.border,
-        borderStyle: "dashed",
-      },
-      optimisticIndicator: {
-        position: "absolute",
-        right: -22,
-        top: 10,
-      },
-      bulletRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        marginBottom: 4,
-      },
-      bullet: {
-        marginTop: 1,
-        marginRight: 6,
-      },
-      markdownBullet: {
-        fontSize: 16,
-        lineHeight: 22,
-        color: theme.text,
-        fontWeight: "700",
-      },
-      typingBubble: {
-        maxWidth: "60%",
-        minHeight: 40,
-        paddingHorizontal: 12,
-        paddingVertical: 10,
-        borderColor: theme.border,
-      },
-      typingIndicator: {
-        flexDirection: "row",
-        gap: 6,
-        alignItems: "center",
-      },
-      typingDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: theme.textHint,
-      },
-      messageText: {
-        fontSize: 14,
-        lineHeight: 22,
-        color: theme.text,
-        textAlign: "left",
-      },
-      markdownParagraph: {
-        fontSize: 14,
-        lineHeight: 22,
-        color: theme.text,
-        marginBottom: 4,
-      },
-      markdownBold: {
-        fontWeight: "700",
-        color: theme.text,
-      },
-      markdownItalic: {
-        fontStyle: "italic",
-        color: theme.text,
-      },
-      markdownCode: {
-        backgroundColor: theme.elevated,
-        borderRadius: 6,
-        paddingHorizontal: 4,
-        paddingVertical: 2,
-        fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
-        color: theme.primary,
-      },
-      userText: {
-        color: theme.surface,
-      },
-      inputRow: {
-        flexDirection: "row",
-        alignItems: "flex-end",
-        gap: 10,
-        paddingHorizontal: 12,
-        paddingTop: 12,
-        paddingBottom: 12,
-        borderTopWidth: 1,
-        borderTopColor: theme.border,
-        backgroundColor: theme.surface,
-      },
-      input: {
-        flex: 1,
-        minHeight: 46,
-        maxHeight: 120,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: theme.border,
-        backgroundColor: theme.elevated,
-        paddingHorizontal: 14,
-        paddingVertical: 10,
-        color: theme.text,
-        fontSize: 14,
-      },
-      sendButton: {
-        width: 48,
-        height: 48,
-        borderRadius: 16,
-        backgroundColor: theme.primary,
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      sendButtonDisabled: {
-        opacity: 0.5,
-      },
-      emptyState: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 40,
-      },
-      emptyText: {
-        marginTop: 10,
-        color: theme.textHint,
-        fontSize: 14,
-      },
-      loadingWrap: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 24,
-      },
-    });
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+    },
+    heroCard: {
+      marginHorizontal: 14,
+      marginTop: 0,
+      paddingHorizontal: 14,
+      paddingVertical: 14,
+      borderRadius: 24,
+      shadowColor: "#6C3FFF",
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.25,
+      shadowRadius: 20,
+      elevation: 8,
+    },
+    heroRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+    },
+    avatarWrap: {
+      width: 46,
+      height: 46,
+      borderRadius: 16,
+      backgroundColor: "rgba(255,255,255,0.2)",
+      alignItems: "center",
+      justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "rgba(255,255,255,0.35)",
+    },
+    heroTextWrap: {
+      flex: 1,
+    },
+    heroTitle: {
+      fontSize: 18,
+      fontWeight: "700",
+      color: theme.surface,
+    },
+    statusRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      marginTop: 12,
+    },
+    statusDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: "#7CFFB2",
+    },
+    statusText: {
+      color: "rgba(255,255,255,0.86)",
+      fontSize: 12,
+      fontWeight: "500",
+    },
+    chatList: {
+      padding: 12,
+      paddingBottom: 18,
+      flexGrow: 1,
+    },
+    messageRow: {
+      flexDirection: "row",
+      marginBottom: 10,
+    },
+    messageRowLeft: {
+      justifyContent: "flex-start",
+    },
+    messageRowRight: {
+      justifyContent: "flex-end",
+    },
+    bubble: {
+      maxWidth: "78%",
+      borderRadius: 18,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+    },
+    aiBubble: {
+      backgroundColor: theme.surface,
+      borderWidth: 1,
+      borderColor: theme.border,
+    },
+    userBubble: {
+      backgroundColor: theme.primary,
+    },
+    optimisticRow: {
+      opacity: 0.75,
+    },
+    optimisticBubble: {
+      borderColor: theme.border,
+      borderStyle: "dashed",
+    },
+    optimisticIndicator: {
+      position: "absolute",
+      right: -22,
+      top: 10,
+    },
+    bulletRow: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: 4,
+    },
+    bullet: {
+      marginTop: 1,
+      marginRight: 6,
+    },
+    markdownBullet: {
+      fontSize: 16,
+      lineHeight: 22,
+      color: theme.text,
+      fontWeight: "700",
+    },
+    typingBubble: {
+      maxWidth: "60%",
+      minHeight: 40,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+      borderColor: theme.border,
+    },
+    typingIndicator: {
+      flexDirection: "row",
+      gap: 6,
+      alignItems: "center",
+    },
+    typingDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: theme.textHint,
+    },
+    messageText: {
+      fontSize: 14,
+      lineHeight: 22,
+      color: theme.text,
+      textAlign: "left",
+    },
+    markdownParagraph: {
+      fontSize: 14,
+      lineHeight: 22,
+      color: theme.text,
+      marginBottom: 4,
+    },
+    markdownBold: {
+      fontWeight: "700",
+      color: theme.text,
+    },
+    markdownItalic: {
+      fontStyle: "italic",
+      color: theme.text,
+    },
+    markdownCode: {
+      backgroundColor: theme.elevated,
+      borderRadius: 6,
+      paddingHorizontal: 4,
+      paddingVertical: 2,
+      fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
+      color: theme.primary,
+    },
+    userText: {
+      color: theme.surface,
+    },
+
+    templateMsgContainer: {
+      flexDirection: "row",
+      gap: 4,
+      alignItems: "center",
+    },
+    templateMsg: {
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      borderColor: theme.border,
+      backgroundColor: theme.elevated,
+      borderRadius: 12,
+      borderWidth: 1,
+    },
+
+    templateMsgText: {
+      color: theme.textHint,
+    },
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "flex-end",
+      gap: 10,
+    },
+    inputRow: {
+      flexDirection: "column",
+      alignItems: "flex-end",
+      gap: 10,
+      paddingHorizontal: 12,
+      paddingTop: 12,
+      paddingBottom: 12,
+      borderTopWidth: 1,
+      borderTopColor: theme.border,
+      backgroundColor: theme.surface,
+    },
+    input: {
+      flex: 1,
+      minHeight: 46,
+      maxHeight: 120,
+      borderRadius: 16,
+      borderWidth: 1,
+      borderColor: theme.border,
+      backgroundColor: theme.elevated,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      color: theme.text,
+      fontSize: 14,
+    },
+    sendButton: {
+      width: 48,
+      height: 48,
+      borderRadius: 16,
+      backgroundColor: theme.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    sendButtonDisabled: {
+      opacity: 0.5,
+    },
+    emptyState: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 40,
+    },
+    emptyText: {
+      marginTop: 10,
+      color: theme.textHint,
+      fontSize: 14,
+    },
+    loadingWrap: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 24,
+    },
+  });

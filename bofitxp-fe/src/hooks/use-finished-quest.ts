@@ -5,6 +5,7 @@ import { QuestCategory } from "@/types/quests.type";
 import { useQueryClient } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import Toast from "react-native-toast-message";
+import i18n from "@/i18n";
 
 interface PropTypes {
   checked: boolean;
@@ -25,7 +26,7 @@ const useFinishedQuest = () => {
     xp_reward: number,
   ) => {
     if (!authUser) {
-      Toast.show({ type: "error", text1: "Invalid user id" });
+      Toast.show({ type: "error", text1: i18n.t("quests.invalidUser") });
       return;
     }
 
@@ -51,7 +52,7 @@ const useFinishedQuest = () => {
       } else {
         Toast.show({
           type: "success",
-          text1: `Quest completed reward +${xp_reward} XP`,
+          text1: i18n.t("quests.questCompleteToast", { xp: xp_reward }),
         });
       }
 
@@ -73,8 +74,8 @@ const useFinishedQuest = () => {
       setChecked(false);
       Toast.show({
         type: "error",
-        text1: "Error update quest",
-        text2: "Please try again later.",
+        text1: i18n.t("quests.updateError"),
+        text2: i18n.t("validation.tryAgain"),
       });
       console.log("Error finish quest: ", error.message);
     } finally {

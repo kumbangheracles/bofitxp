@@ -8,6 +8,7 @@ import { AuthService } from "@/services/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import i18n from "@/i18n";
 const useRegister = () => {
   const authServices = new AuthService();
   const {
@@ -32,7 +33,7 @@ const useRegister = () => {
     onSuccess: (_, variables) => {
       const registeredEmail = variables.email;
 
-      alert("Register berhasil");
+      alert(i18n.t("auth.registerSuccess"));
 
       if (registeredEmail) {
         SecureStore.setItemAsync("email_activation", registeredEmail);

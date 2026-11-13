@@ -3,3 +3,7 @@
 /bofitxp-cms
 # AI Agent Skills
 .agents/
+.github/instructions/
+.github/prompts/
+.github/copilot-instructions.md
+/docs

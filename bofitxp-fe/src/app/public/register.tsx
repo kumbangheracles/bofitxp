@@ -9,6 +9,7 @@ import {
 } from "@/constants/theme";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import useRegister from "@/hooks/use-register";
+import { useTranslation } from "@/hooks/use-translation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -25,6 +26,7 @@ import {
 
 export default function RegisterScreen() {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const styles = makeStyles(theme);
   const { control, errors, handleRegister, handleSubmit, isPendingRegister } =
     useRegister();
@@ -38,9 +40,9 @@ export default function RegisterScreen() {
     icon: GenderIcon;
     color: string;
   }> = [
-    { label: "Men", value: "pria", icon: "gender-male", color: "#3B82F6" },
+    { label: t("auth.men"), value: "pria", icon: "gender-male", color: "#3B82F6" },
     {
-      label: "Woman",
+      label: t("auth.women"),
       value: "wanita",
       icon: "gender-female",
       color: "#EC4899",
@@ -100,13 +102,13 @@ export default function RegisterScreen() {
                 marginBlock: 10,
               }}
             >
-              Level up your fitness journey
+              {t("auth.tagline")}
             </Text>
           </View>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.title}>Welcome</Text>
+          <Text style={styles.title}>{t("auth.welcome")}</Text>
 
           <Controller
             control={control}
@@ -114,7 +116,7 @@ export default function RegisterScreen() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
-                label="Full Name"
+                label={t("auth.fullName")}
                 disableFullscreenUI={isPendingRegister}
                 onChangeText={onChange}
                 value={value}
@@ -124,7 +126,7 @@ export default function RegisterScreen() {
           />
           {errors.fullName && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.fullName.message || "This field is required."}
+              {errors.fullName.message || t("common.required")}
             </Text>
           )}
           <Controller
@@ -133,7 +135,7 @@ export default function RegisterScreen() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
-                label="Username"
+                label={t("auth.username")}
                 disableFullscreenUI={isPendingRegister}
                 onChangeText={onChange}
                 value={value}
@@ -143,7 +145,7 @@ export default function RegisterScreen() {
           />
           {errors.username && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.username.message || "This field is required."}
+              {errors.username.message || t("common.required")}
             </Text>
           )}
 
@@ -153,7 +155,7 @@ export default function RegisterScreen() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <AppInput
-                label="Email"
+                label={t("auth.email")}
                 disableFullscreenUI={isPendingRegister}
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -165,7 +167,7 @@ export default function RegisterScreen() {
 
           {errors.email && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.email.message || "This field is required."}
+              {errors.email.message || t("common.required")}
             </Text>
           )}
 
@@ -175,7 +177,7 @@ export default function RegisterScreen() {
             render={({ field: { onChange, value } }) => (
               <View>
                 <Text style={[styles.label, { color: theme.textHint }]}>
-                  Gender
+                  {t("auth.gender")}
                 </Text>
 
                 <View style={styles.row}>
@@ -243,7 +245,7 @@ export default function RegisterScreen() {
             render={({ field: { onChange, value } }) => (
               <AppInput
                 disableFullscreenUI={isPendingRegister}
-                label="Password"
+                label={t("auth.password")}
                 onChangeText={onChange}
                 value={value}
                 isPassword
@@ -253,7 +255,7 @@ export default function RegisterScreen() {
 
           {errors.password && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.password.message || "This field is required."}
+              {errors.password.message || t("common.required")}
             </Text>
           )}
 
@@ -265,7 +267,7 @@ export default function RegisterScreen() {
               <AppInput
                 isPassword
                 disableFullscreenUI={isPendingRegister}
-                label="ConfirmPassword"
+                label={t("auth.confirmPassword")}
                 onChangeText={onChange}
                 value={value}
               />
@@ -274,12 +276,12 @@ export default function RegisterScreen() {
 
           {errors.confirmPassword && (
             <Text style={{ color: theme.danger, marginBottom: 10 }}>
-              {errors.confirmPassword.message || "This field is required."}
+              {errors.confirmPassword.message || t("common.required")}
             </Text>
           )}
 
           <AppGradButton
-            label="Register"
+            label={t("auth.register")}
             title=""
             disabled={isPendingRegister}
             variantGrad="primary"
@@ -307,7 +309,7 @@ export default function RegisterScreen() {
                 backgroundColor: theme.surface,
               }}
             >
-              Or sign up with
+              {t("auth.orSignUpWith")}
             </Text>
           </View>
 
@@ -349,7 +351,7 @@ export default function RegisterScreen() {
               flexDirection: "row",
             }}
           >
-            <Text style={styles.loginText}>Already have an account? </Text>
+            <Text style={styles.loginText}>{t("auth.hasAccount")} </Text>
             <Pressable
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
@@ -365,7 +367,7 @@ export default function RegisterScreen() {
                     textDecorationLine: "underline",
                   }}
                 >
-                  Sign In
+                  {t("auth.signIn")}
                 </Text>
               )}
             </Pressable>

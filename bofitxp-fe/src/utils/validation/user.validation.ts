@@ -1,94 +1,95 @@
 import * as Yup from "yup";
+import i18n from "@/i18n";
 
 export const registerValidateSchema = Yup.object({
   fullName: Yup.string()
-    .required("Full name must be filled.")
-    .min(6, "Consist of at least 6 characters!."),
+    .required(() => i18n.t("validation.fullNameRequired"))
+    .min(6, () => i18n.t("validation.minChars", { count: 6 })),
   username: Yup.string()
-    .required("Username must be filled.")
-    .min(6, "Consist of at least 6 characters!."),
+    .required(() => i18n.t("validation.usernameRequired"))
+    .min(6, () => i18n.t("validation.minChars", { count: 6 })),
   email: Yup.string()
-    .email("Email format not valid")
-    .required("Please input your email"),
+    .email(() => i18n.t("validation.emailInvalid"))
+    .required(() => i18n.t("validation.emailRequired")),
   password: Yup.string()
-    .min(8, "Minimal 8 Characters")
-    .required("Please input your password"),
+    .min(8, () => i18n.t("validation.passwordMin"))
+    .required(() => i18n.t("validation.passwordRequired")),
   confirmPassword: Yup.string()
-    // Catatan: null di Yup v1 ke atas biasanya ditulis Yup.ref("password") saja
-    .oneOf([Yup.ref("password")], "Password not match")
-    .required("Please input your password"),
-  // activationCode: Yup.string() // Pastikan semua field dari TRegister ada di skema
-  //   .default(""),
+    .oneOf([Yup.ref("password")], () => i18n.t("validation.passwordMismatch"))
+    .required(() => i18n.t("validation.passwordRequired")),
   gender: Yup.string()
-    .oneOf(["pria", "wanita"], "Gender is required.")
-    .required("Gender is required."),
-}).required(); // <-- Tambahkan .required() di ujung objek schema
+    .oneOf(["pria", "wanita"], () => i18n.t("validation.genderRequired"))
+    .required(() => i18n.t("validation.genderRequired")),
+}).required();
 
 export const loginValidateSchema = Yup.object({
   email: Yup.string()
-    .email("Email format not valid")
-    .required("Please input your email"),
-  password: Yup.string().required("Please input your password"),
+    .email(() => i18n.t("validation.emailInvalid"))
+    .required(() => i18n.t("validation.emailRequired")),
+  password: Yup.string().required(() => i18n.t("validation.passwordRequired")),
 });
 
 export const updateUserSchema = Yup.object({
   fullName: Yup.string()
     .trim()
-    .min(3, "Full name must be at least 3 characters")
-    .max(100, "Full name must be at most 100 characters")
+    .min(3, () => i18n.t("validation.minChars", { count: 3 }))
+    .max(100)
     .notRequired(),
 
   username: Yup.string()
     .trim()
-    .min(3, "Username must be at least 3 characters")
-    .max(30, "Username must be at most 30 characters")
+    .min(3, () => i18n.t("validation.minChars", { count: 3 }))
+    .max(30)
     .notRequired(),
 
-  email: Yup.string().trim().email("Invalid email format").notRequired(),
+  email: Yup.string()
+    .trim()
+    .email(() => i18n.t("validation.emailInvalid"))
+    .notRequired(),
 
   password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
+    .min(8, () => i18n.t("validation.passwordMin"))
     .notRequired(),
 
   currentPassword: Yup.string()
-    .min(8, "Current password must be at least 8 characters")
+    .min(8, () => i18n.t("validation.passwordMin"))
     .notRequired(),
 
   confirmPassword: Yup.string()
-    .min(8, "Confirm password must be at least 8 characters")
+    .min(8, () => i18n.t("validation.passwordMin"))
     .notRequired(),
 
   gender: Yup.string()
-    .oneOf(["pria", "wanita"], "Gender is invalid")
+    .oneOf(["pria", "wanita"], () => i18n.t("validation.genderRequired"))
     .notRequired(),
 
   age: Yup.number()
-    .typeError("Age must be a number")
-    .integer("Age must be an integer")
-    .min(0, "Age cannot be negative")
-    .max(120, "Age is too high")
+    .typeError(() => i18n.t("validation.minChars", { count: 1 }))
+    .integer()
+    .min(0)
+    .max(120)
     .notRequired(),
 
   target_final: Yup.string()
     .oneOf(
       ["weight_loss", "muscle_gain", "maintain_fitness", "endurance"],
-      "Target final is invalid",
+      () => i18n.t("error.somethingWentWrong"),
     )
     .notRequired(),
 
-  avatarUrl: Yup.string().url("Invalid avatar URL").nullable().notRequired(),
+  avatarUrl: Yup.string().url().nullable().notRequired(),
 
   body_weight: Yup.number()
-    .typeError("Body weight must be a number")
-    .positive("Body weight must be greater than 0")
-    .max(500, "Body weight is too high")
+    .typeError(() => i18n.t("validation.minChars", { count: 1 }))
+    .positive()
+    .max(500)
     .notRequired(),
 
   body_height: Yup.number()
-    .typeError("Body height must be a number")
-    .integer("Body height must be an integer")
-    .positive("Body height must be greater than 0")
-    .max(300, "Body height is too high")
+    .typeError(() => i18n.t("validation.minChars", { count: 1 }))
+    .integer()
+    .positive()
+    .max(300)
     .notRequired(),
 });
 

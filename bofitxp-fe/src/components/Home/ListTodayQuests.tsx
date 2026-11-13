@@ -20,6 +20,7 @@ import {
   saveCustomRoutines,
   setSelectedDailyRoutineId,
 } from "@/utils/custom-routine";
+import { useTranslation } from "@/hooks/use-translation";
 
 const getExerciseLabel = (exerciseId: string) =>
   exerciseId
@@ -30,6 +31,7 @@ const getExerciseLabel = (exerciseId: string) =>
 
 const ListTodayQuests = () => {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const { authUser, setAuthUser } = useAuth();
   const [checked, _] = useState<boolean>(false);
   const [customRoutines, setCustomRoutines] = useState<CustomRoutine[]>([]);
@@ -163,11 +165,14 @@ const ListTodayQuests = () => {
     );
 
     setCustomRoutines(updated);
-    showSuccess("Custom routine selesai", `+${reward} XP`);
+    showSuccess(
+      t("quests.customCompleteToast"),
+      t("quests.xpReward", { xp: reward }),
+    );
   };
 
   const showToast = (exp: number) => {
-    showSuccess("Workout selesai", `+${exp} XP`);
+    showSuccess(t("quests.workoutCompleteToast"), t("quests.xpReward", { xp: exp }));
   };
 
   return (
@@ -186,7 +191,7 @@ const ListTodayQuests = () => {
             color: theme.text,
           }}
         >
-          Today's Quests
+          {t("home.todaysQuests")}
         </Text>
         {/* <Text
           style={{
@@ -240,7 +245,7 @@ const ListTodayQuests = () => {
                 color: theme.primaryLabel,
               }}
             >
-              Custom Daily Quest
+              {t("quests.customDaily")}
             </Text>
             <Text
               style={{
@@ -264,7 +269,9 @@ const ListTodayQuests = () => {
           </Text>
 
           <Text style={{ marginTop: 8, color: theme.textSecondary }}>
-            {activeRoutine.exercises.length} latihan
+            {t("quests.exerciseCount", {
+              count: activeRoutine.exercises.length,
+            })}
           </Text>
 
           <View style={{ marginTop: 12, gap: 8 }}>

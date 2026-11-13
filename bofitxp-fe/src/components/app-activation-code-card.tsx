@@ -16,6 +16,7 @@ import {
   ViewStyle,
 } from "react-native";
 import AppGradButton from "./app-gradient-btn";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface AppActivationCodeCardProps {
   /** Judul di atas card */
@@ -49,7 +50,7 @@ const formatCooldown = (seconds: number) => {
 };
 
 export default function AppActivationCodeCard({
-  title = "Input activation code",
+  title,
   subtitle,
   codeLength = 6,
   allowLetters = false,
@@ -64,7 +65,9 @@ export default function AppActivationCodeCard({
   style,
 }: AppActivationCodeCardProps) {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const styles = getStyles(theme);
+  const cardTitle = title ?? t("auth.activationTitle");
 
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -180,7 +183,7 @@ export default function AppActivationCodeCard({
 
   return (
     <View style={[styles.card, style]}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{cardTitle}</Text>
       {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
 
       <Animated.View
@@ -221,7 +224,7 @@ export default function AppActivationCodeCard({
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <AppGradButton
-        label={loading ? "" : "Submit"}
+        label={loading ? "" : t("common.submit")}
         isGrad
         variantGrad="primary"
         onPress={onSubmit}
@@ -239,10 +242,10 @@ export default function AppActivationCodeCard({
       />
 
       <View style={styles.resendRow}>
-        <Text style={styles.resendLabel}>Didn't get the code? </Text>
+        <Text style={styles.resendLabel}>{t("auth.didntGetCode")} </Text>
         {secondsLeft > 0 ? (
           <Text style={styles.resendCooldown}>
-            Send again in {formatCooldown(secondsLeft)}
+            {t("auth.sendAgainIn", { time: formatCooldown(secondsLeft) })}
           </Text>
         ) : (
           <Pressable
@@ -251,7 +254,7 @@ export default function AppActivationCodeCard({
             hitSlop={8}
           >
             <Text style={styles.resendActive}>
-              {resendLoading ? "Sending . . ." : "Send again"}
+              {resendLoading ? t("auth.sending") : t("auth.sendAgain")}
             </Text>
           </Pressable>
         )}

@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
 import Toast from "react-native-toast-message";
+import i18n from "@/i18n";
 const useLogin = () => {
   const authServices = new AuthService();
   const { login: loginSaveToken } = useAuth();
@@ -31,7 +32,7 @@ const useLogin = () => {
       Toast.show({
         type: "error",
         text1: error.message,
-        text2: "Password or email is incorrect.",
+        text2: i18n.t("auth.invalidCredentials"),
       });
     },
     onSuccess: async (data) => {
@@ -39,8 +40,8 @@ const useLogin = () => {
       console.log("Data: ", data.data);
       Toast.show({
         type: "success",
-        text1: "Login Success",
-        text2: `Welcome back`,
+        text1: i18n.t("auth.loginSuccess"),
+        text2: i18n.t("auth.welcomeBack"),
       });
 
       reset();

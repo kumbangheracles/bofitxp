@@ -15,6 +15,7 @@ import { ThemedView } from "@/components/themed-view";
 import { fontSize, fontWeight, spacing } from "@/constants/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@/hooks/use-app-theme";
+import { useTranslation } from "@/hooks/use-translation";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ListTodayQuests from "@/components/Home/ListTodayQuests";
@@ -29,6 +30,7 @@ const { width } = Dimensions.get("window");
 export default function index() {
   const { authUser } = useAuth();
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
   const { showToast } = useCustomToast();
@@ -99,15 +101,15 @@ export default function index() {
   const streak_list = [
     {
       id: 1,
-      title: "Streak",
-      label: `${authUser?.streak} Days`,
+      title: t("quests.streak"),
+      label: t("common.days", { count: authUser?.streak }),
       icon: (
         <MaterialCommunityIcons name="fire" size={13} color={theme.combo} />
       ),
     },
     {
       id: 2,
-      title: "Total XP",
+      title: t("home.totalXP"),
       label: authUser?.xp?.toLocaleString("id-ID"),
       icon: (
         <MaterialCommunityIcons
@@ -119,7 +121,7 @@ export default function index() {
     },
     {
       id: 3,
-      title: "Level",
+      title: t("home.currentLevel"),
       label: authUser?.level,
       icon: (
         <MaterialCommunityIcons
@@ -151,9 +153,9 @@ export default function index() {
             }}
           >
             <ThemedView style={{ backgroundColor: theme.elevated }}>
-              <ThemedText>Welcome Back</ThemedText>
+              <ThemedText>{t("home.welcomeBack")}</ThemedText>
               <ThemedText style={{ fontWeight: 300, color: theme.textHint }}>
-                Ready to level up?
+                {t("home.readyToLevelUp")}
               </ThemedText>
             </ThemedView>
             <ThemedView
@@ -168,7 +170,9 @@ export default function index() {
                   Appearance.setColorScheme(isDarkMode ? "light" : "dark")
                 }
                 accessibilityLabel={
-                  isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+                  isDarkMode
+                    ? t("account.switchToLight")
+                    : t("account.switchToDark")
                 }
                 style={{
                   width: 64,
@@ -210,7 +214,7 @@ export default function index() {
               </Pressable>
               <Pressable
                 onPress={() =>
-                  showToast("KERJA WOYYYYY", "KERJA YANG BENER", "success")
+                  showToast(t("home.greatJob"), t("home.keepItUp"), "success")
                 }
                 style={{
                   padding: 10,
@@ -344,7 +348,7 @@ export default function index() {
                       fontSize: fontSize.xs,
                     }}
                   >
-                    Level {authUser?.level}
+                    {t("home.currentLevel")} {authUser?.level}
                   </Text>
                   <Text style={{ color: theme.text }}>
                     {authUser?.xp} / {nextLevelXp} XP
@@ -356,7 +360,7 @@ export default function index() {
                 <Text
                   style={{ color: theme.textSecondary, fontSize: fontSize.xs }}
                 >
-                  To next level
+                  {t("home.toNextLevel")}
                 </Text>
                 <Text
                   style={{
@@ -454,10 +458,13 @@ export default function index() {
                   color: theme.text,
                 }}
               >
-                Daily Progress
+                {t("home.dailyProgress")}
               </Text>
               <Text style={{ fontSize: fontSize.sm, color: theme.textHint }}>
-                {dailyProgress.completed}/{dailyProgress.total} quests completed
+                {t("home.questsCompleted", {
+                  completed: dailyProgress.completed,
+                  total: dailyProgress.total,
+                })}
               </Text>
             </View>
 
@@ -537,7 +544,7 @@ export default function index() {
                     fontSize: fontSize.md,
                   }}
                 >
-                  Generate Quest
+                  {t("home.generateQuest")}
                 </Text>
 
                 <Text
@@ -547,7 +554,7 @@ export default function index() {
                     fontSize: fontSize.xs,
                   }}
                 >
-                  AI-powered daily
+                  {t("home.generateQuestHint")}
                 </Text>
               </View>
             </Animated.View>
@@ -578,7 +585,7 @@ export default function index() {
                     fontSize: fontSize.md,
                   }}
                 >
-                  Open AI Coach
+                  {t("home.openAiCoach")}
                 </Text>
                 <Text
                   style={{
@@ -587,7 +594,7 @@ export default function index() {
                     fontSize: fontSize.xs,
                   }}
                 >
-                  Get advice
+                  {t("home.getAdvice")}
                 </Text>
               </View>
             </Animated.View>

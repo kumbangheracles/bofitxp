@@ -10,8 +10,10 @@ import AppGradButton from "@/components/app-gradient-btn";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { radius, spacing } from "@/constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTranslation } from "@/hooks/use-translation";
 const ActivationScreen = () => {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const authService = new AuthService();
   const [code, setCode] = useState<string>("");
   const [error, setError] = useState<string>();
@@ -22,26 +24,24 @@ const ActivationScreen = () => {
     try {
       const savedEmail = await SecureStore.getItemAsync("email_activation");
       if (!savedEmail) {
-        alert(
-          "Email aktivasi tidak ditemukan. Silakan lakukan registrasi ulang.",
-        );
+        alert(t("auth.activationEmailMissing"));
         return;
       }
       if (type === "activation") {
         const res = await authService.activationCode(code);
         if (res) {
-          alert("Activation account success.");
+          alert(t("auth.accountActivated"));
 
           router.push("/public/login");
         }
       } else if (type === "resendActivationCode") {
         const res = await authService.resendActivationCode(savedEmail);
         if (res) {
-          alert("Resend Activation code success.");
+          alert(t("auth.resendSuccess"));
         }
       }
     } catch (error) {
-      setError("Something went wrong.");
+      setError(t("error.somethingWentWrong"));
       console.log(error);
     } finally {
       setLoading(false);
@@ -64,7 +64,7 @@ const ActivationScreen = () => {
       >
         <SafeAreaView>
           <AppGradButton
-            title={"Back"}
+            title={t("common.back")}
             onPress={() => router.back()}
             viewStyle={{
               position: "absolute",
@@ -90,7 +90,8 @@ const ActivationScreen = () => {
           />
         </SafeAreaView>
         <AppActivationCodeCard
-          subtitle="Activation code has sended to your email"
+          title={t("auth.activationTitle")}
+          subtitle={t("auth.activationSubtitle")}
           value={code}
           onChangeCode={setCode}
           onSubmit={() => handleSubmit("activation")}

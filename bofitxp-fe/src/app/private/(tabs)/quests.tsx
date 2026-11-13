@@ -34,6 +34,7 @@ import {
   saveCustomRoutines,
   setSelectedDailyRoutineId,
 } from "@/utils/custom-routine";
+import { useTranslation } from "@/hooks/use-translation";
 
 export interface QuestCategoryTab {
   id: number;
@@ -51,6 +52,7 @@ const getExerciseLabel = (exerciseId: string) =>
 
 const QuestsPage = () => {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const { setAuthUser } = useAuth();
   const [customRoutines, setCustomRoutines] = useState<CustomRoutine[]>([]);
@@ -68,9 +70,9 @@ const QuestsPage = () => {
         ? QuestCategory.SPECIAL
         : QuestCategory.DAILY;
   const questCat: QuestCategoryTab[] = [
-    { id: 1, key: QuestCategory.DAILY, title: "Daily", iconName: "calendar" },
-    { id: 2, key: QuestCategory.WEEKLY, title: "Weekly", iconName: "recycle" },
-    { id: 3, key: QuestCategory.SPECIAL, title: "Special", iconName: "trophy" },
+    { id: 1, key: QuestCategory.DAILY, title: t("quests.daily"), iconName: "calendar" },
+    { id: 2, key: QuestCategory.WEEKLY, title: t("quests.weekly"), iconName: "recycle" },
+    { id: 3, key: QuestCategory.SPECIAL, title: t("quests.special"), iconName: "trophy" },
   ];
 
   useFocusEffect(
@@ -172,7 +174,10 @@ const QuestsPage = () => {
     );
 
     setCustomRoutines(updated);
-    showSuccess("Custom routine selesai", `+${activeRoutine.xpReward} XP`);
+    showSuccess(
+      t("quests.customCompleteToast"),
+      t("quests.xpReward", { xp: activeRoutine.xpReward }),
+    );
   };
 
   const {
@@ -417,7 +422,7 @@ const QuestsPage = () => {
   ];
 
   const showToast = (exp: number) => {
-    showSuccess("Workout selesai", `+${exp} XP`);
+    showSuccess(t("quests.workoutCompleteToast"), t("quests.xpReward", { xp: exp }));
   };
 
   return (
@@ -431,9 +436,9 @@ const QuestsPage = () => {
         }}
       >
         <View>
-          <ThemedText>Quest Hub</ThemedText>
+          <ThemedText>{t("quests.hub")}</ThemedText>
           <ThemedText style={{ fontWeight: 300, color: theme.textHint }}>
-            Your daily challenges
+            {t("quests.dailyChallenges")}
           </ThemedText>
 
           <ThemedView
@@ -488,12 +493,12 @@ const QuestsPage = () => {
           }}
           variantGrad="primary"
           viewStyle={{ width: 310, padding: 16 }}
-          label={"Generate AI Quests"}
+          label={t("quests.generateAi")}
           title={""}
         />
 
         <ThemedText style={{ fontSize: 10, color: theme.textHint }}>
-          AI will create personalized quests based on your fitness level
+          {t("quests.generateHint")}
         </ThemedText>
       </View>
 
@@ -524,7 +529,7 @@ const QuestsPage = () => {
                   color: theme.primaryLabel,
                 }}
               >
-                Custom Daily Quest
+                {t("quests.customDaily")}
               </Text>
               <Text
                 style={{
@@ -548,7 +553,9 @@ const QuestsPage = () => {
             </Text>
 
             <Text style={{ marginTop: 8, color: theme.textSecondary }}>
-              {activeRoutine.exercises.length} latihan
+              {t("quests.exerciseCount", {
+                count: activeRoutine.exercises.length,
+              })}
             </Text>
 
             <View style={{ marginTop: 12, gap: 8 }}>
@@ -626,7 +633,7 @@ const QuestsPage = () => {
                                 color: theme.primaryLabel,
                               }}
                             >
-                              Custom
+                              {t("quests.custom")}
                             </Text>
                           </View>
 
@@ -687,8 +694,8 @@ const QuestsPage = () => {
                 }}
               >
                 {activeRoutine.completedAt
-                  ? "Custom routine sudah selesai"
-                  : "Selesaikan custom routine"}
+                  ? t("quests.customCompleted")
+                  : t("quests.completeCustom")}
               </Text>
             </Pressable>
           </View>
@@ -745,7 +752,7 @@ const QuestsPage = () => {
               name="database-off"
               size={24}
             />
-            <Text style={{ color: theme.textHint }}>No quests available</Text>
+            <Text style={{ color: theme.textHint }}>{t("quests.empty")}</Text>
           </View>
         )}
 
